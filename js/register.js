@@ -3,7 +3,8 @@ document
   .getElementById("registerForm")
   .addEventListener("submit", async (e) => {
     e.preventDefault();
-
+    const firstName = document.getElementById("firstName").value.trim();
+    const lastName = document.getElementById("lastName").value.trim();
     const email = document.getElementById("email").value.trim();
     const password = document.getElementById("password").value.trim();
 
@@ -13,8 +14,9 @@ document
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ firstName, lastName, email, password }),
       });
+
       const result = await response.json();
 
       if (result.status === "success") {

@@ -1,27 +1,58 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Register</title>
-    <link rel="stylesheet" href="css/style.css" />
-  </head>
-  <body>
-    <h1>Register</h1>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>Registrieren</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body>
 
-    <form id="registerForm">
-      <div>
-        <label>Email</label>
-        <input type="email" id="email" required />
+  <div class="login-container">
+
+    <img src="resources/assets/lumi_logo.svg" alt="Logo" class="logo" />
+
+    <div class="login-card">
+
+      <div class="login-header">
+        <h1>Konto erstellen</h1>
+        <p>Schön, dass du dabei bist</p>
       </div>
-      <div>
-        <label>Password</label>
-        <input type="password" id="password" required />
-      </div>
-      <button type="submit">Register</button>
-    </form>
 
-    <p>Already have an account? <a href="login.html">Login here</a>.</p>
+      <form id="registerForm">
 
-    <script src="js/register.js"></script>
-  </body>
+        <div class="form-group">
+          <label for="firstName">VORNAME</label>
+          <input type="text" id="firstName" placeholder="Max" required />
+        </div>
+
+        <div class="form-group">
+          <label for="lastName">NACHNAME</label>
+          <input type="text" id="lastName" placeholder="Müller" required />
+        </div>
+
+        <div class="form-group">
+          <label for="email">E-MAIL</label>
+          <input type="email" id="email" placeholder="max@beispiel.ch" required />
+        </div>
+
+        <div class="form-group">
+          <label for="password">PASSWORT</label>
+          <input type="password" id="password" placeholder="••••••••" required />
+        </div>
+
+        <button type="submit" class="btn-login">Registrieren</button>
+
+      </form>
+
+      <p class="register-text">
+        Bereits ein Konto? <a href="login.html">Anmelden</a>
+      </p>
+
+    </div>
+
+  </div>
+
+  <script src="js/register.js"></script>
+</body>
 </html>

@@ -1,27 +1,49 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Login</title>
-    <link rel="stylesheet" href="css/style.css" />
-  </head>
-  <body>
-    <h1>Login</h1>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>Login</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />  <!-- NEU: Schrift -->
+</head>
+<body>
 
-    <form id="loginForm">
-      <div>
-        <label>Email</label>
-        <input type="email" id="email" required />
+  <div class="login-container">
+
+    <img src="resources/assets/lumi_logo.svg" alt="Logo" class="logo" />
+
+    <div class="login-card">  <!-- NEU: Card-Wrapper -->
+
+      <div class="login-header">  <!-- NEU: Header -->
+        <h1>Willkommen bei Lumi</h1>
+        <p>Schön, dass du da bist</p>
       </div>
-      <div>
-        <label>Password</label>
-        <input type="password" id="password" required />
-      </div>
-      <button type="submit">Login</button>
-    </form>
 
-    <p>Don’t have an account? <a href="register.html">Register here</a>.</p>
+      <form id="loginForm">
 
-    <script src="js/login.js"></script>
-  </body>
+        <div class="form-group">  <!-- GEÄNDERT: class="form-group" -->
+          <label for="email">E-MAIL</label>
+          <input type="email" id="email" placeholder="max@beispiel.ch" required />
+        </div>
+
+        <div class="form-group">  <!-- GEÄNDERT: class="form-group" -->
+          <label for="password">PASSWORT</label>
+          <input type="password" id="password" placeholder="••••••••" required />
+          <a href="#" class="forgot-link">Passwort vergessen?</a>  <!-- NEU -->
+        </div>
+
+        <button type="submit" class="btn-login">Anmelden</button>  <!-- GEÄNDERT: class="btn-login" -->
+
+      </form>
+
+      <p class="register-text">  <!-- GEÄNDERT: class="register-text" -->
+        Noch kein Konto? <a href="register.html">Registrieren</a>
+      </p>
+
+    </div>  <!-- Ende login-card -->
+
+  </div>  <!-- Ende login-container -->
+
+  <script src="js/login.js"></script>
+</body>
 </html>
