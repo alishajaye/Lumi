@@ -43,7 +43,7 @@ async function loadChildren() {
     }
   } catch (error) {
     console.error(error);
-    alert("Fehler beim Laden der Kinder.");
+    alert("Fehler beim Laden der Kinder: " + error.message);
   }
 }
 
@@ -141,7 +141,7 @@ function renderCards() {
         <div class="kinder-card" style="border-top:4px solid ${soften(child.color, "40")}">
           ${
             child.streak > 0
-              ? `<div class="kinder-streak" style="color:${child.color};background:${soften(child.color, "1A")}">${child.streak}d</div>`
+              ? `<div class="kinder-streak" style="color:${child.color};background:${soften(child.color, "1A")}">${child.streak}d🔥</div>`
               : ""
           }
 
@@ -300,6 +300,7 @@ childForm.addEventListener("submit", async (e) => {
     result = await updateChild(id, data);
   } else {
     result = await createChild(data);
+    console.log("Child Created!");
   }
 
   if (result.status === "success") {
