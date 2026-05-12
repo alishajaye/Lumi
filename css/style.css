@@ -1,7 +1,6 @@
 /* =============================================
    Globale Basis
    ============================================= */
-
    * {
     box-sizing: border-box;
     margin: 0;
@@ -10,230 +9,58 @@
   
   body {
     font-family: 'Nunito', sans-serif;
-    height: 100vh;
-    overflow: hidden;
+    min-height: 100vh;
     background-image: url('../resources/assets/Hintergrund.svg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     background-attachment: fixed;
+    padding-top: 80px;
   }
   
   /* =============================================
-     Login Container
+     Navigation
      ============================================= */
-  
-     .login-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      gap: 24px;
-      padding: 20px;
-    }
-  
-  /* =============================================
-     Logo
-     ============================================= */
-  
-  .logo {
-    width: 120px;
-  }
-  
-  /* =============================================
-     Login Card
-     ============================================= */
-  
-     .login-card {
-      background: rgba(255, 255, 255, 0.75);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border-radius: 28px;
-      padding: 24px 36px;  /* war 40px, jetzt 24px */
-      width: 100%;
-      max-width: 420px;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
-    }
-  
-  /* =============================================
-     Header
-     ============================================= */
-  
-  .login-header {
-    margin-bottom: 28px;
-  }
-  
-  .login-header h1 {
-    font-size: 28px;
-    font-weight: 800;
-    color: #1a1a1a;
-    margin-bottom: 6px;
-  }
-  
-  .login-header {
-    margin-bottom: 16px;  /* war 28px, jetzt 16px */
-  }
-  
-  /* =============================================
-     Formular
-     ============================================= */
-  
-     .form-group {
-      margin-bottom: 12px;  /* war 20px, jetzt 12px */
-    }
-  
-  .form-group label {
-    display: block;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    color: #6b6b6b;
-    margin-bottom: 8px;
-  }
-  
-  .form-group input {
+  nav {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    background-color: #f0ede8;
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 100%;
-    padding: 12px 18px;  /* war 16px, jetzt 12px */
-    border: none;
-    border-radius: 16px;
-    background: #f0ede8;
-    font-family: 'Nunito', sans-serif;
-    font-size: 15px;
-    color: #1a1a1a;
-    outline: none;
-    transition: background 0.2s, box-shadow 0.2s;
-  }
-  
-  .form-group input::placeholder {
-    color: #b0a9a0;
-  }
-  
-  .form-group input:focus {
-    background: #e8e4de;
-    box-shadow: 0 0 0 3px rgba(167, 139, 210, 0.20);
-  }
-  
-  /* =============================================
-     Passwort vergessen
-     ============================================= */
-  
-  .forgot-link {
-    display: block;
-    text-align: right;
-    margin-top: 10px;
-    font-size: 13px;
-    font-weight: 600;
-    color: #a78bd2;
-    text-decoration: none;
-  }
-  
-  .forgot-link:hover {
-    color: #8a6bbf;
-  }
-  
-  /* =============================================
-     Login Button
-     ============================================= */
-  
-     .btn-login {
-      width: 100%;
-      padding: 14px;  /* war 18px, jetzt 14px */
-      margin-top: 4px;
-      border: none;
-      border-radius: 50px;
-      background: #b49ed4;
-      color: #fff;
-      font-family: 'Nunito', sans-serif;
-      font-size: 16px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
-      box-shadow: 0 4px 20px rgba(167, 139, 210, 0.35);
-    }
-  
-  .btn-login:hover {
-    background: #a38bc8;
-    box-shadow: 0 6px 24px rgba(167, 139, 210, 0.45);
-  }
-  
-  .btn-login:active {
-    transform: scale(0.98);
-  }
-  
-  /* =============================================
-     Registrieren Link
-     ============================================= */
-  
-  .register-text {
-    text-align: center;
-    margin-top: 24px;
-    font-size: 14px;
-    color: #9e9e9e;
-  }
-  
-  .register-text a {
-    font-weight: 800;
-    color: #b49ed4;
-    text-decoration: none;
-  }
-  
-  .register-text a:hover {
-    color: #8a6bbf;
-  }
-
-    /* =============================================
-      Header
-     ============================================= */
-
-     nav {
-      display: flex;
-      justify-content: space-evenly; /* Horizontale Zentrierung der Inhalte */
-      align-items: center;     /* Vertikale Zentrierung der Inhalte */
-      background-color: #f0ede8;
-      padding: 5px 0;         /* Oben/Unten 10px, Seiten 0 */
-      
-      /* Fixierung oben */
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      z-index: 999;
-
-      /* Abstände */
-      padding: 5px 20px;
-      box-sizing: border-box;
-      
-      /* Design-Anpassungen */
-      border-radius: 0;        /* Ecken nicht mehr abgerundet */
-      margin: 0;               /* Kein Abstand nach außen */
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 999;
+    padding: 5px 20px;
+    box-sizing: border-box;
+    margin: 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
   
   nav a {
-      color: #7C6E61;
-      padding: 14px 20px;
-      text-decoration: none;
-      text-align: center;
-      transition: background-color 0.3s, color 0.3s;
-      font-weight: bold;
-      border-radius: 10px; /* Die Rundung der Buttons/Links bleibt, falls gewünscht */
-      margin: 0 10px;
+    color: #7C6E61;
+    padding: 14px 20px;
+    text-decoration: none;
+    text-align: center;
+    transition: background-color 0.3s, color 0.3s;
+    font-weight: bold;
+    border-radius: 10px;
+    margin: 0 10px;
   }
-
-  nav img {
-    height: 60px;    /* Hier den Wert verringern, z.B. auf 30px oder 25px */
-    width: auto;     /* Behält das Seitenverhältnis bei, damit es nicht verzerrt */
-    margin-right: 20px; /* Optional: Abstand zu den Menüpunkten */
-    display: block;
-}
   
-  nav a:hover, 
-  nav a.active {
-      background-color: #ffffff; /* Weißer Hintergrund beim Hover */
-      color: #7C6E61;               /* Textfarbe angepasst, da weiß auf weiß unsichtbar wäre */
+  nav img {
+    height: 60px;
+    width: auto;
+    margin-right: 20px;
+    display: block;
   }
-
+  
+  nav a:hover,
+  nav a.active {
+    background-color: #ffffff;
+    color: #7C6E61;
+  }
+  
   .logo a {
     padding: 0;
     margin: 0;
