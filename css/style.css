@@ -1,240 +1,228 @@
 /* =============================================
    Globale Basis
    ============================================= */
-   * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
-  
-  body {
-    font-family: 'Nunito', sans-serif;
-    min-height: 100vh;
-    background-image: url('../resources/assets/Hintergrund.svg');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    padding-top: 80px;
-  }
-  
-  /* =============================================
-     Login Container
-     ============================================= */
-  
-     .login-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      gap: 24px;
-      padding: 20px;
-    }
-  
-  /* =============================================
-     Logo
-     ============================================= */
-  
-  .logo {
-    width: 120px;
-  }
-
-  .logo a {
-    padding: 0;
-    margin: 0;
-    background-color: transparent;
-    border-radius: 0;
-  }
-  
-  .logo a:hover {
-    background-color: transparent;
-  }
-  
-  /* =============================================
-     Login Card
-     ============================================= */
-  
-     .login-card {
-      background: rgba(255, 255, 255, 0.75);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border-radius: 28px;
-      padding: 24px 36px;  /* war 40px, jetzt 24px */
-      width: 100%;
-      max-width: 420px;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
-    }
-  
-  /* =============================================
-     Header
-     ============================================= */
-  
-  .login-header {
-    margin-bottom: 28px;
-  }
-  
-  .login-header h1 {
-    font-size: 28px;
-    font-weight: 800;
-    color: #1a1a1a;
-    margin-bottom: 6px;
-  }
-  
-  .login-header {
-    margin-bottom: 16px;  /* war 28px, jetzt 16px */
-  }
-  
-  /* =============================================
-     Formular
-     ============================================= */
-  
-     .form-group {
-      margin-bottom: 12px;  /* war 20px, jetzt 12px */
-    }
-  
-  .form-group label {
-    display: block;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    color: #6b6b6b;
-    margin-bottom: 8px;
-  }
-  
-  .form-group input {
-    width: 100%;
-    padding: 12px 18px;  /* war 16px, jetzt 12px */
-    border: none;
-    border-radius: 16px;
-    background: #f0ede8;
-    font-family: 'Nunito', sans-serif;
-    font-size: 15px;
-    color: #1a1a1a;
-    outline: none;
-    transition: background 0.2s, box-shadow 0.2s;
-  }
-  
-  .form-group input::placeholder {
-    color: #b0a9a0;
-  }
-  
-  .form-group input:focus {
-    background: #e8e4de;
-    box-shadow: 0 0 0 3px rgba(167, 139, 210, 0.20);
-  }
-  
-  /* =============================================
-     Passwort vergessen
-     ============================================= */
-  
-  .forgot-link {
-    display: block;
-    text-align: right;
-    margin-top: 10px;
-    font-size: 13px;
-    font-weight: 600;
-    color: #a78bd2;
-    text-decoration: none;
-  }
-  
-  .forgot-link:hover {
-    color: #8a6bbf;
-  }
-  
-  /* =============================================
-     Login Button
-     ============================================= */
-  
-     .btn-login {
-      width: 100%;
-      padding: 14px;  /* war 18px, jetzt 14px */
-      margin-top: 4px;
-      border: none;
-      border-radius: 50px;
-      background: #b49ed4;
-      color: #fff;
-      font-family: 'Nunito', sans-serif;
-      font-size: 16px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
-      box-shadow: 0 4px 20px rgba(167, 139, 210, 0.35);
-    }
-  
-  .btn-login:hover {
-    background: #a38bc8;
-    box-shadow: 0 6px 24px rgba(167, 139, 210, 0.45);
-  }
-  
-  .btn-login:active {
-    transform: scale(0.98);
-  }
-  
-  /* =============================================
-     Registrieren Link
-     ============================================= */
-  
-  .register-text {
-    text-align: center;
-    margin-top: 24px;
-    font-size: 14px;
-    color: #9e9e9e;
-  }
-  
-  .register-text a {
-    font-weight: 800;
-    color: #b49ed4;
-    text-decoration: none;
-  }
-  
-  .register-text a:hover {
-    color: #8a6bbf;
-  }
-
-    /* =============================================
-      Header
-     ============================================= */
-  nav {
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    background-color: #f0ede8;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 999;
-    padding: 5px 20px;
-    box-sizing: border-box;
-    margin: 0;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
-  nav a {
-    color: #7C6E61;
-    padding: 14px 20px;
-    text-decoration: none;
-    text-align: center;
-    transition: background-color 0.3s, color 0.3s;
-    font-weight: bold;
-    border-radius: 10px;
-    margin: 0 10px;
-  }
-  
-  nav img {
-    height: 60px;
-    width: auto;
-    margin-right: 20px;
-    display: block;
-  }
-  
-  nav a:hover,
-  nav a.active {
-      background-color: #ffffff; /* Weißer Hintergrund beim Hover */
-      color: #333;               /* Textfarbe angepasst, da weiß auf weiß unsichtbar wäre */
-  }
-
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+ 
+body {
+  font-family: 'Nunito', sans-serif;
+  min-height: 100vh;
+  background-image: url('../resources/assets/Hintergrund.svg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  padding-top: 80px;
+}
+ 
+/* =============================================
+   Login Container
+   ============================================= */
+.login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  gap: 24px;
+  padding: 20px;
+}
+ 
+/* =============================================
+   Logo
+   ============================================= */
+.logo {
+  width: 120px;
+}
+ 
+.logo a {
+  padding: 0;
+  margin: 0;
+  background-color: transparent;
+  border-radius: 0;
+}
+ 
+.logo a:hover {
+  background-color: transparent;
+}
+ 
+/* =============================================
+   Login Card
+   ============================================= */
+.login-card {
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: 28px;
+  padding: 24px 36px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+}
+ 
+/* =============================================
+   Header
+   ============================================= */
+.login-header {
+  margin-bottom: 16px;
+}
+ 
+.login-header h1 {
+  font-size: 28px;
+  font-weight: 800;
+  color: #1a1a1a;
+  margin-bottom: 6px;
+}
+ 
+/* =============================================
+   Formular
+   ============================================= */
+.form-group {
+  margin-bottom: 12px;
+}
+ 
+.form-group label {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #6b6b6b;
+  margin-bottom: 8px;
+}
+ 
+.form-group input {
+  width: 100%;
+  padding: 12px 18px;
+  border: none;
+  border-radius: 16px;
+  background: #f0ede8;
+  font-family: 'Nunito', sans-serif;
+  font-size: 15px;
+  color: #1a1a1a;
+  outline: none;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+ 
+.form-group input::placeholder {
+  color: #b0a9a0;
+}
+ 
+.form-group input:focus {
+  background: #e8e4de;
+  box-shadow: 0 0 0 3px rgba(167, 139, 210, 0.20);
+}
+ 
+/* =============================================
+   Passwort vergessen
+   ============================================= */
+.forgot-link {
+  display: block;
+  text-align: right;
+  margin-top: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #a78bd2;
+  text-decoration: none;
+}
+ 
+.forgot-link:hover {
+  color: #8a6bbf;
+}
+ 
+/* =============================================
+   Login Button
+   ============================================= */
+.btn-login {
+  width: 100%;
+  padding: 14px;
+  margin-top: 4px;
+  border: none;
+  border-radius: 50px;
+  background: #b49ed4;
+  color: #fff;
+  font-family: 'Nunito', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
+  box-shadow: 0 4px 20px rgba(167, 139, 210, 0.35);
+}
+ 
+.btn-login:hover {
+  background: #a38bc8;
+  box-shadow: 0 6px 24px rgba(167, 139, 210, 0.45);
+}
+ 
+.btn-login:active {
+  transform: scale(0.98);
+}
+ 
+/* =============================================
+   Registrieren Link
+   ============================================= */
+.register-text {
+  text-align: center;
+  margin-top: 24px;
+  font-size: 14px;
+  color: #9e9e9e;
+}
+ 
+.register-text a {
+  font-weight: 800;
+  color: #b49ed4;
+  text-decoration: none;
+}
+ 
+.register-text a:hover {
+  color: #8a6bbf;
+}
+ 
+/* =============================================
+   Header / Nav
+   ============================================= */
+nav {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  background-color: #f0ede8;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 999;
+  padding: 5px 20px;
+  box-sizing: border-box;
+  margin: 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+ 
+nav a {
+  color: #7C6E61;
+  padding: 14px 20px;
+  text-decoration: none;
+  text-align: center;
+  transition: background-color 0.3s, color 0.3s;
+  font-weight: bold;
+  border-radius: 10px;
+  margin: 0 10px;
+}
+ 
+nav img {
+  height: 60px;
+  width: auto;
+  margin-right: 20px;
+  display: block;
+}
+ 
+nav a:hover,
+nav a.active {
+  background-color: #ffffff;
+  color: #333;
+}
+ 
 /* =============================================
    PRODUKTE SEITE
    ============================================= */
@@ -252,14 +240,13 @@
   margin-top: 0;
 }
  
-/* Body override für Produkte-Seite: kein padding-top, Hero direkt unter Nav */
 body.produkte-page {
   padding-top: 0;
 }
  
 body.produkte-page .shop-hero {
-  margin-top: 72px; /* Höhe der Nav */
-   height: 320px; /* ← diesen Wert ändern, war 220px */
+  margin-top: 72px;
+  height: 320px;
 }
  
 .shop-hero-overlay {
@@ -323,7 +310,6 @@ body.produkte-page .shop-hero {
   box-shadow: 0 10px 32px rgba(0,0,0,0.11);
 }
  
-/* Badge "Empfohlen" */
 .produkt-badge {
   position: absolute;
   top: 14px;
@@ -338,7 +324,6 @@ body.produkte-page .shop-hero {
   z-index: 2;
 }
  
-/* Produkt Bild */
 .produkt-img-wrap {
   width: 100%;
   height: 220px;
@@ -359,7 +344,6 @@ body.produkte-page .shop-hero {
   transform: scale(1.03);
 }
  
-/* Label Tag über dem Bild (lila Streifen) */
 .produkt-label-tag {
   background: #b49ed4;
   color: #fff;
@@ -369,7 +353,6 @@ body.produkte-page .shop-hero {
   letter-spacing: 0.04em;
 }
  
-/* Info Bereich */
 .produkt-info {
   padding: 18px 20px 20px;
 }
@@ -389,7 +372,6 @@ body.produkte-page .shop-hero {
   line-height: 1.6;
 }
  
-/* Tags */
 .produkt-tags {
   display: flex;
   flex-wrap: wrap;
@@ -407,7 +389,6 @@ body.produkte-page .shop-hero {
   letter-spacing: 0.03em;
 }
  
-/* Preis + Verfügbarkeit */
 .produkt-footer {
   display: flex;
   align-items: center;
@@ -430,7 +411,6 @@ body.produkte-page .shop-hero {
   border-radius: 50px;
 }
  
-/* Kaufen Button */
 .btn-kaufen {
   width: 100%;
   padding: 14px;
@@ -454,7 +434,7 @@ body.produkte-page .shop-hero {
 .btn-kaufen:active {
   transform: scale(0.98);
 }
-
+ 
 /* =============================================
    EMPFEHLUNGEN SEITE
    ============================================= */
@@ -466,21 +446,6 @@ body.produkte-page .shop-hero {
 }
  
 /* Header */
-.empf-source-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 10px;
-}
- 
-.empf-source-label {
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  color: #b49ed4;
-  text-transform: uppercase;
-}
- 
 .empf-title {
   font-size: 28px;
   font-weight: 900;
@@ -514,17 +479,32 @@ body.produkte-page .shop-hero {
   border-left: 3px solid #b49ed4;
 }
  
+.empf-hinweis-icon {
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+ 
 .empf-hinweis strong {
   color: #b49ed4;
   font-weight: 700;
 }
  
-/* Einzelne Spalte */
+.empf-hinweis a {
+  color: #b49ed4;
+  text-decoration: none;
+  font-weight: 700;
+}
+ 
+.empf-hinweis a:hover {
+  text-decoration: underline;
+}
+ 
+/* Karten Liste */
 .empf-list-wrap {
   display: flex;
   flex-direction: column;
   gap: 14px;
-  margin-bottom: 28px;
+  margin-bottom: 36px;
 }
  
 /* Karte */
@@ -543,22 +523,19 @@ body.produkte-page .shop-hero {
   box-shadow: 0 8px 24px rgba(0,0,0,0.09);
 }
  
-/* Karten Top-Zeile (Icon + Altersbezeichnung + Badge) */
+/* Farb-Varianten für Karten */
+.empf-card--pink   { border-left: 4px solid #E888A6; }
+.empf-card--orange { border-left: 4px solid #F6B657; }
+.empf-card--green  { border-left: 4px solid #96C2A0; }
+.empf-card--blue   { border-left: 4px solid #5192D2; }
+.empf-card--purple { border-left: 4px solid #B09AC9; }
+ 
+/* Karten Top-Zeile */
 .empf-card-top {
   display: flex;
   align-items: center;
   gap: 10px;
   margin-bottom: 10px;
-}
- 
-.empf-icon-wrap {
-  width: 32px;
-  height: 32px;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
 }
  
 .empf-age-label {
@@ -568,6 +545,13 @@ body.produkte-page .shop-hero {
   text-transform: uppercase;
 }
  
+/* Farb-Varianten für Age Labels */
+.empf-age-label--pink   { color: #E888A6; }
+.empf-age-label--orange { color: #F6B657; }
+.empf-age-label--green  { color: #96C2A0; }
+.empf-age-label--blue   { color: #5192D2; }
+.empf-age-label--purple { color: #B09AC9; }
+ 
 .empf-minbadge {
   margin-left: auto;
   font-size: 11px;
@@ -576,11 +560,12 @@ body.produkte-page .shop-hero {
   border-radius: 50px;
 }
  
-/* Karten Body */
-.empf-card-body {
-  padding-left: 0;
-}
+/* Farb-Varianten für Badges */
+.empf-minbadge--orange { background: #FEF3E2; color: #F6B657; }
+.empf-minbadge--green  { background: #EDF6EF; color: #96C2A0; }
+.empf-minbadge--blue   { background: #EAF2FB; color: #5192D2; }
  
+/* Karten Body */
 .empf-card-title {
   font-size: 16px;
   font-weight: 800;
@@ -619,14 +604,10 @@ body.produkte-page .shop-hero {
   margin-top: 4px;
 }
  
-/* Tipps */
+/* Tipps – freistehend ohne Box */
 .empf-tipps {
-  background: rgba(255, 255, 255, 0.82);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-radius: 20px;
-  padding: 22px 24px 20px;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+  background: transparent;
+  padding: 0;
   margin-bottom: 24px;
 }
  
@@ -666,6 +647,12 @@ body.produkte-page .shop-hero {
   flex-shrink: 0;
 }
  
+/* Farb-Varianten für Tipp Icons */
+.empf-tipp-icon--pink   { background: #FDEEF2; }
+.empf-tipp-icon--blue   { background: #EAF2FB; }
+.empf-tipp-icon--green  { background: #EDF6EF; }
+.empf-tipp-icon--purple { background: #F3F0F8; }
+ 
 .empf-tipp-name {
   font-size: 13px;
   font-weight: 800;
@@ -686,6 +673,12 @@ body.produkte-page .shop-hero {
   color: #b0a9a0;
   text-align: center;
   line-height: 1.8;
+}
+ 
+.empf-footer-icon {
+  display: inline;
+  vertical-align: middle;
+  margin-right: 4px;
 }
  
 .empf-footer-quelle a {
