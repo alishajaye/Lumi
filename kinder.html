@@ -1,37 +1,521 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Welcome</title>
-    <link rel="stylesheet" href="css/style.css" />
-  </head>
-  <body>
-
-    <nav>
-      <div class="logo">
-        <a href="../index.html">
-          <img src="resources/assets/lumi_logo.svg" alt="Logo">
-        </a>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kinder – Lumi</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+</head>
+<body>
+ 
+  <nav>
+    <div class="logo">
+      <a href="../index.html">
+        <img src="resources/assets/lumi_logo.svg" alt="Logo">
+      </a>
+    </div>
+    <a href="../index.html">Übersicht</a>
+    <a href="kinder.html">Kinder</a>
+    <a href="produkte.html">Produkte</a>
+    <a href="empfehlungen.html">Empfehlungen</a>
+    <a href="mitteilungen.html">Mitteilungen</a>
+  </nav>
+  <script>
+    const navLinks = document.querySelectorAll('nav a');
+    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+    navLinks.forEach(link => {
+      link.classList.remove('active');
+      const linkPage = link.getAttribute('href').split('/').pop();
+      if (linkPage === currentPage) link.classList.add('active');
+    });
+  </script>
+ 
+  <div class="kinder-page">
+ 
+    <!-- Header -->
+    <div class="kinder-header">
+      <div>
+        <h1 class="kinder-title">Kinder</h1>
+        <p class="kinder-subtitle" id="profileCount">2 Profile aktiv</p>
       </div>
-      <a href="../index.html">Übersicht</a>
-      <a href="kinder.html">Kinder</a>
-      <a href="produkte.html">Produkte</a>
-      <a href="empfehlungen.html">Empfehlungen</a>
-      <a href="mitteilungen.html">Mitteilungen</a>
-    </nav>
-
-    <script>
-      const navLinks = document.querySelectorAll('nav a');
-      const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-
-      navLinks.forEach(link => {
-        link.classList.remove('active');
-        const linkPage = link.getAttribute('href').split('/').pop();
-        if (linkPage === currentPage) {
-          link.classList.add('active');
+      <button class="kinder-add-btn" id="addChildBtn">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><line x1="8" y1="2" x2="8" y2="14" stroke="#fff" stroke-width="2" stroke-linecap="round"/><line x1="2" y1="8" x2="14" y2="8" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>
+        Kind hinzufügen
+      </button>
+    </div>
+ 
+    <!-- Cards Grid -->
+    <div class="kinder-grid" id="kinderGrid">
+      <!-- Cards rendered by JS -->
+    </div>
+ 
+  </div>
+ 
+  <!-- ============================================= -->
+  <!-- MODAL: Kind hinzufügen / bearbeiten           -->
+  <!-- ============================================= -->
+  <div class="kinder-modal-overlay" id="modalOverlay">
+    <div class="kinder-modal">
+      <div class="kinder-modal-header">
+        <h2 class="kinder-modal-title" id="modalTitle">Kind hinzufügen</h2>
+        <button class="kinder-modal-close" id="modalClose">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><line x1="4" y1="4" x2="16" y2="16" stroke="#6b6b6b" stroke-width="2" stroke-linecap="round"/><line x1="16" y1="4" x2="4" y2="16" stroke="#6b6b6b" stroke-width="2" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+ 
+      <form id="childForm">
+        <input type="hidden" id="childId" />
+ 
+        <div class="kinder-form-group">
+          <label>NAME</label>
+          <input type="text" id="childName" placeholder="Name des Kindes" required />
+        </div>
+ 
+        <div class="kinder-form-group">
+          <label>ALTER</label>
+          <input type="number" id="childAge" placeholder="Alter in Jahren" min="0" max="18" required />
+        </div>
+ 
+        <div class="kinder-form-group">
+          <label>TAGESLIMIT (MINUTEN)</label>
+          <input type="number" id="childLimit" placeholder="z.B. 90" min="0" max="480" required />
+        </div>
+ 
+        <div class="kinder-form-group">
+          <label>GERÄTE (KOMMAGETRENNT)</label>
+          <input type="text" id="childDevices" placeholder="z.B. iPad Air, MacBook" />
+        </div>
+ 
+        <div class="kinder-form-group">
+          <label>FARBE WÄHLEN</label>
+          <div class="kinder-color-picker">
+            <div class="kinder-color-presets" id="colorPresets">
+              <button type="button" class="kinder-color-dot" data-color="#9C89D2" style="background:#9C89D2"></button>
+              <button type="button" class="kinder-color-dot" data-color="#F19DAE" style="background:#F19DAE"></button>
+              <button type="button" class="kinder-color-dot" data-color="#F7CE6E" style="background:#F7CE6E"></button>
+              <button type="button" class="kinder-color-dot" data-color="#7ECE9F" style="background:#7ECE9F"></button>
+              <button type="button" class="kinder-color-dot" data-color="#639BE9" style="background:#639BE9"></button>
+            </div>
+            <button type="button" class="kinder-custom-color-btn" id="customColorBtn">
+              <span class="kinder-custom-color-preview" id="customColorPreview"></span>
+              + Eigene Farbe
+            </button>
+            <input type="color" id="customColorInput" style="display:none" />
+          </div>
+          <input type="hidden" id="childColor" value="#F19DAE" />
+        </div>
+ 
+        <div class="kinder-form-actions">
+          <button type="button" class="kinder-btn-cancel" id="modalCancelBtn">Abbrechen</button>
+          <button type="submit" class="kinder-btn-save" id="modalSaveBtn">Hinzufügen</button>
+        </div>
+      </form>
+    </div>
+  </div>
+ 
+  <!-- ============================================= -->
+  <!-- MODAL: Farbe ändern (inline auf Karte)        -->
+  <!-- ============================================= -->
+  <div class="kinder-modal-overlay" id="colorModalOverlay">
+    <div class="kinder-modal kinder-modal--small">
+      <div class="kinder-modal-header">
+        <h2 class="kinder-modal-title">Farbe wählen</h2>
+        <button class="kinder-modal-close" id="colorModalClose">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><line x1="4" y1="4" x2="16" y2="16" stroke="#6b6b6b" stroke-width="2" stroke-linecap="round"/><line x1="16" y1="4" x2="4" y2="16" stroke="#6b6b6b" stroke-width="2" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+      <div class="kinder-color-picker">
+        <div class="kinder-color-presets" id="colorModalPresets">
+          <button type="button" class="kinder-color-dot" data-color="#9C89D2" style="background:#9C89D2"></button>
+          <button type="button" class="kinder-color-dot" data-color="#F19DAE" style="background:#F19DAE"></button>
+          <button type="button" class="kinder-color-dot" data-color="#F7CE6E" style="background:#F7CE6E"></button>
+          <button type="button" class="kinder-color-dot" data-color="#7ECE9F" style="background:#7ECE9F"></button>
+          <button type="button" class="kinder-color-dot" data-color="#639BE9" style="background:#639BE9"></button>
+        </div>
+        <button type="button" class="kinder-custom-color-btn" id="colorModalCustomBtn">
+          <span class="kinder-custom-color-preview" id="colorModalCustomPreview"></span>
+          + Eigene Farbe
+        </button>
+        <input type="color" id="colorModalCustomInput" style="display:none" />
+      </div>
+      <input type="hidden" id="colorModalChildId" />
+    </div>
+  </div>
+ 
+  <script>
+    /* =============================================
+       DATA LAYER — localStorage
+       ============================================= */
+    const STORAGE_KEY = 'lumi_children';
+ 
+    function getChildren() {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) return JSON.parse(raw);
+      // Demo data
+      const demo = [
+        {
+          id: 'mayumi',
+          name: 'Mayumi',
+          age: 10,
+          color: '#F19DAE',
+          dailyLimit: 90,
+          devices: ['iPad Air', 'MacBook'],
+          weekData: [45, 50, 0, 0, 0, 0, 0],
+          usedToday: 45,
+          streak: 5,
+          badges: ['Streak Queen', 'Limit-Held']
+        },
+        {
+          id: 'leo',
+          name: 'Leo',
+          age: 8,
+          color: '#F7CE6E',
+          dailyLimit: 60,
+          devices: ['iPad mini'],
+          weekData: [30, 40, 25, 0, 0, 0, 0],
+          usedToday: 30,
+          streak: 3,
+          badges: ['Draussen-Star']
+        }
+      ];
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(demo));
+      return demo;
+    }
+ 
+    function saveChildren(children) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(children));
+    }
+ 
+    function generateId() {
+      return 'child_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5);
+    }
+ 
+    /* =============================================
+       RENDER
+       ============================================= */
+    const WEEK_LABELS = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'];
+ 
+    function soften(hex, alpha) {
+      return hex + alpha;
+    }
+ 
+    function renderCards() {
+      const children = getChildren();
+      const grid = document.getElementById('kinderGrid');
+      document.getElementById('profileCount').textContent = children.length + ' Profile aktiv';
+ 
+      grid.innerHTML = children.map(child => {
+        const pct = child.dailyLimit > 0 ? Math.round((child.usedToday / child.dailyLimit) * 100) : 0;
+        const weekPct = child.dailyLimit > 0
+          ? Math.round((child.weekData.reduce((a,b) => a+b, 0) / (child.dailyLimit * 7)) * 100)
+          : 0;
+        const maxBar = Math.max(...child.weekData, child.dailyLimit, 1);
+ 
+        const barsHtml = child.weekData.map((mins, i) => {
+          const h = maxBar > 0 ? Math.max(4, (mins / maxBar) * 80) : 4;
+          const opacity = mins === 0 ? 0.15 : (i < new Date().getDay() || (i === 0 && new Date().getDay() !== 1)) ? 0.55 : 1;
+          return `<div class="kinder-bar-col">
+            <div class="kinder-bar" style="height:${h}px;background:${child.color};opacity:${opacity}"></div>
+            <span class="kinder-bar-label">${WEEK_LABELS[i]}</span>
+          </div>`;
+        }).join('');
+ 
+        const badgesHtml = child.badges.map(b =>
+          `<span class="kinder-badge" style="color:${child.color};background:${soften(child.color,'1A')}">${b}</span>`
+        ).join('');
+ 
+        const devicesHtml = child.devices.map(d =>
+          `<span class="kinder-device">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="2" y="1" width="8" height="10" rx="1.5" stroke="${child.color}" stroke-width="1.2"/><line x1="4.5" y1="9" x2="7.5" y2="9" stroke="${child.color}" stroke-width="1.2" stroke-linecap="round"/></svg>
+            ${d}
+          </span>`
+        ).join('');
+ 
+        const initial = child.name.charAt(0).toUpperCase();
+ 
+        return `
+        <div class="kinder-card" style="border-top:4px solid ${soften(child.color,'40')}">
+          <!-- Streak badge -->
+          ${child.streak > 0 ? `<div class="kinder-streak" style="color:${child.color};background:${soften(child.color,'1A')}">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1.5C6.8 3 7.5 3.5 8.5 4.5C9.5 5.8 9.5 7.5 8 9C7 10 5 10 4 9C2.5 7.5 2.5 5.8 3.5 4.5C4.5 3.5 5.2 3 6 1.5Z" stroke="${child.color}" stroke-width="1" fill="none"/></svg>
+            ${child.streak}d
+          </div>` : ''}
+ 
+          <!-- Color change button -->
+          <button class="kinder-color-change-btn" data-child-id="${child.id}" style="background:${soften(child.color,'1A')}" title="Farbe ändern">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5" stroke="${child.color}" stroke-width="1.5" fill="none"/><circle cx="7" cy="7" r="2" fill="${child.color}"/></svg>
+          </button>
+ 
+          <!-- Avatar -->
+          <div class="kinder-avatar" style="background:${soften(child.color,'20')};border:3px solid ${child.color}">
+            <span style="color:${child.color}">${initial}</span>
+          </div>
+          <div class="kinder-card-name">${child.name}</div>
+          <div class="kinder-card-age">${child.age} Jahre</div>
+ 
+          <!-- Stats -->
+          <div class="kinder-stats">
+            <div class="kinder-stat-row">
+              <span class="kinder-stat-label">Heute</span>
+              <span class="kinder-stat-value" style="color:${child.color}">${child.usedToday} / ${child.dailyLimit} min</span>
+            </div>
+            <div class="kinder-progress-bar" style="background:${soften(child.color,'15')}">
+              <div class="kinder-progress-fill" style="width:${Math.min(100,pct)}%;background:${child.color}"></div>
+            </div>
+ 
+            <div class="kinder-stat-row">
+              <span class="kinder-stat-label">Wochenziel</span>
+              <span class="kinder-stat-value" style="color:${child.color}">${weekPct}%</span>
+            </div>
+            <div class="kinder-progress-bar" style="background:${soften(child.color,'15')}">
+              <div class="kinder-progress-fill" style="width:${Math.min(100,weekPct)}%;background:${child.color}"></div>
+            </div>
+          </div>
+ 
+          <!-- Weekly chart -->
+          <div class="kinder-week-chart">${barsHtml}</div>
+ 
+          <!-- Badges -->
+          ${badgesHtml ? `<div class="kinder-badges">${badgesHtml}</div>` : ''}
+ 
+          <!-- Devices -->
+          <div class="kinder-devices-section">
+            <div class="kinder-devices-label">GERÄTE</div>
+            <div class="kinder-devices-list">${devicesHtml}</div>
+          </div>
+ 
+          <!-- Actions -->
+          <div class="kinder-card-actions">
+            <button class="kinder-btn-details" style="background:${child.color}" data-child-id="${child.id}">Details</button>
+            <button class="kinder-btn-limit" style="color:${child.color};background:${soften(child.color,'1A')}" data-child-id="${child.id}">Limit</button>
+          </div>
+        </div>`;
+      }).join('');
+ 
+      // Bind color change buttons
+      document.querySelectorAll('.kinder-color-change-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          openColorModal(btn.dataset.childId);
+        });
+      });
+ 
+      // Bind details buttons (edit)
+      document.querySelectorAll('.kinder-btn-details').forEach(btn => {
+        btn.addEventListener('click', () => openEditModal(btn.dataset.childId));
+      });
+ 
+      // Bind limit buttons
+      document.querySelectorAll('.kinder-btn-limit').forEach(btn => {
+        btn.addEventListener('click', () => openLimitPrompt(btn.dataset.childId));
+      });
+    }
+ 
+    /* =============================================
+       ADD / EDIT MODAL
+       ============================================= */
+    const modalOverlay = document.getElementById('modalOverlay');
+    const childForm = document.getElementById('childForm');
+    let selectedColor = '#F19DAE';
+ 
+    function openAddModal() {
+      document.getElementById('modalTitle').textContent = 'Kind hinzufügen';
+      document.getElementById('modalSaveBtn').textContent = 'Hinzufügen';
+      document.getElementById('childId').value = '';
+      document.getElementById('childName').value = '';
+      document.getElementById('childAge').value = '';
+      document.getElementById('childLimit').value = '';
+      document.getElementById('childDevices').value = '';
+      selectedColor = '#F19DAE';
+      document.getElementById('childColor').value = selectedColor;
+      updateColorSelection('colorPresets', selectedColor);
+      modalOverlay.classList.add('active');
+    }
+ 
+    function openEditModal(childId) {
+      const children = getChildren();
+      const child = children.find(c => c.id === childId);
+      if (!child) return;
+      document.getElementById('modalTitle').textContent = child.name + ' bearbeiten';
+      document.getElementById('modalSaveBtn').textContent = 'Speichern';
+      document.getElementById('childId').value = child.id;
+      document.getElementById('childName').value = child.name;
+      document.getElementById('childAge').value = child.age;
+      document.getElementById('childLimit').value = child.dailyLimit;
+      document.getElementById('childDevices').value = child.devices.join(', ');
+      selectedColor = child.color;
+      document.getElementById('childColor').value = selectedColor;
+      updateColorSelection('colorPresets', selectedColor);
+      modalOverlay.classList.add('active');
+    }
+ 
+    function closeModal() {
+      modalOverlay.classList.remove('active');
+    }
+ 
+    document.getElementById('addChildBtn').addEventListener('click', openAddModal);
+    document.getElementById('modalClose').addEventListener('click', closeModal);
+    document.getElementById('modalCancelBtn').addEventListener('click', closeModal);
+    modalOverlay.addEventListener('click', (e) => { if (e.target === modalOverlay) closeModal(); });
+ 
+    childForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const children = getChildren();
+      const id = document.getElementById('childId').value;
+      const name = document.getElementById('childName').value.trim();
+      const age = parseInt(document.getElementById('childAge').value);
+      const dailyLimit = parseInt(document.getElementById('childLimit').value);
+      const devices = document.getElementById('childDevices').value
+        .split(',').map(d => d.trim()).filter(d => d);
+      const color = document.getElementById('childColor').value;
+ 
+      if (id) {
+        // Edit
+        const idx = children.findIndex(c => c.id === id);
+        if (idx !== -1) {
+          children[idx].name = name;
+          children[idx].age = age;
+          children[idx].dailyLimit = dailyLimit;
+          children[idx].devices = devices;
+          children[idx].color = color;
+        }
+      } else {
+        // Add
+        children.push({
+          id: generateId(),
+          name,
+          age,
+          color,
+          dailyLimit,
+          devices,
+          weekData: [0, 0, 0, 0, 0, 0, 0],
+          usedToday: 0,
+          streak: 0,
+          badges: []
+        });
+      }
+ 
+      saveChildren(children);
+      closeModal();
+      renderCards();
+    });
+ 
+    /* =============================================
+       COLOR PICKER (in add/edit modal)
+       ============================================= */
+    function updateColorSelection(presetsId, color) {
+      const dots = document.querySelectorAll(`#${presetsId} .kinder-color-dot`);
+      let found = false;
+      dots.forEach(dot => {
+        if (dot.dataset.color === color) {
+          dot.classList.add('active');
+          found = true;
+        } else {
+          dot.classList.remove('active');
         }
       });
-    </script>
-
-  </body>
+      // Update custom preview
+      const previewId = presetsId === 'colorPresets' ? 'customColorPreview' : 'colorModalCustomPreview';
+      const preview = document.getElementById(previewId);
+      if (!found) {
+        preview.style.background = color;
+        preview.classList.add('active');
+      } else {
+        preview.style.background = '#ccc';
+        preview.classList.remove('active');
+      }
+    }
+ 
+    // Preset clicks in add/edit modal
+    document.querySelectorAll('#colorPresets .kinder-color-dot').forEach(dot => {
+      dot.addEventListener('click', () => {
+        selectedColor = dot.dataset.color;
+        document.getElementById('childColor').value = selectedColor;
+        updateColorSelection('colorPresets', selectedColor);
+      });
+    });
+ 
+    // Custom color in add/edit modal
+    document.getElementById('customColorBtn').addEventListener('click', () => {
+      document.getElementById('customColorInput').click();
+    });
+    document.getElementById('customColorInput').addEventListener('input', (e) => {
+      selectedColor = e.target.value;
+      document.getElementById('childColor').value = selectedColor;
+      updateColorSelection('colorPresets', selectedColor);
+    });
+ 
+    /* =============================================
+       COLOR MODAL (change color from card)
+       ============================================= */
+    const colorModalOverlay = document.getElementById('colorModalOverlay');
+    let colorModalChildId = null;
+ 
+    function openColorModal(childId) {
+      colorModalChildId = childId;
+      const children = getChildren();
+      const child = children.find(c => c.id === childId);
+      if (!child) return;
+      document.getElementById('colorModalChildId').value = childId;
+      updateColorSelection('colorModalPresets', child.color);
+      colorModalOverlay.classList.add('active');
+    }
+ 
+    function closeColorModal() {
+      colorModalOverlay.classList.remove('active');
+    }
+ 
+    document.getElementById('colorModalClose').addEventListener('click', closeColorModal);
+    colorModalOverlay.addEventListener('click', (e) => { if (e.target === colorModalOverlay) closeColorModal(); });
+ 
+    // Preset clicks in color modal
+    document.querySelectorAll('#colorModalPresets .kinder-color-dot').forEach(dot => {
+      dot.addEventListener('click', () => {
+        applyColorChange(dot.dataset.color);
+      });
+    });
+ 
+    // Custom color in color modal
+    document.getElementById('colorModalCustomBtn').addEventListener('click', () => {
+      document.getElementById('colorModalCustomInput').click();
+    });
+    document.getElementById('colorModalCustomInput').addEventListener('input', (e) => {
+      applyColorChange(e.target.value);
+    });
+ 
+    function applyColorChange(color) {
+      if (!colorModalChildId) return;
+      const children = getChildren();
+      const idx = children.findIndex(c => c.id === colorModalChildId);
+      if (idx !== -1) {
+        children[idx].color = color;
+        saveChildren(children);
+        renderCards();
+      }
+      closeColorModal();
+    }
+ 
+    /* =============================================
+       LIMIT PROMPT
+       ============================================= */
+    function openLimitPrompt(childId) {
+      const children = getChildren();
+      const child = children.find(c => c.id === childId);
+      if (!child) return;
+      const newLimit = prompt(`Neues Tageslimit für ${child.name} (in Minuten):`, child.dailyLimit);
+      if (newLimit !== null && !isNaN(parseInt(newLimit))) {
+        child.dailyLimit = parseInt(newLimit);
+        saveChildren(children);
+        renderCards();
+      }
+    }
+ 
+    /* =============================================
+       INIT
+       ============================================= */
+    renderCards();
+  </script>
+ 
+</body>
 </html>
