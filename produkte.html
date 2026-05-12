@@ -8,12 +8,30 @@
   <body>
 
     <nav>
-        <div class="logo">
+      <div class="logo">
+        <a href="../index.html">
           <img src="resources/assets/lumi_logo.svg" alt="Logo">
-        </div>
-        <a href="../index.html" class="active">Übersicht</a>
-        <a href="kinder.html">Kinder</a>
-        <a href="produkte.html">Produkte</a>
-        <a href="empfehlungen.html">Empfehlungen</a>
-        <a href="mitteilungen.html">Mitteilungen</a>
+        </a>
+      </div>
+      <a href="../index.html">Übersicht</a>
+      <a href="kinder.html">Kinder</a>
+      <a href="produkte.html">Produkte</a>
+      <a href="empfehlungen.html">Empfehlungen</a>
+      <a href="mitteilungen.html">Mitteilungen</a>
     </nav>
+
+   <script>
+    const navLinks = document.querySelectorAll('nav a');
+    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+
+    navLinks.forEach(link => {
+      link.classList.remove('active');
+      const linkPage = link.getAttribute('href').split('/').pop();
+      if (linkPage === currentPage) {
+        link.classList.add('active');
+      }
+    });
+  </script>
+
+</body>
+</html>

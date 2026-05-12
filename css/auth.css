@@ -1,0 +1,176 @@
+/* =============================================
+   Globale Basis
+   ============================================= */
+   * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  
+  body {
+    font-family: 'Nunito', sans-serif;
+    height: 100vh;
+    overflow: hidden;
+    background-image: url('../resources/assets/hintergrund.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+  }
+  
+  /* =============================================
+     Login Container
+     ============================================= */
+  .login-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    gap: 24px;
+    padding: 20px;
+  }
+  
+  /* =============================================
+     Logo
+     ============================================= */
+  .logo {
+    width: 120px;
+  }
+  
+  /* =============================================
+     Login Card
+     ============================================= */
+  .login-card {
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-radius: 28px;
+    padding: 24px 36px;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+  }
+  
+  /* =============================================
+     Header
+     ============================================= */
+  .login-header {
+    margin-bottom: 16px;
+  }
+  
+  .login-header h1 {
+    font-size: 28px;
+    font-weight: 800;
+    color: #1a1a1a;
+    margin-bottom: 6px;
+  }
+  
+  .login-header p {
+    font-size: 15px;
+    color: #9e9e9e;
+    font-weight: 400;
+  }
+  
+  /* =============================================
+     Formular
+     ============================================= */
+  .form-group {
+    margin-bottom: 12px;
+  }
+  
+  .form-group label {
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: #6b6b6b;
+    margin-bottom: 8px;
+  }
+  
+  .form-group input {
+    width: 100%;
+    padding: 12px 18px;
+    border: none;
+    border-radius: 16px;
+    background: #f0ede8;
+    font-family: 'Nunito', sans-serif;
+    font-size: 15px;
+    color: #1a1a1a;
+    outline: none;
+    transition: background 0.2s, box-shadow 0.2s;
+  }
+  
+  .form-group input::placeholder {
+    color: #b0a9a0;
+  }
+  
+  .form-group input:focus {
+    background: #e8e4de;
+    box-shadow: 0 0 0 3px rgba(167, 139, 210, 0.20);
+  }
+  
+  /* =============================================
+     Passwort vergessen
+     ============================================= */
+  .forgot-link {
+    display: block;
+    text-align: right;
+    margin-top: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #a78bd2;
+    text-decoration: none;
+  }
+  
+  .forgot-link:hover {
+    color: #8a6bbf;
+  }
+  
+  /* =============================================
+     Login Button
+     ============================================= */
+  .btn-login {
+    width: 100%;
+    padding: 14px;
+    margin-top: 4px;
+    border: none;
+    border-radius: 50px;
+    background: #b49ed4;
+    color: #fff;
+    font-family: 'Nunito', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
+    box-shadow: 0 4px 20px rgba(167, 139, 210, 0.35);
+  }
+  
+  .btn-login:hover {
+    background: #a38bc8;
+    box-shadow: 0 6px 24px rgba(167, 139, 210, 0.45);
+  }
+  
+  .btn-login:active {
+    transform: scale(0.98);
+  }
+  
+  /* =============================================
+     Registrieren Link
+     ============================================= */
+  .register-text {
+    text-align: center;
+    margin-top: 24px;
+    font-size: 14px;
+    color: #9e9e9e;
+  }
+  
+  .register-text a {
+    font-weight: 800;
+    color: #b49ed4;
+    text-decoration: none;
+  }
+  
+  .register-text a:hover {
+    color: #8a6bbf;
+  }
