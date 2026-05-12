@@ -631,10 +631,25 @@ body.produkte-page .shop-hero {
   gap: 18px;
 }
  
+/* =============================================
+   GEÄNDERT: Tipp-Karten mit weissem Hintergrund
+   ============================================= */
 .empf-tipp-card {
   display: flex;
   align-items: flex-start;
   gap: 12px;
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 20px;
+  padding: 18px 20px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+ 
+.empf-tipp-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.09);
 }
  
 .empf-tipp-icon {
