@@ -11,19 +11,21 @@
  
   <nav>
     <div class="logo">
-      <a href="../index.html">
+      <a href="index.php">
         <img src="resources/assets/lumi_logo.svg" alt="Logo">
       </a>
     </div>
-    <a href="../index.html">Übersicht</a>
+    <a href="index.html">Übersicht</a>
     <a href="kinder.html">Kinder</a>
     <a href="produkte.html">Produkte</a>
     <a href="empfehlungen.html">Empfehlungen</a>
     <a href="mitteilungen.html">Mitteilungen</a>
   </nav>
+
   <script>
     const navLinks = document.querySelectorAll('nav a');
-    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+    const currentPage = window.location.pathname.split('/').pop() || 'index.php';
+
     navLinks.forEach(link => {
       link.classList.remove('active');
       const linkPage = link.getAttribute('href').split('/').pop();
@@ -35,45 +37,55 @@
     <div class="kinder-header">
       <div>
         <h1 class="kinder-title">Kinder</h1>
-        <p class="kinder-subtitle" id="profileCount">2 Profile aktiv</p>
+        <p class="kinder-subtitle" id="profileCount">Profile werden geladen...</p>
       </div>
+
       <button class="kinder-add-btn" id="addChildBtn">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><line x1="8" y1="2" x2="8" y2="14" stroke="#fff" stroke-width="2" stroke-linecap="round"/><line x1="2" y1="8" x2="14" y2="8" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <line x1="8" y1="2" x2="8" y2="14" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+          <line x1="2" y1="8" x2="14" y2="8" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+        </svg>
         Kind hinzufügen
       </button>
     </div>
+
     <div class="kinder-grid" id="kinderGrid"></div>
   </div>
  
-  <!-- MODAL: Kind hinzufügen / bearbeiten -->
   <div class="kinder-modal-overlay" id="modalOverlay">
     <div class="kinder-modal">
       <div class="kinder-modal-header">
         <h2 class="kinder-modal-title" id="modalTitle">Kind hinzufügen</h2>
+
         <button class="kinder-modal-close" id="modalClose">
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><line x1="4" y1="4" x2="16" y2="16" stroke="#6b6b6b" stroke-width="2" stroke-linecap="round"/><line x1="16" y1="4" x2="4" y2="16" stroke="#6b6b6b" stroke-width="2" stroke-linecap="round"/></svg>
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <line x1="4" y1="4" x2="16" y2="16" stroke="#6b6b6b" stroke-width="2" stroke-linecap="round"/>
+            <line x1="16" y1="4" x2="4" y2="16" stroke="#6b6b6b" stroke-width="2" stroke-linecap="round"/>
+          </svg>
         </button>
       </div>
+
       <form id="childForm">
         <input type="hidden" id="childId" />
+
         <div class="kinder-form-group">
           <label>NAME</label>
           <input type="text" id="childName" placeholder="Name des Kindes" required />
         </div>
+
         <div class="kinder-form-group">
           <label>ALTER</label>
           <input type="number" id="childAge" placeholder="Alter in Jahren" min="0" max="18" required />
         </div>
+
         <div class="kinder-form-group">
           <label>TAGESLIMIT (MINUTEN)</label>
           <input type="number" id="childLimit" placeholder="z.B. 90" min="0" max="480" required />
         </div>
-        <div class="kinder-form-group">
-          <label>GERÄTE (KOMMAGETRENNT)</label>
-          <input type="text" id="childDevices" placeholder="z.B. iPad Air, MacBook" />
-        </div>
+
         <div class="kinder-form-group">
           <label>FARBE WÄHLEN</label>
+
           <div class="kinder-color-picker">
             <div class="kinder-color-presets" id="colorPresets">
               <button type="button" class="kinder-color-dot" data-color="#9C89D2" style="background:#9C89D2"></button>
@@ -82,37 +94,45 @@
               <button type="button" class="kinder-color-dot" data-color="#7ECE9F" style="background:#7ECE9F"></button>
               <button type="button" class="kinder-color-dot" data-color="#639BE9" style="background:#639BE9"></button>
             </div>
+
             <div class="kinder-custom-color-row">
               <button type="button" class="kinder-custom-color-btn" id="customColorBtn">
                 <span class="kinder-custom-color-preview" id="customColorPreview"></span>
                 + Eigene Farbe
               </button>
+
               <input type="color" id="customColorInput" class="kinder-native-color-input" value="#D4C4C4" />
             </div>
           </div>
+
           <input type="hidden" id="childColor" value="#F19DAE" />
         </div>
+
         <div class="kinder-form-actions">
           <button type="button" class="kinder-btn-cancel" id="modalCancelBtn">Abbrechen</button>
           <button type="submit" class="kinder-btn-save" id="modalSaveBtn">Hinzufügen</button>
         </div>
+
         <button type="button" class="kinder-btn-delete" id="modalDeleteBtn" style="display:none">
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 4h10M5 4V3a1 1 0 011-1h2a1 1 0 011 1v1M9 7v4M5 7v4M3 4l.5 7.5a1.5 1.5 0 001.5 1.5h4a1.5 1.5 0 001.5-1.5L11 4" stroke="#e05260" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
           Kind löschen
         </button>
       </form>
     </div>
   </div>
  
-  <!-- MODAL: Farbe ändern -->
   <div class="kinder-modal-overlay" id="colorModalOverlay">
     <div class="kinder-modal kinder-modal--small">
       <div class="kinder-modal-header">
         <h2 class="kinder-modal-title">Farbe wählen</h2>
+
         <button class="kinder-modal-close" id="colorModalClose">
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><line x1="4" y1="4" x2="16" y2="16" stroke="#6b6b6b" stroke-width="2" stroke-linecap="round"/><line x1="16" y1="4" x2="4" y2="16" stroke="#6b6b6b" stroke-width="2" stroke-linecap="round"/></svg>
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <line x1="4" y1="4" x2="16" y2="16" stroke="#6b6b6b" stroke-width="2" stroke-linecap="round"/>
+            <line x1="16" y1="4" x2="4" y2="16" stroke="#6b6b6b" stroke-width="2" stroke-linecap="round"/>
+          </svg>
         </button>
       </div>
+
       <div class="kinder-color-picker">
         <div class="kinder-color-presets" id="colorModalPresets">
           <button type="button" class="kinder-color-dot" data-color="#9C89D2" style="background:#9C89D2"></button>
@@ -121,351 +141,58 @@
           <button type="button" class="kinder-color-dot" data-color="#7ECE9F" style="background:#7ECE9F"></button>
           <button type="button" class="kinder-color-dot" data-color="#639BE9" style="background:#639BE9"></button>
         </div>
+
         <div class="kinder-custom-color-row">
           <button type="button" class="kinder-custom-color-btn" id="colorModalCustomBtn">
             <span class="kinder-custom-color-preview" id="colorModalCustomPreview"></span>
             + Eigene Farbe
           </button>
+
           <input type="color" id="colorModalCustomInput" class="kinder-native-color-input" value="#D4C4C4" />
         </div>
       </div>
     </div>
   </div>
  
-  <!-- MODAL: Limit ändern -->
   <div class="kinder-modal-overlay" id="limitModalOverlay">
     <div class="kinder-modal kinder-modal--small">
       <div class="kinder-modal-header">
         <h2 class="kinder-modal-title" id="limitModalTitle">Tageslimit ändern</h2>
+
         <button class="kinder-modal-close" id="limitModalClose">
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><line x1="4" y1="4" x2="16" y2="16" stroke="#6b6b6b" stroke-width="2" stroke-linecap="round"/><line x1="16" y1="4" x2="4" y2="16" stroke="#6b6b6b" stroke-width="2" stroke-linecap="round"/></svg>
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <line x1="4" y1="4" x2="16" y2="16" stroke="#6b6b6b" stroke-width="2" stroke-linecap="round"/>
+            <line x1="16" y1="4" x2="4" y2="16" stroke="#6b6b6b" stroke-width="2" stroke-linecap="round"/>
+          </svg>
         </button>
       </div>
+
       <div class="kinder-limit-icon">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#b49ed4" stroke-width="1.5"/><path d="M12 7v5l3 3" stroke="#b49ed4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <circle cx="12" cy="12" r="9" stroke="#b49ed4" stroke-width="1.5"/>
+          <path d="M12 7v5l3 3" stroke="#b49ed4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
       </div>
+
       <div class="kinder-form-group">
         <label>NEUES TAGESLIMIT (MINUTEN)</label>
         <input type="number" id="limitModalInput" placeholder="z.B. 90" min="0" max="480" />
       </div>
+
       <div class="kinder-limit-presets">
         <button type="button" class="kinder-limit-preset" data-mins="30">30 min</button>
         <button type="button" class="kinder-limit-preset" data-mins="60">60 min</button>
         <button type="button" class="kinder-limit-preset" data-mins="90">90 min</button>
         <button type="button" class="kinder-limit-preset" data-mins="120">120 min</button>
       </div>
+
       <div class="kinder-form-actions">
         <button type="button" class="kinder-btn-cancel" id="limitModalCancel">Abbrechen</button>
         <button type="button" class="kinder-btn-save" id="limitModalSave">Speichern</button>
       </div>
-      <input type="hidden" id="limitModalChildId" />
     </div>
   </div>
  
-  <script>
-    /* =============================================
-       DATA LAYER
-       ============================================= */
-    const STORAGE_KEY = 'lumi_children';
- 
-    function getChildren() {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (raw) return JSON.parse(raw);
-      const demo = [
-        { id:'mayumi', name:'Mayumi', age:10, color:'#F19DAE', dailyLimit:90,
-          devices:['iPad Air','MacBook'], weekData:[45,50,0,0,0,0,0], usedToday:45, streak:5 },
-        { id:'leo', name:'Leo', age:8, color:'#F7CE6E', dailyLimit:60,
-          devices:['iPad mini'], weekData:[30,40,25,0,0,0,0], usedToday:30, streak:3 }
-      ];
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(demo));
-      return demo;
-    }
- 
-    function saveChildren(c) { localStorage.setItem(STORAGE_KEY, JSON.stringify(c)); }
-    function genId() { return 'child_' + Date.now() + '_' + Math.random().toString(36).substr(2,5); }
-    function soften(hex, a) { return hex + a; }
- 
-    /* =============================================
-       RENDER
-       ============================================= */
-    const WK = ['Mo','Di','Mi','Do','Fr','Sa','So'];
- 
-    function renderCards() {
-      const children = getChildren();
-      const grid = document.getElementById('kinderGrid');
-      document.getElementById('profileCount').textContent =
-        children.length === 0 ? 'Keine Profile' :
-        children.length === 1 ? '1 Profil aktiv' : children.length + ' Profile aktiv';
- 
-      if (children.length === 0) {
-        grid.innerHTML = `<div class="kinder-empty">
-          <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
-            <circle cx="24" cy="18" r="8" stroke="#b0a9a0" stroke-width="2"/>
-            <path d="M10 40c0-7.732 6.268-14 14-14s14 6.268 14 14" stroke="#b0a9a0" stroke-width="2" stroke-linecap="round"/>
-          </svg>
-          <p>Noch keine Kinder hinzugefügt</p>
-          <p class="kinder-empty-sub">Klicke auf «Kind hinzufügen» um zu starten.</p>
-        </div>`;
-        return;
-      }
- 
-      grid.innerHTML = children.map(child => {
-        const pct = child.dailyLimit > 0 ? Math.round((child.usedToday / child.dailyLimit) * 100) : 0;
-        const wkTotal = child.weekData.reduce((a,b)=>a+b,0);
-        const wkPct = child.dailyLimit > 0 ? Math.round((wkTotal / (child.dailyLimit * 7)) * 100) : 0;
-        const maxB = Math.max(...child.weekData, child.dailyLimit, 1);
- 
-        const bars = child.weekData.map((m, i) => {
-          const h = maxB > 0 ? Math.max(4, (m / maxB) * 80) : 4;
-          const op = m === 0 ? 0.15 : 0.65;
-          return `<div class="kinder-bar-col">
-            <div class="kinder-bar" style="height:${h}px;background:${child.color};opacity:${op}"></div>
-            <span class="kinder-bar-label">${WK[i]}</span>
-          </div>`;
-        }).join('');
- 
-        const devs = child.devices.length > 0 ? child.devices.map(d =>
-          `<span class="kinder-device">
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="2" y="1" width="8" height="10" rx="1.5" stroke="${child.color}" stroke-width="1.2"/><line x1="4.5" y1="9" x2="7.5" y2="9" stroke="${child.color}" stroke-width="1.2" stroke-linecap="round"/></svg>
-            ${d}</span>`
-        ).join('') : '<span class="kinder-device-none">Keine Geräte</span>';
- 
-        return `
-        <div class="kinder-card" style="border-top:4px solid ${soften(child.color,'40')}">
-          ${child.streak > 0 ? `<div class="kinder-streak" style="color:${child.color};background:${soften(child.color,'1A')}">
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1.5C6.8 3 7.5 3.5 8.5 4.5C9.5 5.8 9.5 7.5 8 9C7 10 5 10 4 9C2.5 7.5 2.5 5.8 3.5 4.5C4.5 3.5 5.2 3 6 1.5Z" stroke="${child.color}" stroke-width="1" fill="none"/></svg>
-            ${child.streak}d</div>` : ''}
-          <button class="kinder-color-change-btn" data-child-id="${child.id}" style="background:${soften(child.color,'1A')}" title="Farbe ändern">
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5" stroke="${child.color}" stroke-width="1.5" fill="none"/><circle cx="7" cy="7" r="2" fill="${child.color}"/></svg>
-          </button>
-          <div class="kinder-avatar" style="background:${soften(child.color,'20')};border:3px solid ${child.color}">
-            <span style="color:${child.color}">${child.name.charAt(0)}</span>
-          </div>
-          <div class="kinder-card-name">${child.name}</div>
-          <div class="kinder-card-age">${child.age} Jahre</div>
-          <div class="kinder-stats">
-            <div class="kinder-stat-row"><span class="kinder-stat-label">Heute</span><span class="kinder-stat-value" style="color:${child.color}">${child.usedToday} / ${child.dailyLimit} min</span></div>
-            <div class="kinder-progress-bar" style="background:${soften(child.color,'15')}"><div class="kinder-progress-fill" style="width:${Math.min(100,pct)}%;background:${child.color}"></div></div>
-            <div class="kinder-stat-row"><span class="kinder-stat-label">Wochenziel</span><span class="kinder-stat-value" style="color:${child.color}">${wkPct}%</span></div>
-            <div class="kinder-progress-bar" style="background:${soften(child.color,'15')}"><div class="kinder-progress-fill" style="width:${Math.min(100,wkPct)}%;background:${child.color}"></div></div>
-          </div>
-          <div class="kinder-week-chart">${bars}</div>
-          <div class="kinder-devices-section">
-            <div class="kinder-devices-label">GERÄTE</div>
-            <div class="kinder-devices-list">${devs}</div>
-          </div>
-          <div class="kinder-card-actions">
-            <button class="kinder-btn-details" style="--child-color:${child.color};--child-color-light:${soften(child.color,'1A')}" data-child-id="${child.id}">Details</button>
-            <button class="kinder-btn-limit" style="--child-color:${child.color};--child-color-light:${soften(child.color,'1A')}" data-child-id="${child.id}">Limit</button>
-          </div>
-        </div>`;
-      }).join('');
- 
-      document.querySelectorAll('.kinder-color-change-btn').forEach(b =>
-        b.addEventListener('click', e => { e.stopPropagation(); openColorModal(b.dataset.childId); }));
-      document.querySelectorAll('.kinder-btn-details').forEach(b =>
-        b.addEventListener('click', () => openEditModal(b.dataset.childId)));
-      document.querySelectorAll('.kinder-btn-limit').forEach(b =>
-        b.addEventListener('click', () => openLimitModal(b.dataset.childId)));
-    }
- 
-    /* =============================================
-       ADD / EDIT MODAL
-       ============================================= */
-    const modalOverlay = document.getElementById('modalOverlay');
-    const childForm = document.getElementById('childForm');
-    const deleteBtn = document.getElementById('modalDeleteBtn');
-    let selectedColor = '#F19DAE';
- 
-    function openAddModal() {
-      document.getElementById('modalTitle').textContent = 'Kind hinzufügen';
-      document.getElementById('modalSaveBtn').textContent = 'Hinzufügen';
-      document.getElementById('childId').value = '';
-      childForm.reset();
-      selectedColor = '#F19DAE';
-      document.getElementById('childColor').value = selectedColor;
-      updateColorSel('colorPresets', selectedColor);
-      deleteBtn.style.display = 'none';
-      modalOverlay.classList.add('active');
-    }
- 
-    function openEditModal(childId) {
-      const ch = getChildren().find(c => c.id === childId);
-      if (!ch) return;
-      document.getElementById('modalTitle').textContent = ch.name + ' bearbeiten';
-      document.getElementById('modalSaveBtn').textContent = 'Speichern';
-      document.getElementById('childId').value = ch.id;
-      document.getElementById('childName').value = ch.name;
-      document.getElementById('childAge').value = ch.age;
-      document.getElementById('childLimit').value = ch.dailyLimit;
-      document.getElementById('childDevices').value = ch.devices.join(', ');
-      selectedColor = ch.color;
-      document.getElementById('childColor').value = selectedColor;
-      updateColorSel('colorPresets', selectedColor);
-      deleteBtn.style.display = 'flex';
-      modalOverlay.classList.add('active');
-    }
- 
-    function closeModal() { modalOverlay.classList.remove('active'); }
- 
-    document.getElementById('addChildBtn').addEventListener('click', openAddModal);
-    document.getElementById('modalClose').addEventListener('click', closeModal);
-    document.getElementById('modalCancelBtn').addEventListener('click', closeModal);
-    modalOverlay.addEventListener('click', e => { if (e.target === modalOverlay) closeModal(); });
- 
-    deleteBtn.addEventListener('click', () => {
-      const id = document.getElementById('childId').value;
-      const ch = getChildren().find(c => c.id === id);
-      if (ch && confirm('Möchtest du ' + ch.name + ' wirklich löschen?')) {
-        saveChildren(getChildren().filter(c => c.id !== id));
-        closeModal(); renderCards();
-      }
-    });
- 
-    childForm.addEventListener('submit', e => {
-      e.preventDefault();
-      const children = getChildren();
-      const id = document.getElementById('childId').value;
-      const data = {
-        name: document.getElementById('childName').value.trim(),
-        age: parseInt(document.getElementById('childAge').value),
-        dailyLimit: parseInt(document.getElementById('childLimit').value),
-        devices: document.getElementById('childDevices').value.split(',').map(d=>d.trim()).filter(d=>d),
-        color: document.getElementById('childColor').value
-      };
-      if (id) {
-        const idx = children.findIndex(c => c.id === id);
-        if (idx !== -1) Object.assign(children[idx], data);
-      } else {
-        children.push({ id:genId(), ...data, weekData:[0,0,0,0,0,0,0], usedToday:0, streak:0 });
-      }
-      saveChildren(children); closeModal(); renderCards();
-    });
- 
-    /* =============================================
-       COLOR SELECTION
-       ============================================= */
-    function updateColorSel(presetsId, color) {
-      const dots = document.querySelectorAll('#' + presetsId + ' .kinder-color-dot');
-      let found = false;
-      dots.forEach(d => {
-        if (d.dataset.color.toLowerCase() === color.toLowerCase()) { d.classList.add('active'); found = true; }
-        else d.classList.remove('active');
-      });
-      const isMain = presetsId === 'colorPresets';
-      const prev = document.getElementById(isMain ? 'customColorPreview' : 'colorModalCustomPreview');
-      const inp = document.getElementById(isMain ? 'customColorInput' : 'colorModalCustomInput');
-      if (!found) { prev.style.background = color; prev.classList.add('active'); inp.value = color; }
-      else { prev.style.background = '#ccc'; prev.classList.remove('active'); }
-    }
- 
-    // Main modal presets
-    document.querySelectorAll('#colorPresets .kinder-color-dot').forEach(d => {
-      d.addEventListener('click', () => {
-        selectedColor = d.dataset.color;
-        document.getElementById('childColor').value = selectedColor;
-        updateColorSel('colorPresets', selectedColor);
-      });
-    });
- 
-    // Main modal custom
-    document.getElementById('customColorBtn').addEventListener('click', () =>
-      document.getElementById('customColorInput').click());
-    document.getElementById('customColorInput').addEventListener('input', e => {
-      selectedColor = e.target.value;
-      document.getElementById('childColor').value = selectedColor;
-      document.getElementById('customColorPreview').style.background = selectedColor;
-      document.getElementById('customColorPreview').classList.add('active');
-      document.querySelectorAll('#colorPresets .kinder-color-dot').forEach(d => d.classList.remove('active'));
-    });
- 
-    /* =============================================
-       COLOR MODAL (from card)
-       ============================================= */
-    const colorModalOverlay = document.getElementById('colorModalOverlay');
-    let colorModalChildId = null;
- 
-    function openColorModal(childId) {
-      colorModalChildId = childId;
-      const ch = getChildren().find(c => c.id === childId);
-      if (!ch) return;
-      updateColorSel('colorModalPresets', ch.color);
-      colorModalOverlay.classList.add('active');
-    }
-    function closeColorModal() { colorModalOverlay.classList.remove('active'); }
- 
-    document.getElementById('colorModalClose').addEventListener('click', closeColorModal);
-    colorModalOverlay.addEventListener('click', e => { if (e.target === colorModalOverlay) closeColorModal(); });
- 
-    document.querySelectorAll('#colorModalPresets .kinder-color-dot').forEach(d => {
-      d.addEventListener('click', () => applyColor(d.dataset.color));
-    });
-    document.getElementById('colorModalCustomBtn').addEventListener('click', () =>
-      document.getElementById('colorModalCustomInput').click());
-    document.getElementById('colorModalCustomInput').addEventListener('input', e => {
-      document.getElementById('colorModalCustomPreview').style.background = e.target.value;
-      document.getElementById('colorModalCustomPreview').classList.add('active');
-      document.querySelectorAll('#colorModalPresets .kinder-color-dot').forEach(d => d.classList.remove('active'));
-      applyColor(e.target.value);
-    });
- 
-    function applyColor(color) {
-      if (!colorModalChildId) return;
-      const children = getChildren();
-      const idx = children.findIndex(c => c.id === colorModalChildId);
-      if (idx !== -1) { children[idx].color = color; saveChildren(children); renderCards(); }
-      closeColorModal();
-    }
- 
-    /* =============================================
-       LIMIT MODAL
-       ============================================= */
-    const limitModalOverlay = document.getElementById('limitModalOverlay');
-    let limitChildId = null;
- 
-    function openLimitModal(childId) {
-      limitChildId = childId;
-      const ch = getChildren().find(c => c.id === childId);
-      if (!ch) return;
-      document.getElementById('limitModalTitle').textContent = 'Tageslimit – ' + ch.name;
-      document.getElementById('limitModalInput').value = ch.dailyLimit;
-      document.querySelectorAll('.kinder-limit-preset').forEach(b => {
-        if (parseInt(b.dataset.mins) === ch.dailyLimit) {
-          b.style.background = ch.color; b.style.color = '#fff';
-        } else { b.style.background = '#f0ede8'; b.style.color = '#6b6b6b'; }
-      });
-      limitModalOverlay.classList.add('active');
-    }
-    function closeLimitModal() { limitModalOverlay.classList.remove('active'); }
- 
-    document.getElementById('limitModalClose').addEventListener('click', closeLimitModal);
-    document.getElementById('limitModalCancel').addEventListener('click', closeLimitModal);
-    limitModalOverlay.addEventListener('click', e => { if (e.target === limitModalOverlay) closeLimitModal(); });
- 
-    document.querySelectorAll('.kinder-limit-preset').forEach(b => {
-      b.addEventListener('click', () => {
-        document.getElementById('limitModalInput').value = b.dataset.mins;
-        const ch = getChildren().find(c => c.id === limitChildId);
-        document.querySelectorAll('.kinder-limit-preset').forEach(x => {
-          if (x === b && ch) { x.style.background = ch.color; x.style.color = '#fff'; }
-          else { x.style.background = '#f0ede8'; x.style.color = '#6b6b6b'; }
-        });
-      });
-    });
- 
-    document.getElementById('limitModalSave').addEventListener('click', () => {
-      if (!limitChildId) return;
-      const v = parseInt(document.getElementById('limitModalInput').value);
-      if (isNaN(v) || v < 0) return;
-      const children = getChildren();
-      const idx = children.findIndex(c => c.id === limitChildId);
-      if (idx !== -1) { children[idx].dailyLimit = v; saveChildren(children); renderCards(); }
-      closeLimitModal();
-    });
- 
-    /* INIT */
-    renderCards();
-  </script>
- 
+  <script src="js/kinder.js"></script>
 </body>
 </html>
