@@ -455,3 +455,277 @@ body.produkte-page .shop-hero {
   transform: scale(0.98);
 }
 
+/* =============================================
+   EMPFEHLUNGEN SEITE
+   ============================================= */
+ 
+.empf-container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 40px 24px 60px;
+}
+ 
+/* Header */
+.empf-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  gap: 20px;
+}
+ 
+.empf-header-left {
+  flex: 1;
+}
+ 
+.empf-source-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: #b49ed4;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 8px;
+}
+ 
+.empf-title {
+  font-size: 30px;
+  font-weight: 900;
+  color: #1a1a1a;
+  margin-bottom: 8px;
+  line-height: 1.2;
+}
+ 
+.empf-subtitle {
+  font-size: 14px;
+  color: #6b6b6b;
+  font-weight: 500;
+  line-height: 1.6;
+  max-width: 580px;
+}
+ 
+.empf-extern-link {
+  font-size: 13px;
+  font-weight: 600;
+  color: #b49ed4;
+  text-decoration: none;
+  white-space: nowrap;
+  margin-top: 4px;
+}
+ 
+.empf-extern-link:hover {
+  color: #8a6bbf;
+  text-decoration: underline;
+}
+ 
+/* Hinweis Box */
+.empf-hinweis {
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 16px;
+  padding: 14px 20px;
+  font-size: 13px;
+  color: #6b6b6b;
+  line-height: 1.6;
+  margin-bottom: 28px;
+  border-left: 3px solid #b49ed4;
+}
+ 
+.empf-hinweis strong {
+  color: #b49ed4;
+  font-weight: 700;
+}
+ 
+/* Grid Altersgruppen */
+.empf-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-bottom: 28px;
+}
+ 
+/* Karte */
+.empf-card {
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 20px;
+  padding: 20px 22px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+ 
+.empf-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.09);
+}
+ 
+.empf-card-full {
+  grid-column: 1 / -1;
+}
+ 
+/* Karten Header */
+.empf-card-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+  padding-left: 10px;
+}
+ 
+.empf-dot {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+ 
+.empf-age-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+ 
+.empf-minbadge {
+  margin-left: auto;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 50px;
+}
+ 
+/* Karten Inhalt */
+.empf-card-title {
+  font-size: 16px;
+  font-weight: 800;
+  color: #1a1a1a;
+  margin-bottom: 10px;
+  padding-left: 14px;
+}
+ 
+.empf-list {
+  list-style: none;
+  padding-left: 14px;
+  margin-bottom: 12px;
+}
+ 
+.empf-list li {
+  font-size: 13px;
+  color: #4a4a4a;
+  line-height: 1.6;
+  padding: 2px 0;
+  padding-left: 14px;
+  position: relative;
+}
+ 
+.empf-list li::before {
+  content: '·';
+  position: absolute;
+  left: 0;
+  color: #b49ed4;
+  font-weight: 900;
+  font-size: 16px;
+  line-height: 1.4;
+}
+ 
+/* Letzte Karte mit 2 Spalten Liste */
+.empf-list-cols {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0 24px;
+}
+ 
+.empf-quelle {
+  font-size: 11px;
+  color: #b0a9a0;
+  padding-left: 14px;
+  display: block;
+}
+ 
+/* Tipps Sektion */
+.empf-tipps {
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 20px;
+  padding: 24px 24px 20px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+  margin-bottom: 24px;
+}
+ 
+.empf-tipps-title {
+  font-size: 20px;
+  font-weight: 800;
+  color: #1a1a1a;
+  margin-bottom: 4px;
+}
+ 
+.empf-tipps-subtitle {
+  font-size: 13px;
+  color: #9e9e9e;
+  margin-bottom: 20px;
+  font-weight: 500;
+}
+ 
+.empf-tipps-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+ 
+.empf-tipp-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+ 
+.empf-tipp-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+ 
+.empf-tipp-name {
+  font-size: 14px;
+  font-weight: 800;
+  color: #1a1a1a;
+  margin-bottom: 4px;
+}
+ 
+.empf-tipp-text {
+  font-size: 12px;
+  color: #6b6b6b;
+  line-height: 1.6;
+  font-weight: 500;
+}
+ 
+/* Footer Quelle */
+.empf-footer-quelle {
+  font-size: 11px;
+  color: #b0a9a0;
+  text-align: center;
+  line-height: 1.8;
+}
+ 
+.empf-footer-quelle a {
+  color: #b49ed4;
+  text-decoration: none;
+  font-weight: 600;
+}
+ 
+.empf-footer-quelle a:hover {
+  text-decoration: underline;
+}
