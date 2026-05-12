@@ -705,3 +705,172 @@ body.produkte-page .shop-hero {
 .empf-footer-quelle a:hover {
   text-decoration: underline;
 }
+ 
+/* =============================================
+   MITTEILUNGEN SEITE
+   ============================================= */
+ 
+.mitt-page-content {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 40px 20px 60px;
+}
+ 
+.mitt-top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+ 
+.mitt-page-title {
+  font-size: 28px;
+  font-weight: 800;
+  color: #1a1a1a;
+}
+ 
+.mitt-mark-all-btn {
+  background: none;
+  border: none;
+  font-family: 'Nunito', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: #b49ed4;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.2s;
+}
+ 
+.mitt-mark-all-btn:hover {
+  color: #8a6bbf;
+}
+ 
+/* Filter Tabs */
+.mitt-filter-tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+ 
+.mitt-filter-tab {
+  padding: 8px 18px;
+  border-radius: 50px;
+  border: none;
+  font-family: 'Nunito', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  background: rgba(255, 255, 255, 0.6);
+  color: #7C6E61;
+}
+ 
+.mitt-filter-tab.active {
+  background: #b49ed4;
+  color: #fff;
+}
+ 
+.mitt-filter-tab:hover:not(.active) {
+  background: #fff;
+}
+ 
+/* Notification List */
+.mitt-notification-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+ 
+/* Notification Card */
+.mitt-notification-card {
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 20px;
+  padding: 18px 20px;
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+  transition: transform 0.15s, box-shadow 0.15s;
+  cursor: pointer;
+  position: relative;
+}
+ 
+.mitt-notification-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+}
+ 
+/* Ungelesen-Punkt */
+.mitt-notification-card.unread::after {
+  content: '';
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #e8829a;
+}
+ 
+/* Notification Icon */
+.mitt-notif-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+ 
+/* Icon Farb-Varianten */
+.mitt-notif-icon--pink   { background: #FDEEF2; }
+.mitt-notif-icon--orange { background: #FEF3E2; }
+.mitt-notif-icon--green  { background: #EDF6EF; }
+.mitt-notif-icon--blue   { background: #EAF2FB; }
+.mitt-notif-icon--purple { background: #F3F0F8; }
+ 
+/* Notification Body */
+.mitt-notif-body {
+  flex: 1;
+  min-width: 0;
+}
+ 
+.mitt-notif-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 3px;
+}
+ 
+.mitt-notif-desc {
+  font-size: 13px;
+  color: #7C6E61;
+  margin-bottom: 5px;
+  line-height: 1.4;
+}
+ 
+.mitt-notif-time {
+  font-size: 12px;
+  color: #b0a9a0;
+  font-weight: 600;
+}
+ 
+/* Empty State */
+.mitt-empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: #b0a9a0;
+  display: none;
+}
+ 
+.mitt-empty-icon {
+  margin-bottom: 16px;
+}
+ 
+.mitt-empty-state p {
+  font-size: 15px;
+  font-weight: 600;
+}

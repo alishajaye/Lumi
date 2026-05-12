@@ -6,177 +6,9 @@
   <title>Mitteilungen – Lumi</title>
   <link rel="stylesheet" href="css/style.css" />
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
-  <style>
-    /* =============================================
-       Mitteilungen – Page Styles
-       ============================================= */
-    .page-content {
-      max-width: 680px;
-      margin: 0 auto;
-      padding: 40px 20px 60px;
-    }
-
-    .page-title {
-      font-size: 28px;
-      font-weight: 800;
-      color: #1a1a1a;
-      margin-bottom: 24px;
-    }
-
-    /* Filter Tabs */
-    .filter-tabs {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 24px;
-    }
-
-    .filter-tab {
-      padding: 8px 18px;
-      border-radius: 50px;
-      border: none;
-      font-family: 'Nunito', sans-serif;
-      font-size: 14px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: background 0.2s, color 0.2s;
-      background: rgba(255,255,255,0.6);
-      color: #7C6E61;
-    }
-
-    .filter-tab.active {
-      background: #b49ed4;
-      color: #fff;
-    }
-
-    .filter-tab:hover:not(.active) {
-      background: #fff;
-    }
-
-    /* Notification Cards */
-    .notification-list {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .notification-card {
-      background: rgba(255, 255, 255, 0.82);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-radius: 20px;
-      padding: 18px 20px;
-      display: flex;
-      align-items: flex-start;
-      gap: 16px;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.05);
-      transition: transform 0.15s, box-shadow 0.15s;
-      cursor: pointer;
-      position: relative;
-    }
-
-    .notification-card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(0,0,0,0.08);
-    }
-
-    .notification-card.unread::after {
-      content: '';
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      width: 9px;
-      height: 9px;
-      border-radius: 50%;
-      background: #e8829a;
-    }
-
-    .notif-icon {
-      width: 44px;
-      height: 44px;
-      border-radius: 14px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      font-size: 20px;
-    }
-
-    .notif-icon.streak  { background: #fde8ed; }
-    .notif-icon.reward  { background: #fde8ed; }
-    .notif-icon.limit   { background: #fef3e2; }
-    .notif-icon.session { background: #e8f0fe; }
-    .notif-icon.offline { background: #e8f0fe; }
-
-    .notif-body {
-      flex: 1;
-      min-width: 0;
-    }
-
-    .notif-title {
-      font-size: 15px;
-      font-weight: 700;
-      color: #1a1a1a;
-      margin-bottom: 3px;
-    }
-
-    .notif-desc {
-      font-size: 13px;
-      color: #7C6E61;
-      margin-bottom: 5px;
-      line-height: 1.4;
-    }
-
-    .notif-time {
-      font-size: 12px;
-      color: #b0a9a0;
-      font-weight: 600;
-    }
-
-    /* Empty State */
-    .empty-state {
-      text-align: center;
-      padding: 60px 20px;
-      color: #b0a9a0;
-      display: none;
-    }
-
-    .empty-state .empty-icon {
-      font-size: 48px;
-      margin-bottom: 16px;
-    }
-
-    .empty-state p {
-      font-size: 15px;
-      font-weight: 600;
-    }
-
-    /* Top Bar */
-    .top-bar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 24px;
-    }
-
-    .mark-all-btn {
-      background: none;
-      border: none;
-      font-family: 'Nunito', sans-serif;
-      font-size: 13px;
-      font-weight: 700;
-      color: #b49ed4;
-      cursor: pointer;
-      padding: 0;
-      transition: color 0.2s;
-    }
-
-    .mark-all-btn:hover {
-      color: #8a6bbf;
-    }
-  </style>
 </head>
 <body>
-
+ 
   <nav>
     <div class="logo">
       <a href="../index.html">
@@ -189,76 +21,112 @@
     <a href="empfehlungen.html">Empfehlungen</a>
     <a href="mitteilungen.html">Mitteilungen</a>
   </nav>
-
-  <div class="page-content">
-
-    <div class="top-bar">
-      <h1 class="page-title">Mitteilungen</h1>
-      <button class="mark-all-btn" id="markAllBtn">Alle als gelesen markieren</button>
+ 
+  <div class="mitt-page-content">
+ 
+    <div class="mitt-top-bar">
+      <h1 class="mitt-page-title">Mitteilungen</h1>
+      <button class="mitt-mark-all-btn" id="markAllBtn">Alle als gelesen markieren</button>
     </div>
-
-    <div class="filter-tabs">
-      <button class="filter-tab active" data-filter="all">Alle</button>
-      <button class="filter-tab" data-filter="unread">Ungelesen</button>
-      <button class="filter-tab" data-filter="read">Gelesen</button>
+ 
+    <div class="mitt-filter-tabs">
+      <button class="mitt-filter-tab active" data-filter="all">Alle</button>
+      <button class="mitt-filter-tab" data-filter="unread">Ungelesen</button>
+      <button class="mitt-filter-tab" data-filter="read">Gelesen</button>
     </div>
-
-    <div class="notification-list" id="notificationList">
-
-      <div class="notification-card unread" data-type="streak">
-        <div class="notif-icon streak">⭐</div>
-        <div class="notif-body">
-          <div class="notif-title">Mayumi hat 5-Tage-Streak erreicht</div>
-          <div class="notif-desc">Mayumi hat 5 Tage in Folge ihr Limit eingehalten.</div>
-          <div class="notif-time">vor 1h</div>
+ 
+    <div class="mitt-notification-list" id="notificationList">
+ 
+      <!-- Streak – Pink -->
+      <div class="mitt-notification-card unread" data-type="streak">
+        <div class="mitt-notif-icon mitt-notif-icon--pink">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path d="M10 3l1.8 3.6L16 7.6l-3 2.9.7 4.1L10 12.4l-3.7 2.2.7-4.1-3-2.9 4.2-.6z" stroke="#E888A6" stroke-width="1.5" stroke-linejoin="round" fill="none"/>
+          </svg>
+        </div>
+        <div class="mitt-notif-body">
+          <div class="mitt-notif-title">Mayumi hat 5-Tage-Streak erreicht</div>
+          <div class="mitt-notif-desc">Mayumi hat 5 Tage in Folge ihr Limit eingehalten.</div>
+          <div class="mitt-notif-time">vor 1h</div>
         </div>
       </div>
-
-      <div class="notification-card unread" data-type="reward">
-        <div class="notif-icon reward">🎁</div>
-        <div class="notif-body">
-          <div class="notif-title">Belohnung vergeben</div>
-          <div class="notif-desc">Du hast Mayumi +20 Minuten für das Aufräumen gegeben.</div>
-          <div class="notif-time">vor 3h</div>
+ 
+      <!-- Belohnung – Orange -->
+      <div class="mitt-notification-card unread" data-type="reward">
+        <div class="mitt-notif-icon mitt-notif-icon--orange">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <rect x="4" y="9" width="12" height="8" rx="2" stroke="#F6B657" stroke-width="1.5"/>
+            <path d="M10 9V4" stroke="#F6B657" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M10 4C10 4 7 4 6 6s2 3 4 3c2 0 5-1 4-3s-4-2-4-2z" stroke="#F6B657" stroke-width="1.5" stroke-linejoin="round" fill="none"/>
+            <line x1="10" y1="9" x2="10" y2="17" stroke="#F6B657" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <div class="mitt-notif-body">
+          <div class="mitt-notif-title">Belohnung vergeben</div>
+          <div class="mitt-notif-desc">Du hast Mayumi +20 Minuten für das Aufräumen gegeben.</div>
+          <div class="mitt-notif-time">vor 3h</div>
         </div>
       </div>
-
-      <div class="notification-card" data-type="limit">
-        <div class="notif-icon limit">✅</div>
-        <div class="notif-body">
-          <div class="notif-title">Leo: Tageslimit eingehalten</div>
-          <div class="notif-desc">Leo hat heute sein Limit von 60 Minuten eingehalten.</div>
-          <div class="notif-time">vor 5h</div>
+ 
+      <!-- Limit eingehalten – Grün -->
+      <div class="mitt-notification-card" data-type="limit">
+        <div class="mitt-notif-icon mitt-notif-icon--green">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <circle cx="10" cy="10" r="7" stroke="#96C2A0" stroke-width="1.5"/>
+            <path d="M7 10l2 2 4-4" stroke="#96C2A0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="mitt-notif-body">
+          <div class="mitt-notif-title">Leo: Tageslimit eingehalten</div>
+          <div class="mitt-notif-desc">Leo hat heute sein Limit von 60 Minuten eingehalten.</div>
+          <div class="mitt-notif-time">vor 5h</div>
         </div>
       </div>
-
-      <div class="notification-card" data-type="session">
-        <div class="notif-icon session">📱</div>
-        <div class="notif-body">
-          <div class="notif-title">Felix' Tablet-Session beendet</div>
-          <div class="notif-desc">Die Sitzung wurde nach 45 Minuten automatisch beendet.</div>
-          <div class="notif-time">gestern</div>
+ 
+      <!-- Session beendet – Blau -->
+      <div class="mitt-notification-card" data-type="session">
+        <div class="mitt-notif-icon mitt-notif-icon--blue">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <rect x="5" y="3" width="10" height="14" rx="2" stroke="#5192D2" stroke-width="1.5"/>
+            <line x1="8" y1="14" x2="12" y2="14" stroke="#5192D2" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="mitt-notif-body">
+          <div class="mitt-notif-title">Felix' Tablet-Session beendet</div>
+          <div class="mitt-notif-desc">Die Sitzung wurde nach 45 Minuten automatisch beendet.</div>
+          <div class="mitt-notif-time">gestern</div>
         </div>
       </div>
-
-      <div class="notification-card" data-type="offline">
-        <div class="notif-icon offline">⚡</div>
-        <div class="notif-body">
-          <div class="notif-title">Lumi Hub ist offline</div>
-          <div class="notif-desc">Dein Lumi Hub ist seit gestern 22:00 nicht erreichbar.</div>
-          <div class="notif-time">gestern</div>
+ 
+      <!-- Offline – Lila -->
+      <div class="mitt-notification-card" data-type="offline">
+        <div class="mitt-notif-icon mitt-notif-icon--purple">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path d="M11 3l-4 8h4l-1 6 5-8h-4.5L11 3z" stroke="#B09AC9" stroke-width="1.5" stroke-linejoin="round" fill="none"/>
+          </svg>
+        </div>
+        <div class="mitt-notif-body">
+          <div class="mitt-notif-title">Lumi Hub ist offline</div>
+          <div class="mitt-notif-desc">Dein Lumi Hub ist seit gestern 22:00 nicht erreichbar.</div>
+          <div class="mitt-notif-time">gestern</div>
         </div>
       </div>
-
+ 
     </div>
-
-    <div class="empty-state" id="emptyState">
-      <div class="empty-icon">🔔</div>
+ 
+    <div class="mitt-empty-state" id="emptyState">
+      <div class="mitt-empty-icon">
+        <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+          <path d="M20 8a4 4 0 0 1 8 0v2h-8V8z" stroke="#b0a9a0" stroke-width="2"/>
+          <path d="M12 20c0-6.627 5.373-12 12-12s12 5.373 12 12v8l3 6H9l3-6v-8z" stroke="#b0a9a0" stroke-width="2" stroke-linejoin="round" fill="none"/>
+          <path d="M20 38a4 4 0 0 0 8 0" stroke="#b0a9a0" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </div>
       <p>Keine Mitteilungen in dieser Kategorie</p>
     </div>
-
+ 
   </div>
-
+ 
   <script>
     // Aktive Navigationsseite setzen
     const navLinks = document.querySelectorAll('nav a');
@@ -270,12 +138,12 @@
         link.classList.add('active');
       }
     });
-
+ 
     // Filter Tabs
-    const tabs = document.querySelectorAll('.filter-tab');
-    const cards = document.querySelectorAll('.notification-card');
+    const tabs = document.querySelectorAll('.mitt-filter-tab');
+    const cards = document.querySelectorAll('.mitt-notification-card');
     const emptyState = document.getElementById('emptyState');
-
+ 
     function applyFilter(filter) {
       let visible = 0;
       cards.forEach(card => {
@@ -293,7 +161,7 @@
       });
       emptyState.style.display = visible === 0 ? 'block' : 'none';
     }
-
+ 
     tabs.forEach(tab => {
       tab.addEventListener('click', () => {
         tabs.forEach(t => t.classList.remove('active'));
@@ -301,23 +169,23 @@
         applyFilter(tab.dataset.filter);
       });
     });
-
+ 
     // Karte anklicken → als gelesen markieren
     cards.forEach(card => {
       card.addEventListener('click', () => {
         card.classList.remove('unread');
-        const activeFilter = document.querySelector('.filter-tab.active').dataset.filter;
+        const activeFilter = document.querySelector('.mitt-filter-tab.active').dataset.filter;
         applyFilter(activeFilter);
       });
     });
-
+ 
     // Alle als gelesen markieren
     document.getElementById('markAllBtn').addEventListener('click', () => {
       cards.forEach(card => card.classList.remove('unread'));
-      const activeFilter = document.querySelector('.filter-tab.active').dataset.filter;
+      const activeFilter = document.querySelector('.mitt-filter-tab.active').dataset.filter;
       applyFilter(activeFilter);
     });
   </script>
-
+ 
 </body>
 </html>
