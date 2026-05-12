@@ -1154,18 +1154,17 @@ body.produkte-page .shop-hero {
   font-size: 14px;
   font-weight: 700;
   cursor: pointer;
-  transition: opacity 0.2s, transform 0.1s;
-}
- 
-.kinder-btn-details {
+  background: var(--child-color);
   color: #fff;
+  transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
 }
- 
+
 .kinder-btn-details:hover,
 .kinder-btn-limit:hover {
-  opacity: 0.85;
+  background: var(--child-color-hover);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
 }
- 
+
 .kinder-btn-details:active,
 .kinder-btn-limit:active {
   transform: scale(0.97);
