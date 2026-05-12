@@ -460,22 +460,17 @@ body.produkte-page .shop-hero {
    ============================================= */
  
 .empf-container {
-  max-width: 960px;
+  max-width: 720px;
   margin: 0 auto;
   padding: 40px 24px 60px;
 }
  
 /* Header */
-.empf-header {
+.empf-source-row {
   display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  margin-bottom: 20px;
-  gap: 20px;
-}
- 
-.empf-header-left {
-  flex: 1;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
 }
  
 .empf-source-label {
@@ -484,12 +479,10 @@ body.produkte-page .shop-hero {
   letter-spacing: 0.12em;
   color: #b49ed4;
   text-transform: uppercase;
-  display: block;
-  margin-bottom: 8px;
 }
  
 .empf-title {
-  font-size: 30px;
+  font-size: 28px;
   font-weight: 900;
   color: #1a1a1a;
   margin-bottom: 8px;
@@ -501,30 +494,19 @@ body.produkte-page .shop-hero {
   color: #6b6b6b;
   font-weight: 500;
   line-height: 1.6;
-  max-width: 580px;
+  margin-bottom: 24px;
 }
  
-.empf-extern-link {
-  font-size: 13px;
-  font-weight: 600;
-  color: #b49ed4;
-  text-decoration: none;
-  white-space: nowrap;
-  margin-top: 4px;
-}
- 
-.empf-extern-link:hover {
-  color: #8a6bbf;
-  text-decoration: underline;
-}
- 
-/* Hinweis Box */
+/* Hinweis */
 .empf-hinweis {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
   background: rgba(255, 255, 255, 0.75);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border-radius: 16px;
-  padding: 14px 20px;
+  border-radius: 14px;
+  padding: 14px 18px;
   font-size: 13px;
   color: #6b6b6b;
   line-height: 1.6;
@@ -537,11 +519,11 @@ body.produkte-page .shop-hero {
   font-weight: 700;
 }
  
-/* Grid Altersgruppen */
-.empf-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 16px;
+/* Einzelne Spalte */
+.empf-list-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
   margin-bottom: 28px;
 }
  
@@ -551,7 +533,7 @@ body.produkte-page .shop-hero {
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-radius: 20px;
-  padding: 20px 22px;
+  padding: 18px 22px 16px;
   box-shadow: 0 4px 16px rgba(0,0,0,0.06);
   transition: transform 0.2s, box-shadow 0.2s;
 }
@@ -561,26 +543,18 @@ body.produkte-page .shop-hero {
   box-shadow: 0 8px 24px rgba(0,0,0,0.09);
 }
  
-.empf-card-full {
-  grid-column: 1 / -1;
-}
- 
-/* Karten Header */
-.empf-card-header {
+/* Karten Top-Zeile (Icon + Altersbezeichnung + Badge) */
+.empf-card-top {
   display: flex;
   align-items: center;
   gap: 10px;
   margin-bottom: 10px;
-  padding-left: 10px;
 }
  
-.empf-dot {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  color: #fff;
-  font-size: 12px;
-  font-weight: 800;
+.empf-icon-wrap {
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -602,18 +576,21 @@ body.produkte-page .shop-hero {
   border-radius: 50px;
 }
  
-/* Karten Inhalt */
+/* Karten Body */
+.empf-card-body {
+  padding-left: 0;
+}
+ 
 .empf-card-title {
   font-size: 16px;
   font-weight: 800;
   color: #1a1a1a;
   margin-bottom: 10px;
-  padding-left: 14px;
 }
  
 .empf-list {
   list-style: none;
-  padding-left: 14px;
+  padding: 0;
   margin-bottom: 12px;
 }
  
@@ -621,42 +598,34 @@ body.produkte-page .shop-hero {
   font-size: 13px;
   color: #4a4a4a;
   line-height: 1.6;
-  padding: 2px 0;
-  padding-left: 14px;
+  padding: 2px 0 2px 16px;
   position: relative;
 }
  
 .empf-list li::before {
-  content: '·';
+  content: '*';
   position: absolute;
   left: 0;
   color: #b49ed4;
   font-weight: 900;
-  font-size: 16px;
-  line-height: 1.4;
-}
- 
-/* Letzte Karte mit 2 Spalten Liste */
-.empf-list-cols {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 0 24px;
+  font-size: 14px;
+  line-height: 1.5;
 }
  
 .empf-quelle {
   font-size: 11px;
   color: #b0a9a0;
-  padding-left: 14px;
   display: block;
+  margin-top: 4px;
 }
  
-/* Tipps Sektion */
+/* Tipps */
 .empf-tipps {
   background: rgba(255, 255, 255, 0.82);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-radius: 20px;
-  padding: 24px 24px 20px;
+  padding: 22px 24px 20px;
   box-shadow: 0 4px 16px rgba(0,0,0,0.06);
   margin-bottom: 24px;
 }
@@ -678,28 +647,27 @@ body.produkte-page .shop-hero {
 .empf-tipps-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 16px;
+  gap: 18px;
 }
  
 .empf-tipp-card {
   display: flex;
   align-items: flex-start;
-  gap: 14px;
+  gap: 12px;
 }
  
 .empf-tipp-icon {
-  width: 40px;
-  height: 40px;
+  width: 38px;
+  height: 38px;
   border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 18px;
   flex-shrink: 0;
 }
  
 .empf-tipp-name {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 800;
   color: #1a1a1a;
   margin-bottom: 4px;
@@ -712,7 +680,7 @@ body.produkte-page .shop-hero {
   font-weight: 500;
 }
  
-/* Footer Quelle */
+/* Footer */
 .empf-footer-quelle {
   font-size: 11px;
   color: #b0a9a0;
