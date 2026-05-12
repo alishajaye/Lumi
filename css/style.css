@@ -1154,14 +1154,15 @@ body.produkte-page .shop-hero {
   font-size: 14px;
   font-weight: 700;
   cursor: pointer;
-  background: var(--child-color);
-  color: #fff;
-  transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
+  background: var(--child-color-light);
+  color: var(--child-color);
+  transition: background 0.2s, color 0.2s, transform 0.1s, box-shadow 0.2s;
 }
 
 .kinder-btn-details:hover,
 .kinder-btn-limit:hover {
-  background: var(--child-color-hover);
+  background: var(--child-color);
+  color: #fff;
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
 }
 
