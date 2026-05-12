@@ -1374,3 +1374,112 @@ body.produkte-page .shop-hero {
 .kinder-btn-save:hover {
   background: #a38bc8;
 }
+ 
+/* Delete button */
+.kinder-btn-delete {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 12px;
+  margin-top: 12px;
+  border: 1.5px solid #f5d5da;
+  border-radius: 50px;
+  background: #fef2f4;
+  color: #e05260;
+  font-family: 'Nunito', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+ 
+.kinder-btn-delete:hover {
+  background: #fde8eb;
+  border-color: #e05260;
+}
+ 
+/* Native color input (visible as small swatch) */
+.kinder-native-color-input {
+  width: 0;
+  height: 0;
+  padding: 0;
+  border: none;
+  opacity: 0;
+  position: absolute;
+  pointer-events: none;
+}
+ 
+.kinder-custom-color-row {
+  position: relative;
+  display: inline-flex;
+}
+ 
+/* Limit modal extras */
+.kinder-limit-icon {
+  text-align: center;
+  margin-bottom: 16px;
+}
+ 
+.kinder-limit-presets {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-bottom: 20px;
+}
+ 
+.kinder-limit-preset {
+  padding: 10px;
+  border: none;
+  border-radius: 14px;
+  background: #f0ede8;
+  color: #6b6b6b;
+  font-family: 'Nunito', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, transform 0.1s;
+}
+ 
+.kinder-limit-preset:hover {
+  transform: scale(1.03);
+}
+ 
+/* Empty state */
+.kinder-empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 60px 20px;
+  color: #b0a9a0;
+}
+ 
+.kinder-empty p {
+  font-size: 16px;
+  font-weight: 700;
+  margin-top: 16px;
+  color: #6b6b6b;
+}
+ 
+.kinder-empty-sub {
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  color: #9e9e9e !important;
+  margin-top: 4px !important;
+}
+ 
+.kinder-device-none {
+  font-size: 12px;
+  color: #b0a9a0;
+  font-weight: 500;
+}
+ 
+/* Card flex fix — push actions to bottom */
+.kinder-card {
+  display: flex;
+  flex-direction: column;
+}
+ 
+.kinder-card-actions {
+  margin-top: auto;
+}
