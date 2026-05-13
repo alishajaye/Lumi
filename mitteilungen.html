@@ -9,100 +9,118 @@
 </head>
 <body>
   <nav>
-  <div class="logo">
-    <a href="index.html">
-      <img src="resources/assets/lumi_logo.svg" alt="Logo">
-    </a>
-  </div>
+    <div class="logo">
+      <a href="index.html">
+        <img src="resources/assets/lumi_logo.svg" alt="Logo">
+      </a>
+    </div>
 
-  <div class="nav-links">
-    <a href="index.html" data-i18n-nav="nav_uebersicht">Übersicht</a>
-    <a href="kinder.html" data-i18n-nav="nav_kinder">Kinder</a>
-    <a href="produkte.html" data-i18n-nav="nav_produkte">Produkte</a>
-    <a href="empfehlungen.html" data-i18n-nav="nav_empfehlungen">Empfehlungen</a>
-    <a href="mitteilungen.html" data-i18n-nav="nav_mitteilungen">Mitteilungen</a>
-  </div>
-</nav>
+    <div class="nav-links">
+      <a href="index.html" data-i18n-nav="nav_uebersicht">Übersicht</a>
+      <a href="kinder.html" data-i18n-nav="nav_kinder">Kinder</a>
+      <a href="produkte.html" data-i18n-nav="nav_produkte">Produkte</a>
+      <a href="empfehlungen.html" data-i18n-nav="nav_empfehlungen">Empfehlungen</a>
+      <a href="mitteilungen.html" data-i18n-nav="nav_mitteilungen">Mitteilungen</a>
+    </div>
+  </nav>
  
   <div class="mitt-page-content">
     <div class="mitt-top-bar">
-      <h1 class="mitt-page-title">Mitteilungen</h1>
-      <button class="mitt-mark-all-btn" id="markAllBtn">Alle als gelesen markieren</button>
+      <h1 class="mitt-page-title" data-i18n="mitt_title">Mitteilungen</h1>
+      <button class="mitt-mark-all-btn" id="markAllBtn" data-i18n="mitt_mark_all">Alle als gelesen markieren</button>
     </div>
  
     <div class="mitt-filter-tabs">
-      <button class="mitt-filter-tab active" data-filter="all">Alle</button>
-      <button class="mitt-filter-tab" data-filter="unread">Ungelesen</button>
-      <button class="mitt-filter-tab" data-filter="read">Gelesen</button>
+      <button class="mitt-filter-tab active" data-filter="all" data-i18n="mitt_all">Alle</button>
+      <button class="mitt-filter-tab" data-filter="unread" data-i18n="mitt_unread">Ungelesen</button>
+      <button class="mitt-filter-tab" data-filter="read" data-i18n="mitt_read">Gelesen</button>
     </div>
  
     <div class="mitt-notification-list" id="notificationList">
       <div class="mitt-notification-card unread" data-type="streak">
-        <div class="mitt-notif-icon mitt-notif-icon--pink"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 3l1.8 3.6L16 7.6l-3 2.9.7 4.1L10 12.4l-3.7 2.2.7-4.1-3-2.9 4.2-.6z" stroke="#E888A6" stroke-width="1.5" stroke-linejoin="round" fill="none"/></svg></div>
-        <div class="mitt-notif-body"><div class="mitt-notif-title">Mayumi hat 5-Tage-Streak erreicht</div><div class="mitt-notif-desc">Mayumi hat 5 Tage in Folge ihr Limit eingehalten.</div><div class="mitt-notif-time">vor 1h</div></div>
+        <div class="mitt-notif-icon mitt-notif-icon--pink">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path d="M10 3l1.8 3.6L16 7.6l-3 2.9.7 4.1L10 12.4l-3.7 2.2.7-4.1-3-2.9 4.2-.6z" stroke="#E888A6" stroke-width="1.5" stroke-linejoin="round" fill="none"/>
+          </svg>
+        </div>
+        <div class="mitt-notif-body">
+          <div class="mitt-notif-title" data-i18n="mitt_streak_title">Mayumi hat 5-Tage-Streak erreicht</div>
+          <div class="mitt-notif-desc" data-i18n="mitt_streak_desc">Mayumi hat 5 Tage in Folge ihr Limit eingehalten.</div>
+          <div class="mitt-notif-time" data-i18n="mitt_1h">vor 1h</div>
+        </div>
       </div>
+
       <div class="mitt-notification-card unread" data-type="reward">
-        <div class="mitt-notif-icon mitt-notif-icon--orange"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="4" y="9" width="12" height="8" rx="2" stroke="#F6B657" stroke-width="1.5"/><path d="M10 9V4" stroke="#F6B657" stroke-width="1.5" stroke-linecap="round"/><path d="M10 4C10 4 7 4 6 6s2 3 4 3c2 0 5-1 4-3s-4-2-4-2z" stroke="#F6B657" stroke-width="1.5" stroke-linejoin="round" fill="none"/><line x1="10" y1="9" x2="10" y2="17" stroke="#F6B657" stroke-width="1.5"/></svg></div>
-        <div class="mitt-notif-body"><div class="mitt-notif-title">Belohnung vergeben</div><div class="mitt-notif-desc">Du hast Mayumi +20 Minuten für das Aufräumen gegeben.</div><div class="mitt-notif-time">vor 3h</div></div>
+        <div class="mitt-notif-icon mitt-notif-icon--orange">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <rect x="4" y="9" width="12" height="8" rx="2" stroke="#F6B657" stroke-width="1.5"/>
+            <path d="M10 9V4" stroke="#F6B657" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M10 4C10 4 7 4 6 6s2 3 4 3c2 0 5-1 4-3s-4-2-4-2z" stroke="#F6B657" stroke-width="1.5" stroke-linejoin="round" fill="none"/>
+            <line x1="10" y1="9" x2="10" y2="17" stroke="#F6B657" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <div class="mitt-notif-body">
+          <div class="mitt-notif-title" data-i18n="mitt_reward_title">Belohnung vergeben</div>
+          <div class="mitt-notif-desc" data-i18n="mitt_reward_desc">Du hast Mayumi +20 Minuten für das Aufräumen gegeben.</div>
+          <div class="mitt-notif-time" data-i18n="mitt_3h">vor 3h</div>
+        </div>
       </div>
+
       <div class="mitt-notification-card" data-type="limit">
-        <div class="mitt-notif-icon mitt-notif-icon--green"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7" stroke="#96C2A0" stroke-width="1.5"/><path d="M7 10l2 2 4-4" stroke="#96C2A0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        <div class="mitt-notif-body"><div class="mitt-notif-title">Leo: Tageslimit eingehalten</div><div class="mitt-notif-desc">Leo hat heute sein Limit von 60 Minuten eingehalten.</div><div class="mitt-notif-time">vor 5h</div></div>
+        <div class="mitt-notif-icon mitt-notif-icon--green">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <circle cx="10" cy="10" r="7" stroke="#96C2A0" stroke-width="1.5"/>
+            <path d="M7 10l2 2 4-4" stroke="#96C2A0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="mitt-notif-body">
+          <div class="mitt-notif-title" data-i18n="mitt_limit_title">Leo: Tageslimit eingehalten</div>
+          <div class="mitt-notif-desc" data-i18n="mitt_limit_desc">Leo hat heute sein Limit von 60 Minuten eingehalten.</div>
+          <div class="mitt-notif-time" data-i18n="mitt_5h">vor 5h</div>
+        </div>
       </div>
+
       <div class="mitt-notification-card" data-type="session">
-        <div class="mitt-notif-icon mitt-notif-icon--blue"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="5" y="3" width="10" height="14" rx="2" stroke="#5192D2" stroke-width="1.5"/><line x1="8" y1="14" x2="12" y2="14" stroke="#5192D2" stroke-width="1.5" stroke-linecap="round"/></svg></div>
-        <div class="mitt-notif-body"><div class="mitt-notif-title">Felix' Tablet-Session beendet</div><div class="mitt-notif-desc">Die Sitzung wurde nach 45 Minuten automatisch beendet.</div><div class="mitt-notif-time">gestern</div></div>
+        <div class="mitt-notif-icon mitt-notif-icon--blue">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <rect x="5" y="3" width="10" height="14" rx="2" stroke="#5192D2" stroke-width="1.5"/>
+            <line x1="8" y1="14" x2="12" y2="14" stroke="#5192D2" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="mitt-notif-body">
+          <div class="mitt-notif-title" data-i18n="mitt_session_title">Felix' Tablet-Session beendet</div>
+          <div class="mitt-notif-desc" data-i18n="mitt_session_desc">Die Sitzung wurde nach 45 Minuten automatisch beendet.</div>
+          <div class="mitt-notif-time" data-i18n="mitt_yesterday">gestern</div>
+        </div>
       </div>
+
       <div class="mitt-notification-card" data-type="offline">
-        <div class="mitt-notif-icon mitt-notif-icon--purple"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M11 3l-4 8h4l-1 6 5-8h-4.5L11 3z" stroke="#B09AC9" stroke-width="1.5" stroke-linejoin="round" fill="none"/></svg></div>
-        <div class="mitt-notif-body"><div class="mitt-notif-title">Lumi Hub ist offline</div><div class="mitt-notif-desc">Dein Lumi Hub ist seit gestern 22:00 nicht erreichbar.</div><div class="mitt-notif-time">gestern</div></div>
+        <div class="mitt-notif-icon mitt-notif-icon--purple">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path d="M11 3l-4 8h4l-1 6 5-8h-4.5L11 3z" stroke="#B09AC9" stroke-width="1.5" stroke-linejoin="round" fill="none"/>
+          </svg>
+        </div>
+        <div class="mitt-notif-body">
+          <div class="mitt-notif-title" data-i18n="mitt_offline_title">Lumi Hub ist offline</div>
+          <div class="mitt-notif-desc" data-i18n="mitt_offline_desc">Dein Lumi Hub ist seit gestern 22:00 nicht erreichbar.</div>
+          <div class="mitt-notif-time" data-i18n="mitt_yesterday">gestern</div>
+        </div>
       </div>
     </div>
  
     <div class="mitt-empty-state" id="emptyState">
-      <div class="mitt-empty-icon"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M20 8a4 4 0 0 1 8 0v2h-8V8z" stroke="#b0a9a0" stroke-width="2"/><path d="M12 20c0-6.627 5.373-12 12-12s12 5.373 12 12v8l3 6H9l3-6v-8z" stroke="#b0a9a0" stroke-width="2" stroke-linejoin="round" fill="none"/><path d="M20 38a4 4 0 0 0 8 0" stroke="#b0a9a0" stroke-width="2" stroke-linecap="round"/></svg></div>
-      <p>Keine Mitteilungen in dieser Kategorie</p>
+      <div class="mitt-empty-icon">
+        <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+          <path d="M20 8a4 4 0 0 1 8 0v2h-8V8z" stroke="#b0a9a0" stroke-width="2"/>
+          <path d="M12 20c0-6.627 5.373-12 12-12s12 5.373 12 12v8l3 6H9l3-6v-8z" stroke="#b0a9a0" stroke-width="2" stroke-linejoin="round" fill="none"/>
+          <path d="M20 38a4 4 0 0 0 8 0" stroke="#b0a9a0" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <p data-i18n="mitt_empty">Keine Mitteilungen in dieser Kategorie</p>
     </div>
   </div>
  
   <script src="js/nav.js"></script>
-  <script>
-    const tabs = document.querySelectorAll('.mitt-filter-tab');
-    const cards = document.querySelectorAll('.mitt-notification-card');
-    const emptyState = document.getElementById('emptyState');
- 
-    function applyFilter(filter) {
-      let visible = 0;
-      cards.forEach(card => {
-        const isUnread = card.classList.contains('unread');
-        if (filter === 'all') { card.style.display = 'flex'; visible++; }
-        else if (filter === 'unread') { card.style.display = isUnread ? 'flex' : 'none'; if (isUnread) visible++; }
-        else if (filter === 'read') { card.style.display = !isUnread ? 'flex' : 'none'; if (!isUnread) visible++; }
-      });
-      emptyState.style.display = visible === 0 ? 'block' : 'none';
-    }
- 
-    tabs.forEach(tab => {
-      tab.addEventListener('click', () => {
-        tabs.forEach(t => t.classList.remove('active'));
-        tab.classList.add('active');
-        applyFilter(tab.dataset.filter);
-      });
-    });
- 
-    cards.forEach(card => {
-      card.addEventListener('click', () => {
-        card.classList.remove('unread');
-        const activeFilter = document.querySelector('.mitt-filter-tab.active').dataset.filter;
-        applyFilter(activeFilter);
-      });
-    });
- 
-    document.getElementById('markAllBtn').addEventListener('click', () => {
-      cards.forEach(card => card.classList.remove('unread'));
-      const activeFilter = document.querySelector('.mitt-filter-tab.active').dataset.filter;
-      applyFilter(activeFilter);
-    });
-  </script>
+  <script src="js/mitteilungen.js"></script>
 </body>
 </html>
