@@ -15,9 +15,10 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
     const result = await response.json();
  
     if (result.status === 'success') {
-      // Use part before @ as display name, capitalize first letter
-      const raw = email.split('@')[0];
-      const displayName = raw.charAt(0).toUpperCase() + raw.slice(1);
+      // Use first name from email (before dot or @), capitalize
+      const beforeAt = email.split('@')[0];
+      const firstName = beforeAt.split('.')[0];
+      const displayName = firstName.charAt(0).toUpperCase() + firstName.slice(1);
       localStorage.setItem('lumi_user', JSON.stringify({ name: displayName, email: email }));
  
       // Redirect to overview

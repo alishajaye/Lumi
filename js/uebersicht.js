@@ -250,15 +250,26 @@ let belSelectedMinutes = null;
  
 function renderBelKinder() {
   const container = document.getElementById('belKinder');
-  container.innerHTML = children.map(child => `
-    <div class="ueb-bel-child ${belSelectedChild === child.id ? 'active' : ''}"
-         style="--c:${child.color}"
+ 
+  // Auto-select if only one child
+  if (children.length === 1 && !belSelectedChild) {
+    belSelectedChild = children[0].id;
+  }
+ 
+  container.innerHTML = children.map(child => {
+    const isActive = String(belSelectedChild) === String(child.id);
+    return `
+    <div class="ueb-bel-child ${isActive ? 'active' : ''}"
+         style="--c:${child.color};${isActive ? 'background:' + soften(child.color,'15') + ';' : ''}"
          onclick="selectBelChild('${child.id}')">
       <div class="ueb-bel-child-avatar" style="background:${soften(child.color,'20')};border:2px solid ${child.color}">
         <span style="color:${child.color}">${child.name.charAt(0)}</span>
       </div>
       <span>${child.name}</span>
-    </div>`).join('') || `<span style="color:#b0a9a0;font-size:13px">${t('noChildren')}</span>`;
+    </div>`;
+  }).join('') || `<span style="color:#b0a9a0;font-size:13px">${t('noChildren')}</span>`;
+ 
+  checkBelSubmit();
 }
  
 function selectBelChild(id) {

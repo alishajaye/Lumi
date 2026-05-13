@@ -91,8 +91,9 @@ function checkAuth() {
         var stored = getUser();
         // Only update if we don't have a name yet or email changed
         if (!stored.name || stored.name === 'User' || stored.email !== result.email) {
-          var raw = result.email.split('@')[0];
-          var displayName = raw.charAt(0).toUpperCase() + raw.slice(1);
+          var beforeAt = result.email.split('@')[0];
+          var firstName = beforeAt.split('.')[0];
+          var displayName = firstName.charAt(0).toUpperCase() + firstName.slice(1);
           localStorage.setItem('lumi_user', JSON.stringify({ name: displayName, email: result.email }));
         }
         // Refresh profile display
