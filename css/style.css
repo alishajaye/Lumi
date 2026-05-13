@@ -2003,7 +2003,7 @@ body.produkte-page .shop-hero {
  
 .uebersicht-bel-reason-btn.active,
 .uebersicht-bel-reason-btn:hover {
-  background: #b49ed4;
+  background: #F6B657;
   color: #fff;
 }
  
@@ -2048,7 +2048,7 @@ body.produkte-page .shop-hero {
  
 .uebersicht-bel-min-btn.active,
 .uebersicht-bel-min-btn:hover {
-  background: #b49ed4;
+  background: #F6B657;
   color: #fff;
 }
  
@@ -2058,19 +2058,20 @@ body.produkte-page .shop-hero {
   margin-top: 14px;
   border: none;
   border-radius: 50px;
-  background: #b49ed4;
+  background: #F6B657;
   color: #fff;
   font-family: 'Nunito', sans-serif;
   font-size: 14px;
   font-weight: 700;
   cursor: pointer;
-  transition: background 0.2s, box-shadow 0.2s;
-  box-shadow: 0 4px 16px rgba(180,158,212,0.3);
+  transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
+  box-shadow: 0 4px 16px rgba(246,182,87,0.3);
 }
  
 .uebersicht-bel-submit:hover:not(:disabled) {
-  background: #a38bc8;
-  box-shadow: 0 6px 20px rgba(180,158,212,0.42);
+  background: #e5a84d;
+  box-shadow: 0 6px 20px rgba(246,182,87,0.42);
+  transform: translateY(-1px);
 }
  
 .uebersicht-bel-submit:disabled {

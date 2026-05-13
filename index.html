@@ -8,82 +8,21 @@
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
 </head>
 <body>
- 
-  <!-- NAV -->
   <nav>
-    <div class="logo">
-      <a href="index.html">
-        <img src="resources/assets/lumi_logo.svg" alt="Logo">
-      </a>
-    </div>
-    <a href="index.html">Übersicht</a>
-    <a href="kinder.html">Kinder</a>
-    <a href="produkte.html">Produkte</a>
-    <a href="empfehlungen.html">Empfehlungen</a>
-    <a href="mitteilungen.html">Mitteilungen</a>
- 
-    <!-- Profil Dropdown -->
-    <div class="nav-profile-wrap">
-      <button class="nav-profile-btn" id="profileBtn">
-        <span class="nav-profile-avatar" id="profileAvatar">M</span>
-      </button>
-      <div class="nav-profile-dropdown" id="profileDropdown">
-        <div class="nav-profile-info">
-          <div class="nav-profile-avatar-lg" id="profileAvatarLg">M</div>
-          <div>
-            <div class="nav-profile-name" id="profileName">Max</div>
-            <div class="nav-profile-email" id="profileEmail">max@beispiel.ch</div>
-          </div>
-        </div>
-        <div class="nav-profile-divider"></div>
- 
-        <!-- Sprache -->
-        <div class="nav-profile-item nav-profile-item--lang">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="#7C6E61" stroke-width="1.3"/><path d="M8 2c0 0-3 2.5-3 6s3 6 3 6M8 2c0 0 3 2.5 3 6s-3 6-3 6M2 8h12" stroke="#7C6E61" stroke-width="1.3" stroke-linecap="round"/></svg>
-          <span data-i18n="language">Sprache</span>
-          <div class="nav-lang-toggle">
-            <button class="nav-lang-btn active" id="langDE" onclick="setLang('de')">DE</button>
-            <button class="nav-lang-btn" id="langEN" onclick="setLang('en')">EN</button>
-          </div>
-        </div>
- 
-        <!-- Passwort -->
-        <button class="nav-profile-item" onclick="openPasswordModal()">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="3" y="7" width="10" height="7" rx="2" stroke="#7C6E61" stroke-width="1.3"/><path d="M5 7V5a3 3 0 016 0v2" stroke="#7C6E61" stroke-width="1.3" stroke-linecap="round"/></svg>
-          <span data-i18n="changePassword">Passwort ändern</span>
-        </button>
- 
-        <div class="nav-profile-divider"></div>
- 
-        <!-- Logout -->
-        <button class="nav-profile-item nav-profile-item--logout" id="logoutBtn">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 14H3a1 1 0 01-1-1V3a1 1 0 011-1h3M10 11l3-3-3-3M13 8H6" stroke="#e05260" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <span data-i18n="logout">Abmelden</span>
-        </button>
-      </div>
-    </div>
+    <div class="logo"><a href="index.html"><img src="resources/assets/lumi_logo.svg" alt="Logo"></a></div>
+    <a href="index.html" data-i18n-nav="nav_uebersicht">Übersicht</a>
+    <a href="kinder.html" data-i18n-nav="nav_kinder">Kinder</a>
+    <a href="produkte.html" data-i18n-nav="nav_produkte">Produkte</a>
+    <a href="empfehlungen.html" data-i18n-nav="nav_empfehlungen">Empfehlungen</a>
+    <a href="mitteilungen.html" data-i18n-nav="nav_mitteilungen">Mitteilungen</a>
   </nav>
  
-  <script>
-    // Active nav link
-    const navLinks = document.querySelectorAll('nav a');
-    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-    navLinks.forEach(link => {
-      link.classList.remove('active');
-      const linkPage = link.getAttribute('href').split('/').pop();
-      if (linkPage === currentPage) link.classList.add('active');
-    });
-  </script>
- 
-  <!-- HAUPTINHALT -->
   <div class="uebersicht-page">
- 
-    <!-- HEADER -->
     <div class="uebersicht-header">
       <div>
-        <div class="uebersicht-date" id="uebersichtDate">Mittwoch, 7. Mai 2025</div>
-        <h1 class="uebersicht-greeting" id="uebersichtGreeting">Guten Morgen, Max.</h1>
-        <div class="uebersicht-meta" id="uebersichtMeta">0 Kinder · 0 Geräte aktiv · Ø 0 min heute</div>
+        <div class="uebersicht-date" id="uebersichtDate"></div>
+        <h1 class="uebersicht-greeting" id="uebersichtGreeting"></h1>
+        <div class="uebersicht-meta" id="uebersichtMeta"></div>
       </div>
       <div class="uebersicht-stats-row">
         <div class="uebersicht-stat-badge">
@@ -104,21 +43,17 @@
       </div>
     </div>
  
-    <!-- FAMILIE -->
     <div class="uebersicht-section">
       <div class="uebersicht-section-header">
         <h2 class="uebersicht-section-title" data-i18n="family">Familie</h2>
-        <a href="kinder.html" class="uebersicht-section-link" data-i18n="manage">Verwalten &rsaquo;</a>
+        <a href="kinder.html" class="uebersicht-section-link" data-i18n="manage">Verwalten ›</a>
       </div>
       <div class="uebersicht-kinder-grid" id="uebersichtKinderGrid">
         <div class="uebersicht-empty" data-i18n="noChildren">Noch keine Kinder hinzugefügt</div>
       </div>
     </div>
  
-    <!-- BELOHNUNG + AKTIVITÄTEN -->
     <div class="uebersicht-two-col">
- 
-      <!-- Belohnung schenken -->
       <div class="uebersicht-card uebersicht-belohnung">
         <div class="uebersicht-card-header">
           <div class="uebersicht-card-icon" style="background:#FEF3E2;">
@@ -129,10 +64,8 @@
             <div class="uebersicht-card-subtitle" data-i18n="giveRewardSub">Zeit als Anerkennung vergeben</div>
           </div>
         </div>
- 
         <div class="uebersicht-bel-section-label" data-i18n="selectChild">KIND AUSWÄHLEN</div>
         <div class="uebersicht-bel-children" id="belKinder"></div>
- 
         <div class="uebersicht-bel-section-label" data-i18n="selectReason">GRUND AUSWÄHLEN</div>
         <div class="uebersicht-bel-reasons" id="belGruende">
           <button class="uebersicht-bel-reason-btn" data-i18n="cleanRoom">Zimmer aufgeräumt</button>
@@ -141,33 +74,27 @@
           <button class="uebersicht-bel-reason-btn" data-i18n="helpedCooking">Beim Kochen geholfen</button>
           <button class="uebersicht-bel-reason-btn" data-i18n="readBook">Buch gelesen</button>
         </div>
-        <input class="uebersicht-bel-input" type="text" id="belEigenerGrund" placeholder="Eigener Grund eingeben..." data-i18n-placeholder="ownReason" />
- 
+        <input class="uebersicht-bel-input" type="text" id="belEigenerGrund" placeholder="Eigener Grund eingeben..." data-i18n-placeholder="ownReason" autocomplete="off" />
         <div class="uebersicht-bel-section-label" data-i18n="giveMinutes">MINUTEN SCHENKEN</div>
         <div class="uebersicht-bel-minutes">
           <button class="uebersicht-bel-min-btn" data-mins="10">+10 min</button>
           <button class="uebersicht-bel-min-btn" data-mins="20">+20 min</button>
           <button class="uebersicht-bel-min-btn" data-mins="30">+30 min</button>
         </div>
-        <input class="uebersicht-bel-input" type="number" id="belEigeneMinuten" placeholder="Eigene Minutenzahl eingeben..." min="1" max="120" data-i18n-placeholder="ownMinutes" />
- 
+        <input class="uebersicht-bel-input" type="text" inputmode="numeric" pattern="[0-9]*" id="belEigeneMinuten" placeholder="Eigene Minutenzahl eingeben..." data-i18n-placeholder="ownMinutes" autocomplete="off" />
         <button class="uebersicht-bel-submit" id="belSubmitBtn" disabled data-i18n="giveTime">Zeit schenken</button>
- 
         <div class="uebersicht-bel-section-label" style="margin-top:20px;" data-i18n="lastRewards">LETZTE BELOHNUNGEN</div>
         <div id="belLetzteList" class="uebersicht-bel-letzte"></div>
       </div>
  
-      <!-- Aktivitäten -->
       <div class="uebersicht-card uebersicht-aktivitaeten">
         <div class="uebersicht-card-header">
           <div class="uebersicht-card-title" data-i18n="activities">Aktivitäten</div>
-          <a href="kinder.html" class="uebersicht-section-link" data-i18n="seeAll">Alle sehen</a>
         </div>
         <div class="uebersicht-aktivitaeten-list" id="aktivitaetenList"></div>
       </div>
     </div>
  
-    <!-- WOCHENÜBERSICHT -->
     <div class="uebersicht-card uebersicht-woche">
       <div class="uebersicht-woche-header">
         <div>
@@ -179,48 +106,16 @@
           <div class="uebersicht-woche-label" data-i18n="thisWeek">diese Woche bis heute</div>
         </div>
       </div>
- 
-      <!-- Filter Tabs -->
       <div class="uebersicht-woche-tabs">
         <button class="uebersicht-woche-tab active" id="tabEinzeln" onclick="setWocheTab('einzeln')" data-i18n="individual">Einzeln</button>
         <button class="uebersicht-woche-tab" id="tabAlle" onclick="setWocheTab('alle')" data-i18n="allChildren">Alle Kinder</button>
         <div class="uebersicht-woche-kinder-tabs" id="wocheKinderTabs"></div>
       </div>
- 
-      <!-- Chart -->
       <div class="uebersicht-woche-chart" id="wocheChart"></div>
-    </div>
- 
-  </div><!-- /uebersicht-page -->
- 
-  <!-- PASSWORT MODAL -->
-  <div class="kinder-modal-overlay" id="passwordModalOverlay">
-    <div class="kinder-modal kinder-modal--small">
-      <div class="kinder-modal-header">
-        <h2 class="kinder-modal-title" data-i18n="changePassword">Passwort ändern</h2>
-        <button class="kinder-modal-close" onclick="closePasswordModal()">
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><line x1="4" y1="4" x2="16" y2="16" stroke="#6b6b6b" stroke-width="2" stroke-linecap="round"/><line x1="16" y1="4" x2="4" y2="16" stroke="#6b6b6b" stroke-width="2" stroke-linecap="round"/></svg>
-        </button>
-      </div>
-      <div class="kinder-form-group">
-        <label data-i18n="currentPassword">AKTUELLES PASSWORT</label>
-        <input type="password" id="pwCurrent" placeholder="••••••••" />
-      </div>
-      <div class="kinder-form-group">
-        <label data-i18n="newPassword">NEUES PASSWORT</label>
-        <input type="password" id="pwNew" placeholder="••••••••" />
-      </div>
-      <div class="kinder-form-group">
-        <label data-i18n="confirmPassword">PASSWORT BESTÄTIGEN</label>
-        <input type="password" id="pwConfirm" placeholder="••••••••" />
-      </div>
-      <div class="kinder-form-actions">
-        <button class="kinder-btn-cancel" onclick="closePasswordModal()" data-i18n="cancel">Abbrechen</button>
-        <button class="kinder-btn-save" onclick="savePassword()" data-i18n="save">Speichern</button>
-      </div>
     </div>
   </div>
  
+  <script src="js/nav.js"></script>
   <script src="js/uebersicht.js"></script>
 </body>
 </html>

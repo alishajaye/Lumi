@@ -69,17 +69,9 @@ const TRANSLATIONS = {
   }
 };
  
-let currentLang = localStorage.getItem('lumi_lang') || 'de';
+// currentLang is declared in nav.js (loaded first)
 function t(key) { return (TRANSLATIONS[currentLang] && TRANSLATIONS[currentLang][key]) || key; }
 function WK() { return currentLang === 'en' ? WK_EN : WK_DE; }
- 
-function setLang(lang) {
-  currentLang = lang;
-  localStorage.setItem('lumi_lang', lang);
-  document.getElementById('langDE').classList.toggle('active', lang === 'de');
-  document.getElementById('langEN').classList.toggle('active', lang === 'en');
-  renderAll();
-}
  
 function applyTranslations() {
   document.querySelectorAll('[data-i18n]').forEach(el => {
@@ -93,19 +85,10 @@ function applyTranslations() {
 }
  
 // ─── Auth / User ─────────────────────────────
-function getUser() {
-  const raw = localStorage.getItem('lumi_user');
-  if (raw) return JSON.parse(raw);
-  return { name: 'Max', email: 'max@beispiel.ch' };
-}
- 
+// getUser() is defined in nav.js
 function renderUser() {
-  const user = getUser();
-  const initial = user.name ? user.name.charAt(0).toUpperCase() : user.email.charAt(0).toUpperCase();
-  document.getElementById('profileAvatar').textContent = initial;
-  document.getElementById('profileAvatarLg').textContent = initial;
-  document.getElementById('profileName').textContent = user.name || user.email;
-  document.getElementById('profileEmail').textContent = user.email;
+  // nav.js handles profile display via updateProfileDisplay()
+  if (typeof updateProfileDisplay === 'function') updateProfileDisplay();
 }
  
 // ─── Kinder von API laden ────────────────────
@@ -530,45 +513,8 @@ function renderWoche() {
   }
 }
  
-// ─── Profil Dropdown ─────────────────────────
-const profileBtn = document.getElementById('profileBtn');
-const profileDropdown = document.getElementById('profileDropdown');
- 
-profileBtn.addEventListener('click', (e) => {
-  e.stopPropagation();
-  profileDropdown.classList.toggle('active');
-});
- 
-document.addEventListener('click', () => profileDropdown.classList.remove('active'));
-profileDropdown.addEventListener('click', e => e.stopPropagation());
- 
-// Logout
-document.getElementById('logoutBtn').addEventListener('click', async () => {
-  try {
-    await fetch('api/logout.php', { method: 'POST' });
-  } catch(e) {}
-  localStorage.removeItem('lumi_session');
-  localStorage.removeItem('lumi_user');
-  window.location.href = 'login.html';
-});
- 
-// ─── Passwort Modal ──────────────────────────
-function openPasswordModal() {
-  document.getElementById('passwordModalOverlay').classList.add('active');
-  profileDropdown.classList.remove('active');
-}
-function closePasswordModal() {
-  document.getElementById('passwordModalOverlay').classList.remove('active');
-}
-function savePassword() {
-  const curr = document.getElementById('pwCurrent').value;
-  const newPw = document.getElementById('pwNew').value;
-  const confirm = document.getElementById('pwConfirm').value;
-  if (!curr || !newPw || !confirm) return alert(currentLang === 'de' ? 'Bitte alle Felder ausfüllen.' : 'Please fill in all fields.');
-  if (newPw !== confirm) return alert(currentLang === 'de' ? 'Passwörter stimmen nicht überein.' : 'Passwords do not match.');
-  alert(currentLang === 'de' ? 'Passwort wurde gespeichert.' : 'Password saved.');
-  closePasswordModal();
-}
+// ─── Profil Dropdown, Logout, Passwort Modal ─
+// All handled by nav.js
  
 // ─── Init ────────────────────────────────────
 function renderAllSync() {
@@ -580,8 +526,6 @@ function renderAllSync() {
   renderBelLetzte();
   renderAktivitaeten();
   renderWoche();
-  document.getElementById('langDE').classList.toggle('active', currentLang === 'de');
-  document.getElementById('langEN').classList.toggle('active', currentLang === 'en');
 }
  
 async function renderAll() {

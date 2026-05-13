@@ -8,30 +8,14 @@
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
 </head>
 <body>
- 
   <nav>
-    <div class="logo">
-      <a href="index.html">
-        <img src="resources/assets/lumi_logo.svg" alt="Logo">
-      </a>
-    </div>
-    <a href="index.html">Übersicht</a>
-    <a href="kinder.html">Kinder</a>
-    <a href="produkte.html">Produkte</a>
-    <a href="empfehlungen.html">Empfehlungen</a>
-    <a href="mitteilungen.html">Mitteilungen</a>
+    <div class="logo"><a href="index.html"><img src="resources/assets/lumi_logo.svg" alt="Logo"></a></div>
+    <a href="index.html" data-i18n-nav="nav_uebersicht">Übersicht</a>
+    <a href="kinder.html" data-i18n-nav="nav_kinder">Kinder</a>
+    <a href="produkte.html" data-i18n-nav="nav_produkte">Produkte</a>
+    <a href="empfehlungen.html" data-i18n-nav="nav_empfehlungen">Empfehlungen</a>
+    <a href="mitteilungen.html" data-i18n-nav="nav_mitteilungen">Mitteilungen</a>
   </nav>
-
-  <script>
-    const navLinks = document.querySelectorAll('nav a');
-    const currentPage = window.location.pathname.split('/').pop() || 'index.php';
-
-    navLinks.forEach(link => {
-      link.classList.remove('active');
-      const linkPage = link.getAttribute('href').split('/').pop();
-      if (linkPage === currentPage) link.classList.add('active');
-    });
-  </script>
  
   <div class="kinder-page">
     <div class="kinder-header">
@@ -39,53 +23,30 @@
         <h1 class="kinder-title">Kinder</h1>
         <p class="kinder-subtitle" id="profileCount">Profile werden geladen...</p>
       </div>
-
       <button class="kinder-add-btn" id="addChildBtn">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-          <line x1="8" y1="2" x2="8" y2="14" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
-          <line x1="2" y1="8" x2="14" y2="8" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
-        </svg>
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><line x1="8" y1="2" x2="8" y2="14" stroke="#fff" stroke-width="2" stroke-linecap="round"/><line x1="2" y1="8" x2="14" y2="8" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>
         Kind hinzufügen
       </button>
     </div>
-
     <div class="kinder-grid" id="kinderGrid"></div>
   </div>
  
+  <!-- Add/Edit Modal -->
   <div class="kinder-modal-overlay" id="modalOverlay">
     <div class="kinder-modal">
       <div class="kinder-modal-header">
         <h2 class="kinder-modal-title" id="modalTitle">Kind hinzufügen</h2>
-
         <button class="kinder-modal-close" id="modalClose">
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-            <line x1="4" y1="4" x2="16" y2="16" stroke="#6b6b6b" stroke-width="2" stroke-linecap="round"/>
-            <line x1="16" y1="4" x2="4" y2="16" stroke="#6b6b6b" stroke-width="2" stroke-linecap="round"/>
-          </svg>
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><line x1="4" y1="4" x2="16" y2="16" stroke="#6b6b6b" stroke-width="2" stroke-linecap="round"/><line x1="16" y1="4" x2="4" y2="16" stroke="#6b6b6b" stroke-width="2" stroke-linecap="round"/></svg>
         </button>
       </div>
-
       <form id="childForm">
         <input type="hidden" id="childId" />
-
-        <div class="kinder-form-group">
-          <label>NAME</label>
-          <input type="text" id="childName" placeholder="Name des Kindes" required />
-        </div>
-
-        <div class="kinder-form-group">
-          <label>ALTER</label>
-          <input type="number" id="childAge" placeholder="Alter in Jahren" min="0" max="18" required />
-        </div>
-
-        <div class="kinder-form-group">
-          <label>TAGESLIMIT (MINUTEN)</label>
-          <input type="number" id="childLimit" placeholder="z.B. 90" min="0" max="480" required />
-        </div>
-
+        <div class="kinder-form-group"><label>NAME</label><input type="text" id="childName" placeholder="Name des Kindes" required /></div>
+        <div class="kinder-form-group"><label>ALTER</label><input type="number" id="childAge" placeholder="Alter in Jahren" min="0" max="18" required /></div>
+        <div class="kinder-form-group"><label>TAGESLIMIT (MINUTEN)</label><input type="number" id="childLimit" placeholder="z.B. 90" min="0" max="480" required /></div>
         <div class="kinder-form-group">
           <label>FARBE WÄHLEN</label>
-
           <div class="kinder-color-picker">
             <div class="kinder-color-presets" id="colorPresets">
               <button type="button" class="kinder-color-dot" data-color="#9C89D2" style="background:#9C89D2"></button>
@@ -94,45 +55,29 @@
               <button type="button" class="kinder-color-dot" data-color="#7ECE9F" style="background:#7ECE9F"></button>
               <button type="button" class="kinder-color-dot" data-color="#639BE9" style="background:#639BE9"></button>
             </div>
-
             <div class="kinder-custom-color-row">
-              <button type="button" class="kinder-custom-color-btn" id="customColorBtn">
-                <span class="kinder-custom-color-preview" id="customColorPreview"></span>
-                + Eigene Farbe
-              </button>
-
+              <button type="button" class="kinder-custom-color-btn" id="customColorBtn"><span class="kinder-custom-color-preview" id="customColorPreview"></span> + Eigene Farbe</button>
               <input type="color" id="customColorInput" class="kinder-native-color-input" value="#D4C4C4" />
             </div>
           </div>
-
           <input type="hidden" id="childColor" value="#F19DAE" />
         </div>
-
         <div class="kinder-form-actions">
           <button type="button" class="kinder-btn-cancel" id="modalCancelBtn">Abbrechen</button>
           <button type="submit" class="kinder-btn-save" id="modalSaveBtn">Hinzufügen</button>
         </div>
-
-        <button type="button" class="kinder-btn-delete" id="modalDeleteBtn" style="display:none">
-          Kind löschen
-        </button>
+        <button type="button" class="kinder-btn-delete" id="modalDeleteBtn" style="display:none">Kind löschen</button>
       </form>
     </div>
   </div>
  
+  <!-- Color Modal -->
   <div class="kinder-modal-overlay" id="colorModalOverlay">
     <div class="kinder-modal kinder-modal--small">
       <div class="kinder-modal-header">
         <h2 class="kinder-modal-title">Farbe wählen</h2>
-
-        <button class="kinder-modal-close" id="colorModalClose">
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-            <line x1="4" y1="4" x2="16" y2="16" stroke="#6b6b6b" stroke-width="2" stroke-linecap="round"/>
-            <line x1="16" y1="4" x2="4" y2="16" stroke="#6b6b6b" stroke-width="2" stroke-linecap="round"/>
-          </svg>
-        </button>
+        <button class="kinder-modal-close" id="colorModalClose"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><line x1="4" y1="4" x2="16" y2="16" stroke="#6b6b6b" stroke-width="2" stroke-linecap="round"/><line x1="16" y1="4" x2="4" y2="16" stroke="#6b6b6b" stroke-width="2" stroke-linecap="round"/></svg></button>
       </div>
-
       <div class="kinder-color-picker">
         <div class="kinder-color-presets" id="colorModalPresets">
           <button type="button" class="kinder-color-dot" data-color="#9C89D2" style="background:#9C89D2"></button>
@@ -141,51 +86,29 @@
           <button type="button" class="kinder-color-dot" data-color="#7ECE9F" style="background:#7ECE9F"></button>
           <button type="button" class="kinder-color-dot" data-color="#639BE9" style="background:#639BE9"></button>
         </div>
-
         <div class="kinder-custom-color-row">
-          <button type="button" class="kinder-custom-color-btn" id="colorModalCustomBtn">
-            <span class="kinder-custom-color-preview" id="colorModalCustomPreview"></span>
-            + Eigene Farbe
-          </button>
-
+          <button type="button" class="kinder-custom-color-btn" id="colorModalCustomBtn"><span class="kinder-custom-color-preview" id="colorModalCustomPreview"></span> + Eigene Farbe</button>
           <input type="color" id="colorModalCustomInput" class="kinder-native-color-input" value="#D4C4C4" />
         </div>
       </div>
     </div>
   </div>
  
+  <!-- Limit Modal -->
   <div class="kinder-modal-overlay" id="limitModalOverlay">
     <div class="kinder-modal kinder-modal--small">
       <div class="kinder-modal-header">
         <h2 class="kinder-modal-title" id="limitModalTitle">Tageslimit ändern</h2>
-
-        <button class="kinder-modal-close" id="limitModalClose">
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-            <line x1="4" y1="4" x2="16" y2="16" stroke="#6b6b6b" stroke-width="2" stroke-linecap="round"/>
-            <line x1="16" y1="4" x2="4" y2="16" stroke="#6b6b6b" stroke-width="2" stroke-linecap="round"/>
-          </svg>
-        </button>
+        <button class="kinder-modal-close" id="limitModalClose"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><line x1="4" y1="4" x2="16" y2="16" stroke="#6b6b6b" stroke-width="2" stroke-linecap="round"/><line x1="16" y1="4" x2="4" y2="16" stroke="#6b6b6b" stroke-width="2" stroke-linecap="round"/></svg></button>
       </div>
-
-      <div class="kinder-limit-icon">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-          <circle cx="12" cy="12" r="9" stroke="#b49ed4" stroke-width="1.5"/>
-          <path d="M12 7v5l3 3" stroke="#b49ed4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </div>
-
-      <div class="kinder-form-group">
-        <label>NEUES TAGESLIMIT (MINUTEN)</label>
-        <input type="number" id="limitModalInput" placeholder="z.B. 90" min="0" max="480" />
-      </div>
-
+      <div class="kinder-limit-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#b49ed4" stroke-width="1.5"/><path d="M12 7v5l3 3" stroke="#b49ed4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="kinder-form-group"><label>NEUES TAGESLIMIT (MINUTEN)</label><input type="number" id="limitModalInput" placeholder="z.B. 90" min="0" max="480" /></div>
       <div class="kinder-limit-presets">
         <button type="button" class="kinder-limit-preset" data-mins="30">30 min</button>
         <button type="button" class="kinder-limit-preset" data-mins="60">60 min</button>
         <button type="button" class="kinder-limit-preset" data-mins="90">90 min</button>
         <button type="button" class="kinder-limit-preset" data-mins="120">120 min</button>
       </div>
-
       <div class="kinder-form-actions">
         <button type="button" class="kinder-btn-cancel" id="limitModalCancel">Abbrechen</button>
         <button type="button" class="kinder-btn-save" id="limitModalSave">Speichern</button>
@@ -193,6 +116,7 @@
     </div>
   </div>
  
+  <script src="js/nav.js"></script>
   <script src="js/kinder.js"></script>
 </body>
 </html>
