@@ -181,7 +181,7 @@ body {
 }
  
 /* =============================================
-   Header / Nav
+   Header / Nav  –  FIX: overflow visible + stabile Höhe
    ============================================= */
 nav {
   display: flex;
@@ -197,6 +197,8 @@ nav {
   box-sizing: border-box;
   margin: 0;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  /* FIX: Dropdown muss über Nav hinausragen können */
+  overflow: visible;
 }
  
 nav a {
@@ -221,6 +223,167 @@ nav a:hover,
 nav a.active {
   background-color: #ffffff;
   color: #333;
+}
+ 
+/* =============================================
+   NAV PROFIL DROPDOWN  –  FIX: keine Nav-Aufblähung
+   ============================================= */
+.nav-profile-wrap {
+  position: relative;
+  margin-left: 10px;
+  /* FIX: Feste Grösse, damit das Dropdown die Nav nicht vergrössert */
+  flex-shrink: 0;
+  align-self: center;
+}
+ 
+.nav-profile-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+ 
+.nav-profile-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #b49ed4;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Nunito', sans-serif;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+ 
+.nav-profile-btn:hover .nav-profile-avatar {
+  transform: scale(1.07);
+  box-shadow: 0 4px 12px rgba(180, 158, 212, 0.4);
+}
+ 
+.nav-profile-dropdown {
+  display: none;
+  position: absolute;
+  top: calc(100% + 12px);
+  right: 0;
+  width: 240px;
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.13);
+  padding: 8px;
+  z-index: 1100;
+  animation: dropdownIn 0.18s ease;
+}
+ 
+.nav-profile-dropdown.active {
+  display: block;
+}
+ 
+@keyframes dropdownIn {
+  from { opacity: 0; transform: translateY(-8px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+ 
+.nav-profile-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px 14px;
+}
+ 
+.nav-profile-avatar-lg {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: #b49ed4;
+  color: #fff;
+  font-size: 17px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Nunito', sans-serif;
+  flex-shrink: 0;
+}
+ 
+.nav-profile-name {
+  font-size: 14px;
+  font-weight: 800;
+  color: #1a1a1a;
+}
+ 
+.nav-profile-email {
+  font-size: 12px;
+  color: #9e9e9e;
+  font-weight: 500;
+}
+ 
+.nav-profile-divider {
+  height: 1px;
+  background: #f0ede8;
+  margin: 4px 0;
+}
+ 
+.nav-profile-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 12px;
+  border: none;
+  background: none;
+  font-family: 'Nunito', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #4a4a4a;
+  cursor: pointer;
+  border-radius: 12px;
+  text-align: left;
+  transition: background 0.15s;
+}
+ 
+.nav-profile-item:hover {
+  background: #f5f2ee;
+}
+ 
+.nav-profile-item--logout {
+  color: #e05260;
+}
+ 
+.nav-profile-item--logout:hover {
+  background: #fef2f4;
+}
+ 
+.nav-profile-item--lang {
+  cursor: default;
+}
+ 
+.nav-lang-toggle {
+  margin-left: auto;
+  display: flex;
+  gap: 4px;
+}
+ 
+.nav-lang-btn {
+  padding: 4px 10px;
+  border: none;
+  border-radius: 8px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  background: #f0ede8;
+  color: #7C6E61;
+  transition: background 0.15s, color 0.15s;
+}
+ 
+.nav-lang-btn.active {
+  background: #b49ed4;
+  color: #fff;
 }
  
 /* =============================================
@@ -604,7 +767,7 @@ body.produkte-page .shop-hero {
   margin-top: 4px;
 }
  
-/* Tipps – freistehend ohne Box */
+/* Tipps */
 .empf-tipps {
   background: transparent;
   padding: 0;
@@ -631,9 +794,6 @@ body.produkte-page .shop-hero {
   gap: 18px;
 }
  
-/* =============================================
-   GEÄNDERT: Tipp-Karten mit weissem Hintergrund
-   ============================================= */
 .empf-tipp-card {
   display: flex;
   align-items: flex-start;
@@ -662,7 +822,6 @@ body.produkte-page .shop-hero {
   flex-shrink: 0;
 }
  
-/* Farb-Varianten für Tipp Icons */
 .empf-tipp-icon--pink   { background: #FDEEF2; }
 .empf-tipp-icon--blue   { background: #EAF2FB; }
 .empf-tipp-icon--green  { background: #EDF6EF; }
@@ -825,7 +984,6 @@ body.produkte-page .shop-hero {
   flex-shrink: 0;
 }
  
-/* Icon Farb-Varianten */
 .mitt-notif-icon--pink   { background: #FDEEF2; }
 .mitt-notif-icon--orange { background: #FEF3E2; }
 .mitt-notif-icon--green  { background: #EDF6EF; }
@@ -945,6 +1103,8 @@ body.produkte-page .shop-hero {
   position: relative;
   text-align: center;
   transition: transform 0.2s, box-shadow 0.2s;
+  display: flex;
+  flex-direction: column;
 }
  
 .kinder-card:hover {
@@ -1143,6 +1303,7 @@ body.produkte-page .shop-hero {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 10px;
+  margin-top: auto;
 }
  
 .kinder-btn-details,
@@ -1158,14 +1319,14 @@ body.produkte-page .shop-hero {
   color: var(--child-color);
   transition: background 0.2s, color 0.2s, transform 0.1s, box-shadow 0.2s;
 }
-
+ 
 .kinder-btn-details:hover,
 .kinder-btn-limit:hover {
   background: var(--child-color);
   color: #fff;
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
 }
-
+ 
 .kinder-btn-details:active,
 .kinder-btn-limit:active {
   transform: scale(0.97);
@@ -1400,7 +1561,7 @@ body.produkte-page .shop-hero {
   border-color: #e05260;
 }
  
-/* Native color input (visible as small swatch) */
+/* Native color input */
 .kinder-native-color-input {
   width: 0;
   height: 0;
@@ -1472,175 +1633,6 @@ body.produkte-page .shop-hero {
   font-size: 12px;
   color: #b0a9a0;
   font-weight: 500;
-}
- 
-/* Card flex fix — push actions to bottom */
-.kinder-card {
-  display: flex;
-  flex-direction: column;
-}
- 
-.kinder-card-actions {
-  margin-top: auto;
-}
-
-/* =============================================
-   NAV PROFIL DROPDOWN
-   ============================================= */
- 
-.nav-profile-wrap {
-  position: relative;
-  margin-left: 10px;
-}
- 
-.nav-profile-btn {
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-  display: flex;
-  align-items: center;
-}
- 
-.nav-profile-avatar {
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  background: #b49ed4;
-  color: #fff;
-  font-size: 15px;
-  font-weight: 800;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: 'Nunito', sans-serif;
-  transition: transform 0.15s, box-shadow 0.15s;
-}
- 
-.nav-profile-btn:hover .nav-profile-avatar {
-  transform: scale(1.07);
-  box-shadow: 0 4px 12px rgba(180, 158, 212, 0.4);
-}
- 
-.nav-profile-dropdown {
-  display: none;
-  position: absolute;
-  top: calc(100% + 12px);
-  right: 0;
-  width: 240px;
-  background: #fff;
-  border-radius: 20px;
-  box-shadow: 0 12px 40px rgba(0,0,0,0.13);
-  padding: 8px;
-  z-index: 1100;
-  animation: dropdownIn 0.18s ease;
-}
- 
-.nav-profile-dropdown.active {
-  display: block;
-}
- 
-@keyframes dropdownIn {
-  from { opacity: 0; transform: translateY(-8px) scale(0.97); }
-  to   { opacity: 1; transform: translateY(0) scale(1); }
-}
- 
-.nav-profile-info {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 10px 12px 14px;
-}
- 
-.nav-profile-avatar-lg {
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  background: #b49ed4;
-  color: #fff;
-  font-size: 17px;
-  font-weight: 800;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: 'Nunito', sans-serif;
-  flex-shrink: 0;
-}
- 
-.nav-profile-name {
-  font-size: 14px;
-  font-weight: 800;
-  color: #1a1a1a;
-}
- 
-.nav-profile-email {
-  font-size: 12px;
-  color: #9e9e9e;
-  font-weight: 500;
-}
- 
-.nav-profile-divider {
-  height: 1px;
-  background: #f0ede8;
-  margin: 4px 0;
-}
- 
-.nav-profile-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  width: 100%;
-  padding: 10px 12px;
-  border: none;
-  background: none;
-  font-family: 'Nunito', sans-serif;
-  font-size: 14px;
-  font-weight: 600;
-  color: #4a4a4a;
-  cursor: pointer;
-  border-radius: 12px;
-  text-align: left;
-  transition: background 0.15s;
-}
- 
-.nav-profile-item:hover {
-  background: #f5f2ee;
-}
- 
-.nav-profile-item--logout {
-  color: #e05260;
-}
- 
-.nav-profile-item--logout:hover {
-  background: #fef2f4;
-}
- 
-.nav-profile-item--lang {
-  cursor: default;
-}
- 
-.nav-lang-toggle {
-  margin-left: auto;
-  display: flex;
-  gap: 4px;
-}
- 
-.nav-lang-btn {
-  padding: 4px 10px;
-  border: none;
-  border-radius: 8px;
-  font-family: 'Nunito', sans-serif;
-  font-size: 12px;
-  font-weight: 700;
-  cursor: pointer;
-  background: #f0ede8;
-  color: #7C6E61;
-  transition: background 0.15s, color 0.15s;
-}
- 
-.nav-lang-btn.active {
-  background: #b49ed4;
-  color: #fff;
 }
  
 /* =============================================
@@ -1744,7 +1736,7 @@ body.produkte-page .shop-hero {
   color: #8a6bbf;
 }
  
-/* Kinder Grid (kleinere Karten) */
+/* Kinder Grid */
 .uebersicht-kinder-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
@@ -2278,4 +2270,29 @@ body.produkte-page .shop-hero {
   color: #9e9e9e;
   font-weight: 600;
   margin-top: 6px;
+}
+ 
+/* =============================================
+   RESPONSIVE
+   ============================================= */
+@media (max-width: 768px) {
+  .uebersicht-two-col {
+    grid-template-columns: 1fr;
+  }
+ 
+  .uebersicht-header {
+    flex-direction: column;
+  }
+ 
+  .uebersicht-woche-chart {
+    height: 140px;
+  }
+ 
+  .shop-container {
+    grid-template-columns: 1fr;
+  }
+ 
+  .empf-tipps-grid {
+    grid-template-columns: 1fr;
+  }
 }
