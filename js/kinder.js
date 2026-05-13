@@ -1,7 +1,128 @@
 let children = [];
 let selectedColor = "#F19DAE";
 
-const WK = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
+const KINDER_TRANSLATIONS = {
+  de: {
+    pageTitle: "Kinder",
+    loadingProfiles: "Profile werden geladen...",
+    noProfiles: "Keine Profile",
+    oneProfile: "1 Profil aktiv",
+    manyProfiles: "Profile aktiv",
+
+    addChild: "Kind hinzufügen",
+    add: "Hinzufügen",
+    save: "Speichern",
+    cancel: "Abbrechen",
+    deleteChild: "Kind löschen",
+
+    name: "NAME",
+    age: "ALTER",
+    dailyLimit: "TAGESLIMIT (MINUTEN)",
+    chooseColor: "FARBE WÄHLEN",
+    ownColor: "+ Eigene Farbe",
+
+    namePlaceholder: "Name des Kindes",
+    agePlaceholder: "Alter in Jahren",
+    limitPlaceholder: "z.B. 90",
+
+    noChildren: "Noch keine Kinder hinzugefügt",
+    noChildrenSub: "Klicke auf «Kind hinzufügen» um zu starten.",
+
+    today: "Heute",
+    weeklyGoal: "Wochenziel",
+    devices: "GERÄTE",
+    noDevice: "Noch kein Gerät verbunden",
+    details: "Details",
+    limit: "Limit",
+
+    years: "Jahre",
+    colorChange: "Farbe ändern",
+    chooseColorTitle: "Farbe wählen",
+
+    edit: "bearbeiten",
+    newDailyLimit: "NEUES TAGESLIMIT (MINUTEN)",
+    changeDailyLimit: "Tageslimit ändern",
+    dailyLimitDash: "Tageslimit – ",
+
+    deleteConfirmStart: "Möchtest du ",
+    deleteConfirmEnd: " wirklich löschen?",
+
+    loadError: "Fehler beim Laden der Kinder: ",
+    loadChildrenError: "Kinder konnten nicht geladen werden.",
+    deleteError: "Kind konnte nicht gelöscht werden.",
+    saveError: "Speichern fehlgeschlagen.",
+    colorError: "Farbe konnte nicht gespeichert werden.",
+    limitError: "Limit konnte nicht gespeichert werden."
+  },
+
+  en: {
+    pageTitle: "Children",
+    loadingProfiles: "Loading profiles...",
+    noProfiles: "No profiles",
+    oneProfile: "1 active profile",
+    manyProfiles: "active profiles",
+
+    addChild: "Add child",
+    add: "Add",
+    save: "Save",
+    cancel: "Cancel",
+    deleteChild: "Delete child",
+
+    name: "NAME",
+    age: "AGE",
+    dailyLimit: "DAILY LIMIT (MINUTES)",
+    chooseColor: "CHOOSE COLOR",
+    ownColor: "+ Custom color",
+
+    namePlaceholder: "Child's name",
+    agePlaceholder: "Age in years",
+    limitPlaceholder: "e.g. 90",
+
+    noChildren: "No children added yet",
+    noChildrenSub: "Click “Add child” to get started.",
+
+    today: "Today",
+    weeklyGoal: "Weekly goal",
+    devices: "DEVICES",
+    noDevice: "No device connected yet",
+    details: "Details",
+    limit: "Limit",
+
+    years: "years old",
+    colorChange: "Change color",
+    chooseColorTitle: "Choose color",
+
+    edit: "edit",
+    newDailyLimit: "NEW DAILY LIMIT (MINUTES)",
+    changeDailyLimit: "Change daily limit",
+    dailyLimitDash: "Daily limit – ",
+
+    deleteConfirmStart: "Do you really want to delete ",
+    deleteConfirmEnd: "?",
+
+    loadError: "Error loading children: ",
+    loadChildrenError: "Children could not be loaded.",
+    deleteError: "Child could not be deleted.",
+    saveError: "Saving failed.",
+    colorError: "Color could not be saved.",
+    limitError: "Limit could not be saved."
+  }
+};
+
+function getKinderLang() {
+  return localStorage.getItem("lumi_lang") || "de";
+}
+
+function t(key) {
+  const lang = getKinderLang();
+  return KINDER_TRANSLATIONS[lang][key] || key;
+}
+
+function getWeekdays() {
+  return getKinderLang() === "en"
+    ? ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+    : ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
+}
 
 const modalOverlay = document.getElementById("modalOverlay");
 const childForm = document.getElementById("childForm");
@@ -17,7 +138,83 @@ function soften(hex, a) {
   return hex + a;
 }
 
+function applyKinderStaticTranslations() {
+  const title = document.querySelector(".kinder-title");
+  if (title) title.textContent = t("pageTitle");
+
+  const addBtn = document.getElementById("addChildBtn");
+  if (addBtn) {
+    const svg = addBtn.querySelector("svg");
+    addBtn.innerHTML = "";
+    if (svg) addBtn.appendChild(svg);
+    addBtn.append(" " + t("addChild"));
+  }
+
+  const modalTitle = document.getElementById("modalTitle");
+  if (modalTitle && !document.getElementById("childId").value) {
+    modalTitle.textContent = t("addChild");
+  }
+
+  const modalSaveBtn = document.getElementById("modalSaveBtn");
+  if (modalSaveBtn && !document.getElementById("childId").value) {
+    modalSaveBtn.textContent = t("add");
+  }
+
+  const modalCancelBtn = document.getElementById("modalCancelBtn");
+  if (modalCancelBtn) modalCancelBtn.textContent = t("cancel");
+
+  if (deleteBtn) deleteBtn.textContent = t("deleteChild");
+
+  const labels = document.querySelectorAll("#childForm .kinder-form-group label");
+  if (labels[0]) labels[0].textContent = t("name");
+  if (labels[1]) labels[1].textContent = t("age");
+  if (labels[2]) labels[2].textContent = t("dailyLimit");
+  if (labels[3]) labels[3].textContent = t("chooseColor");
+
+  const childName = document.getElementById("childName");
+  if (childName) childName.placeholder = t("namePlaceholder");
+
+  const childAge = document.getElementById("childAge");
+  if (childAge) childAge.placeholder = t("agePlaceholder");
+
+  const childLimit = document.getElementById("childLimit");
+  if (childLimit) childLimit.placeholder = t("limitPlaceholder");
+
+  const customColorBtn = document.getElementById("customColorBtn");
+  if (customColorBtn) {
+    const preview = document.getElementById("customColorPreview");
+    customColorBtn.innerHTML = "";
+    if (preview) customColorBtn.appendChild(preview);
+    customColorBtn.append(" " + t("ownColor"));
+  }
+
+  const colorModalTitle = colorModalOverlay?.querySelector(".kinder-modal-title");
+  if (colorModalTitle) colorModalTitle.textContent = t("chooseColorTitle");
+
+  const colorModalCustomBtn = document.getElementById("colorModalCustomBtn");
+  if (colorModalCustomBtn) {
+    const preview = document.getElementById("colorModalCustomPreview");
+    colorModalCustomBtn.innerHTML = "";
+    if (preview) colorModalCustomBtn.appendChild(preview);
+    colorModalCustomBtn.append(" " + t("ownColor"));
+  }
+
+  const limitModalLabel = limitModalOverlay?.querySelector(".kinder-form-group label");
+  if (limitModalLabel) limitModalLabel.textContent = t("newDailyLimit");
+
+  const limitModalInput = document.getElementById("limitModalInput");
+  if (limitModalInput) limitModalInput.placeholder = t("limitPlaceholder");
+
+  const limitModalCancel = document.getElementById("limitModalCancel");
+  if (limitModalCancel) limitModalCancel.textContent = t("cancel");
+
+  const limitModalSave = document.getElementById("limitModalSave");
+  if (limitModalSave) limitModalSave.textContent = t("save");
+}
+
 async function loadChildren() {
+  applyKinderStaticTranslations();
+
   try {
     const response = await fetch("api/kinder.php");
     const result = await response.json();
@@ -39,11 +236,11 @@ async function loadChildren() {
 
       renderCards();
     } else {
-      alert(result.message || "Kinder konnten nicht geladen werden.");
+      alert(result.message || t("loadChildrenError"));
     }
   } catch (error) {
     console.error(error);
-    alert("Fehler beim Laden der Kinder: " + error.message);
+    alert(t("loadError") + error.message);
   }
 }
 
@@ -89,24 +286,31 @@ async function deleteChild(id) {
 }
 
 function renderCards() {
-  const grid = document.getElementById("kinderGrid");
+  applyKinderStaticTranslations();
 
-  document.getElementById("profileCount").textContent =
-    children.length === 0
-      ? "Keine Profile"
-      : children.length === 1
-      ? "1 Profil aktiv"
-      : children.length + " Profile aktiv";
+  const grid = document.getElementById("kinderGrid");
+  const profileCount = document.getElementById("profileCount");
+
+  if (profileCount) {
+    profileCount.textContent =
+      children.length === 0
+        ? t("noProfiles")
+        : children.length === 1
+        ? t("oneProfile")
+        : children.length + " " + t("manyProfiles");
+  }
 
   if (children.length === 0) {
     grid.innerHTML = `
       <div class="kinder-empty">
-        <p>Noch keine Kinder hinzugefügt</p>
-        <p class="kinder-empty-sub">Klicke auf «Kind hinzufügen» um zu starten.</p>
+        <p>${t("noChildren")}</p>
+        <p class="kinder-empty-sub">${t("noChildrenSub")}</p>
       </div>
     `;
     return;
   }
+
+  const WK = getWeekdays();
 
   grid.innerHTML = children
     .map((child) => {
@@ -145,7 +349,7 @@ function renderCards() {
               : ""
           }
 
-          <button class="kinder-color-change-btn" data-child-id="${child.id}" style="background:${soften(child.color, "1A")}" title="Farbe ändern">
+          <button class="kinder-color-change-btn" data-child-id="${child.id}" style="background:${soften(child.color, "1A")}" title="${t("colorChange")}">
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
               <circle cx="7" cy="7" r="5" stroke="${child.color}" stroke-width="1.5" fill="none"/>
               <circle cx="7" cy="7" r="2" fill="${child.color}"/>
@@ -157,11 +361,11 @@ function renderCards() {
           </div>
 
           <div class="kinder-card-name">${child.name}</div>
-          <div class="kinder-card-age">${child.age} Jahre</div>
+          <div class="kinder-card-age">${child.age} ${t("years")}</div>
 
           <div class="kinder-stats">
             <div class="kinder-stat-row">
-              <span class="kinder-stat-label">Heute</span>
+              <span class="kinder-stat-label">${t("today")}</span>
               <span class="kinder-stat-value" style="color:${child.color}">
                 ${child.usedToday} / ${child.dailyLimit} min
               </span>
@@ -172,7 +376,7 @@ function renderCards() {
             </div>
 
             <div class="kinder-stat-row">
-              <span class="kinder-stat-label">Wochenziel</span>
+              <span class="kinder-stat-label">${t("weeklyGoal")}</span>
               <span class="kinder-stat-value" style="color:${child.color}">${wkPct}%</span>
             </div>
 
@@ -184,18 +388,18 @@ function renderCards() {
           <div class="kinder-week-chart">${bars}</div>
 
           <div class="kinder-devices-section">
-            <div class="kinder-devices-label">GERÄTE</div>
+            <div class="kinder-devices-label">${t("devices")}</div>
             <div class="kinder-devices-list">
-              <span class="kinder-device-none">Noch kein Gerät verbunden</span>
+              <span class="kinder-device-none">${t("noDevice")}</span>
             </div>
           </div>
 
           <div class="kinder-card-actions">
             <button class="kinder-btn-details" style="--child-color:${child.color};--child-color-light:${soften(child.color, "1A")}" data-child-id="${child.id}">
-              Details
+              ${t("details")}
             </button>
             <button class="kinder-btn-limit" style="--child-color:${child.color};--child-color-light:${soften(child.color, "1A")}" data-child-id="${child.id}">
-              Limit
+              ${t("limit")}
             </button>
           </div>
         </div>
@@ -219,9 +423,16 @@ function renderCards() {
   });
 }
 
+function renderAll() {
+  applyKinderStaticTranslations();
+  renderCards();
+}
+
 function openAddModal() {
-  document.getElementById("modalTitle").textContent = "Kind hinzufügen";
-  document.getElementById("modalSaveBtn").textContent = "Hinzufügen";
+  applyKinderStaticTranslations();
+
+  document.getElementById("modalTitle").textContent = t("addChild");
+  document.getElementById("modalSaveBtn").textContent = t("add");
   document.getElementById("childId").value = "";
   childForm.reset();
 
@@ -237,8 +448,8 @@ function openEditModal(childId) {
   const child = children.find((c) => c.id === childId);
   if (!child) return;
 
-  document.getElementById("modalTitle").textContent = child.name + " bearbeiten";
-  document.getElementById("modalSaveBtn").textContent = "Speichern";
+  document.getElementById("modalTitle").textContent = child.name + " " + t("edit");
+  document.getElementById("modalSaveBtn").textContent = t("save");
   document.getElementById("childId").value = child.id;
   document.getElementById("childName").value = child.name;
   document.getElementById("childAge").value = child.age;
@@ -270,14 +481,14 @@ deleteBtn.addEventListener("click", async () => {
 
   if (!child) return;
 
-  if (confirm("Möchtest du " + child.name + " wirklich löschen?")) {
+  if (confirm(t("deleteConfirmStart") + child.name + t("deleteConfirmEnd"))) {
     const result = await deleteChild(id);
 
     if (result.status === "success") {
       closeModal();
       loadChildren();
     } else {
-      alert(result.message || "Kind konnte nicht gelöscht werden.");
+      alert(result.message || t("deleteError"));
     }
   }
 });
@@ -300,14 +511,13 @@ childForm.addEventListener("submit", async (e) => {
     result = await updateChild(id, data);
   } else {
     result = await createChild(data);
-    console.log("Child Created!");
   }
 
   if (result.status === "success") {
     closeModal();
     loadChildren();
   } else {
-    alert(result.message || "Speichern fehlgeschlagen.");
+    alert(result.message || t("saveError"));
   }
 });
 
@@ -416,7 +626,7 @@ async function applyColor(color) {
     closeColorModal();
     loadChildren();
   } else {
-    alert(result.message || "Farbe konnte nicht gespeichert werden.");
+    alert(result.message || t("colorError"));
   }
 }
 
@@ -426,7 +636,7 @@ function openLimitModal(childId) {
   const child = children.find((c) => c.id === childId);
   if (!child) return;
 
-  document.getElementById("limitModalTitle").textContent = "Tageslimit – " + child.name;
+  document.getElementById("limitModalTitle").textContent = t("dailyLimitDash") + child.name;
   document.getElementById("limitModalInput").value = child.dailyLimit;
 
   document.querySelectorAll(".kinder-limit-preset").forEach((btn) => {
@@ -490,7 +700,7 @@ document.getElementById("limitModalSave").addEventListener("click", async () => 
     closeLimitModal();
     loadChildren();
   } else {
-    alert(result.message || "Limit konnte nicht gespeichert werden.");
+    alert(result.message || t("limitError"));
   }
 });
 
