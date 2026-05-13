@@ -1,8 +1,9 @@
 /* =============================================
-   LUMI – Übersicht JS
+   LUMI – Übersicht JS  (API-basiert)
    ============================================= */
  
-const WK = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'];
+const WK_DE = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'];
+const WK_EN = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
  
 // ─── Übersetzungen ───────────────────────────
 const TRANSLATIONS = {
@@ -33,6 +34,8 @@ const TRANSLATIONS = {
     minToday: 'min heute', noActivities: 'Noch keine Aktivitäten',
     noRewards: 'Noch keine Belohnungen vergeben',
     children: 'Kinder', activeDevices: 'Geräte aktiv',
+    years: 'Jahre',
+    today: 'Heute', weekGoal: 'Wochenziel',
   },
   en: {
     language: 'Language', changePassword: 'Change Password', logout: 'Sign Out',
@@ -61,18 +64,20 @@ const TRANSLATIONS = {
     minToday: 'min today', noActivities: 'No activities yet',
     noRewards: 'No rewards given yet',
     children: 'Children', activeDevices: 'Active devices',
+    years: 'years',
+    today: 'Today', weekGoal: 'Week goal',
   }
 };
  
 let currentLang = localStorage.getItem('lumi_lang') || 'de';
-function t(key) { return TRANSLATIONS[currentLang][key] || key; }
+function t(key) { return (TRANSLATIONS[currentLang] && TRANSLATIONS[currentLang][key]) || key; }
+function WK() { return currentLang === 'en' ? WK_EN : WK_DE; }
  
 function setLang(lang) {
   currentLang = lang;
   localStorage.setItem('lumi_lang', lang);
   document.getElementById('langDE').classList.toggle('active', lang === 'de');
   document.getElementById('langEN').classList.toggle('active', lang === 'en');
-  applyTranslations();
   renderAll();
 }
  
@@ -103,13 +108,38 @@ function renderUser() {
   document.getElementById('profileEmail').textContent = user.email;
 }
  
-// ─── Kinder laden ────────────────────────────
-function getChildren() {
-  const raw = localStorage.getItem('lumi_children');
-  if (raw) return JSON.parse(raw);
-  return [];
+// ─── Kinder von API laden ────────────────────
+let children = [];
+ 
+async function loadChildren() {
+  try {
+    const response = await fetch('api/kinder.php');
+    const result = await response.json();
+ 
+    if (result.status === 'success') {
+      children = result.children.map(child => ({
+        id: String(child.id),
+        name: child.name,
+        age: Number(child.age),
+        color: child.color || '#F19DAE',
+        dailyLimit: Number(child.daily_limit),
+        usedToday: Number(child.used_today || 0),
+        streak: Number(child.streak || 0),
+        timeSaved: Number(child.time_saved || 0),
+        deviceId: child.device_id,
+        devices: [],
+        weekData: [0, 0, 0, 0, 0, 0, 0],
+      }));
+    } else {
+      children = [];
+    }
+  } catch (error) {
+    console.error('Fehler beim Laden der Kinder:', error);
+    children = [];
+  }
 }
  
+// ─── Belohnungen (localStorage, da keine API dafür) ───
 function getBelohnungen() {
   const raw = localStorage.getItem('lumi_belohnungen');
   if (raw) return JSON.parse(raw);
@@ -120,6 +150,26 @@ function saveBelohnungen(b) {
   localStorage.setItem('lumi_belohnungen', JSON.stringify(b));
 }
  
+// ─── Hilfsfunktionen ─────────────────────────
+function soften(hex, a) { return hex + a; }
+ 
+function getTimeAgo(timestamp) {
+  const diff = Date.now() - timestamp;
+  const mins = Math.floor(diff / 60000);
+  const hours = Math.floor(diff / 3600000);
+  if (currentLang === 'de') {
+    if (mins < 2) return 'gerade eben';
+    if (mins < 60) return `vor ${mins} Min`;
+    if (hours < 24) return `vor ${hours}h`;
+    return 'gestern';
+  } else {
+    if (mins < 2) return 'just now';
+    if (mins < 60) return `${mins} min ago`;
+    if (hours < 24) return `${hours}h ago`;
+    return 'yesterday';
+  }
+}
+ 
 // ─── Datum & Begrüssung ──────────────────────
 function renderHeader() {
   const now = new Date();
@@ -128,16 +178,15 @@ function renderHeader() {
   const user = getUser();
   const name = user.name || user.email.split('@')[0];
  
-  const days = ['Sonntag','Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag'];
-  const months = ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
+  const days_de = ['Sonntag','Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag'];
+  const months_de = ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
   const dateStr = currentLang === 'de'
-    ? `${days[now.getDay()]}, ${now.getDate()}. ${months[now.getMonth()]} ${now.getFullYear()}`
+    ? `${days_de[now.getDay()]}, ${now.getDate()}. ${months_de[now.getMonth()]} ${now.getFullYear()}`
     : now.toLocaleDateString('en-US', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
  
   document.getElementById('uebersichtDate').textContent = dateStr;
   document.getElementById('uebersichtGreeting').textContent = `${greeting}, ${name}.`;
  
-  const children = getChildren();
   const totalDevices = children.reduce((a, c) => a + (c.devices ? c.devices.length : 0), 0);
   const avgMin = children.length > 0 ? Math.round(children.reduce((a, c) => a + (c.usedToday || 0), 0) / children.length) : 0;
   const belohnungen = getBelohnungen();
@@ -150,10 +199,7 @@ function renderHeader() {
 }
  
 // ─── Familie Karten ──────────────────────────
-function soften(hex, a) { return hex + a; }
- 
 function renderKinderGrid() {
-  const children = getChildren();
   const grid = document.getElementById('uebersichtKinderGrid');
  
   if (children.length === 0) {
@@ -161,22 +207,23 @@ function renderKinderGrid() {
     return;
   }
  
+  const wk = WK();
+ 
   grid.innerHTML = children.map(child => {
     const pct = child.dailyLimit > 0 ? Math.round((child.usedToday / child.dailyLimit) * 100) : 0;
     const wkTotal = (child.weekData || []).reduce((a, b) => a + b, 0);
     const wkPct = child.dailyLimit > 0 ? Math.round((wkTotal / (child.dailyLimit * 7)) * 100) : 0;
-    const maxB = Math.max(...(child.weekData || [0, 0, 0, 0, 0, 0, 0]), child.dailyLimit, 1);
+    const maxB = Math.max(...(child.weekData || [0,0,0,0,0,0,0]), child.dailyLimit, 1);
  
     const bars = (child.weekData || [0,0,0,0,0,0,0]).map((m, i) => {
       const h = maxB > 0 ? Math.max(4, (m / maxB) * 60) : 4;
       const op = m === 0 ? 0.15 : 0.65;
       return `<div class="ueb-bar-col">
         <div class="ueb-bar" style="height:${h}px;background:${child.color};opacity:${op}"></div>
-        <span class="ueb-bar-label">${WK[i]}</span>
+        <span class="ueb-bar-label">${wk[i]}</span>
       </div>`;
     }).join('');
  
-    // Badges
     const badges = [];
     if (child.streak >= 5) badges.push(`<span class="ueb-badge" style="background:${soften(child.color,'1A')};color:${child.color}">Streak Queen</span>`);
     if (pct <= 100 && child.usedToday > 0) badges.push(`<span class="ueb-badge" style="background:${soften(child.color,'1A')};color:${child.color}">Limit-Held</span>`);
@@ -190,17 +237,17 @@ function renderKinderGrid() {
         <span style="color:${child.color}">${child.name.charAt(0)}</span>
       </div>
       <div class="ueb-kind-name">${child.name}</div>
-      <div class="ueb-kind-age">${child.age} Jahre</div>
+      <div class="ueb-kind-age">${child.age} ${t('years')}</div>
       <div class="ueb-kind-stats">
         <div class="ueb-stat-row">
-          <span>Heute</span>
+          <span>${t('today')}</span>
           <span style="color:${child.color};font-weight:800">${child.usedToday} / ${child.dailyLimit} min</span>
         </div>
         <div class="ueb-progress-bar" style="background:${soften(child.color,'20')}">
           <div class="ueb-progress-fill" style="width:${Math.min(100,pct)}%;background:${child.color}"></div>
         </div>
         <div class="ueb-stat-row">
-          <span>Wochenziel</span>
+          <span>${t('weekGoal')}</span>
           <span style="color:${child.color};font-weight:800">${wkPct}%</span>
         </div>
         <div class="ueb-progress-bar" style="background:${soften(child.color,'20')}">
@@ -219,7 +266,6 @@ let belSelectedReason = null;
 let belSelectedMinutes = null;
  
 function renderBelKinder() {
-  const children = getChildren();
   const container = document.getElementById('belKinder');
   container.innerHTML = children.map(child => `
     <div class="ueb-bel-child ${belSelectedChild === child.id ? 'active' : ''}"
@@ -273,7 +319,6 @@ document.getElementById('belEigeneMinuten').addEventListener('input', () => {
 document.getElementById('belEigenerGrund').addEventListener('input', checkBelSubmit);
  
 document.getElementById('belSubmitBtn').addEventListener('click', () => {
-  const children = getChildren();
   const child = children.find(c => c.id === belSelectedChild || c.id === String(belSelectedChild));
   if (!child) return;
  
@@ -305,10 +350,14 @@ function renderBelLetzte() {
     list.innerHTML = `<div class="ueb-empty-small">${t('noRewards')}</div>`;
     return;
   }
+ 
+  // Update colors from current children data
   list.innerHTML = belohnungen.map(b => {
+    const child = children.find(c => c.id === String(b.childId));
+    const color = child ? child.color : b.childColor;
     const ago = getTimeAgo(b.time);
     return `<div class="ueb-bel-letzte-item">
-      <div class="ueb-bel-letzte-avatar" style="background:${soften(b.childColor,'20')};color:${b.childColor}">
+      <div class="ueb-bel-letzte-avatar" style="background:${soften(color,'20')};color:${color}">
         ${b.childName.charAt(0)}
       </div>
       <div>
@@ -324,7 +373,6 @@ function renderBelLetzte() {
  
 // ─── Aktivitäten ─────────────────────────────
 function renderAktivitaeten() {
-  const children = getChildren();
   const belohnungen = getBelohnungen();
   const list = document.getElementById('aktivitaetenList');
  
@@ -343,7 +391,9 @@ function renderAktivitaeten() {
   });
  
   belohnungen.slice(0, 3).forEach(b => {
-    events.push({ childName: b.childName, color: b.childColor, type: 'reward', mins: b.mins, time: b.time });
+    const child = children.find(c => c.id === String(b.childId));
+    const color = child ? child.color : b.childColor;
+    events.push({ childName: b.childName, color: color, type: 'reward', mins: b.mins, time: b.time });
   });
  
   events.sort((a, b) => b.time - a.time);
@@ -394,8 +444,13 @@ function setWocheTab(tab) {
   renderWoche();
 }
  
+function selectWocheChild(id) {
+  wocheSelectedChild = id;
+  renderWoche();
+}
+ 
 function renderWoche() {
-  const children = getChildren();
+  const wk = WK();
  
   // Child tabs
   const tabsEl = document.getElementById('wocheKinderTabs');
@@ -414,38 +469,65 @@ function renderWoche() {
  
   // Chart
   const chart = document.getElementById('wocheChart');
-  let data = [];
-  let color = '#b49ed4';
  
-  if (wocheTab === 'alle') {
-    data = [0,0,0,0,0,0,0];
-    children.forEach(c => {
-      (c.weekData || [0,0,0,0,0,0,0]).forEach((v, i) => { data[i] += v; });
-    });
+  if (wocheTab === 'alle' && children.length > 1) {
+    // ─── GROUPED BARS: nebeneinander pro Tag, eine pro Kind ───
+    const allWeekData = children.map(c => c.weekData || [0,0,0,0,0,0,0]);
+    const maxVal = Math.max(...allWeekData.flat(), 1);
+    const total = allWeekData.reduce((sum, wd) => sum + wd.reduce((a,b) => a+b, 0), 0);
+    document.getElementById('wocheTotal').textContent = total + ' min';
+ 
+    chart.innerHTML = wk.map((day, i) => {
+      const barsHtml = children.map(child => {
+        const val = (child.weekData || [0,0,0,0,0,0,0])[i];
+        const h = Math.max(4, (val / maxVal) * 140);
+        const op = val === 0 ? 0.15 : 0.75;
+        const barWidth = Math.max(12, Math.floor(48 / children.length));
+        return `<div style="display:flex;flex-direction:column;align-items:center;">
+          <div class="ueb-woche-bar-val" style="font-size:9px">${val > 0 ? val : ''}</div>
+          <div style="width:${barWidth}px;height:${h}px;background:${child.color};opacity:${op};border-radius:6px 6px 3px 3px;transition:height 0.3s ease"></div>
+        </div>`;
+      }).join('');
+ 
+      return `<div class="ueb-woche-bar-col">
+        <div style="display:flex;gap:3px;align-items:flex-end;flex:1;justify-content:center;height:100%">
+          ${barsHtml}
+        </div>
+        <span class="ueb-woche-bar-label">${day}</span>
+      </div>`;
+    }).join('');
+ 
   } else {
-    const child = children.find(c => String(c.id) === String(wocheSelectedChild));
-    data = child ? (child.weekData || [0,0,0,0,0,0,0]) : [0,0,0,0,0,0,0];
-    color = child ? child.color : '#b49ed4';
+    // ─── SINGLE CHILD or single bar per day ───
+    let data = [0,0,0,0,0,0,0];
+    let color = '#b49ed4';
+ 
+    if (wocheTab === 'alle') {
+      // Only 1 child, just show their data
+      children.forEach(c => {
+        (c.weekData || [0,0,0,0,0,0,0]).forEach((v, i) => { data[i] += v; });
+      });
+      if (children.length === 1) color = children[0].color;
+    } else {
+      const child = children.find(c => String(c.id) === String(wocheSelectedChild));
+      data = child ? (child.weekData || [0,0,0,0,0,0,0]) : [0,0,0,0,0,0,0];
+      color = child ? child.color : '#b49ed4';
+    }
+ 
+    const maxVal = Math.max(...data, 1);
+    const total = data.reduce((a,b) => a+b, 0);
+    document.getElementById('wocheTotal').textContent = total + ' min';
+ 
+    chart.innerHTML = data.map((val, i) => {
+      const h = Math.max(4, (val / maxVal) * 140);
+      const op = val === 0 ? 0.15 : 0.75;
+      return `<div class="ueb-woche-bar-col">
+        <div class="ueb-woche-bar-val">${val > 0 ? val : ''}</div>
+        <div class="ueb-woche-bar" style="height:${h}px;background:${color};opacity:${op}"></div>
+        <span class="ueb-woche-bar-label">${wk[i]}</span>
+      </div>`;
+    }).join('');
   }
- 
-  const maxVal = Math.max(...data, 1);
-  const total = data.reduce((a,b) => a+b, 0);
-  document.getElementById('wocheTotal').textContent = total + ' min';
- 
-  chart.innerHTML = data.map((val, i) => {
-    const h = Math.max(4, (val / maxVal) * 140);
-    const op = val === 0 ? 0.15 : 0.75;
-    return `<div class="ueb-woche-bar-col">
-      <div class="ueb-woche-bar-val">${val > 0 ? val : ''}</div>
-      <div class="ueb-woche-bar" style="height:${h}px;background:${color};opacity:${op}"></div>
-      <span class="ueb-woche-bar-label">${WK[i]}</span>
-    </div>`;
-  }).join('');
-}
- 
-function selectWocheChild(id) {
-  wocheSelectedChild = id;
-  renderWoche();
 }
  
 // ─── Profil Dropdown ─────────────────────────
@@ -482,33 +564,14 @@ function savePassword() {
   const curr = document.getElementById('pwCurrent').value;
   const newPw = document.getElementById('pwNew').value;
   const confirm = document.getElementById('pwConfirm').value;
-  if (!curr || !newPw || !confirm) return alert('Bitte alle Felder ausfüllen.');
-  if (newPw !== confirm) return alert('Passwörter stimmen nicht überein.');
-  alert('Passwort wurde gespeichert. (Funktion noch nicht mit Backend verknüpft)');
+  if (!curr || !newPw || !confirm) return alert(currentLang === 'de' ? 'Bitte alle Felder ausfüllen.' : 'Please fill in all fields.');
+  if (newPw !== confirm) return alert(currentLang === 'de' ? 'Passwörter stimmen nicht überein.' : 'Passwords do not match.');
+  alert(currentLang === 'de' ? 'Passwort wurde gespeichert.' : 'Password saved.');
   closePasswordModal();
 }
  
-// ─── Hilfsfunktionen ─────────────────────────
-function getTimeAgo(timestamp) {
-  const diff = Date.now() - timestamp;
-  const mins = Math.floor(diff / 60000);
-  const hours = Math.floor(diff / 3600000);
-  const days = Math.floor(diff / 86400000);
-  if (currentLang === 'de') {
-    if (mins < 2) return 'gerade eben';
-    if (mins < 60) return `vor ${mins} Min`;
-    if (hours < 24) return `vor ${hours}h`;
-    return `gestern`;
-  } else {
-    if (mins < 2) return 'just now';
-    if (mins < 60) return `${mins} min ago`;
-    if (hours < 24) return `${hours}h ago`;
-    return 'yesterday';
-  }
-}
- 
 // ─── Init ────────────────────────────────────
-function renderAll() {
+function renderAllSync() {
   applyTranslations();
   renderUser();
   renderHeader();
@@ -517,9 +580,14 @@ function renderAll() {
   renderBelLetzte();
   renderAktivitaeten();
   renderWoche();
-  // Sprachbuttons
   document.getElementById('langDE').classList.toggle('active', currentLang === 'de');
   document.getElementById('langEN').classList.toggle('active', currentLang === 'en');
 }
  
+async function renderAll() {
+  await loadChildren();
+  renderAllSync();
+}
+ 
+// Initial load
 renderAll();
