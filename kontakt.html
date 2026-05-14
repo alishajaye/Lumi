@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kontakt – Lumi</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <nav>
+    <div class="logo">
+      <a href="index.html">
+        <img src="resources/assets/lumi_logo.svg" alt="Logo">
+      </a>
+    </div>
+
+    <div class="nav-links">
+      <a href="index.html" data-i18n-nav="nav_uebersicht">Übersicht</a>
+      <a href="kinder.html" data-i18n-nav="nav_kinder">Kinder</a>
+      <a href="produkte.html" data-i18n-nav="nav_produkte">Produkte</a>
+      <a href="empfehlungen.html" data-i18n-nav="nav_empfehlungen">Empfehlungen</a>
+      <a href="mitteilungen.html" data-i18n-nav="nav_mitteilungen">Mitteilungen</a>
+    </div>
+  </nav>
+
+  <div class="legal-page">
+    <a href="index.html" class="legal-back">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <path d="M10 12L6 8l4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span data-i18n="legal_back_overview">Zurück zur Übersicht</span>
+    </a>
+
+    <h1 data-i18n="contact_title">Kontakt</h1>
+    <p class="legal-subtitle" data-i18n="contact_subtitle">Wir freuen uns über deine Nachricht.</p>
+
+    <div class="legal-card">
+      <h2 data-i18n="contact_write_title">Schreib uns</h2>
+      <p data-i18n="contact_write_text">Hast du Fragen zu Lumi, Feedback oder Anregungen? Wir sind gerne für dich da.</p>
+      <p style="font-size:20px;margin-top:16px;">
+        <a href="mailto:kontakt@lumi.ch" style="display:inline-flex;align-items:center;gap:8px;">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <rect x="2" y="4" width="16" height="12" rx="2" stroke="#b49ed4" stroke-width="1.5"/>
+            <path d="M2 6l8 5 8-5" stroke="#b49ed4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          kontakt@lumi.ch
+        </a>
+      </p>
+    </div>
+
+    <div class="legal-card">
+      <h2 data-i18n="contact_location_title">Standort</h2>
+      <p data-i18n="contact_location_text">Lumi ist ein Projekt der Fachhochschule Graubünden.</p>
+      <p>
+        <strong data-i18n="fhgr_name">FHGR – Fachhochschule Graubünden</strong><br>
+        Pulvermühlestrasse 57<br>
+        7000 Chur, Schweiz
+      </p>
+    </div>
+  </div>
+
+  <script src="js/nav.js"></script>
+</body>
+</html>

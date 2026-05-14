@@ -23,14 +23,14 @@
       <a href="mitteilungen.html" data-i18n-nav="nav_mitteilungen">Mitteilungen</a>
     </div>
   </nav>
- 
+
   <div class="shop-hero">
     <div class="shop-hero-overlay">
-      <h1 class="shop-hero-title" data-i18n="prod_hero_title">Lumi Hardware für Familien</h1>
+      <h1 class="shop-hero-title" data-i18n-html="prod_hero_title">Lumi Hardware<br>für Familien</h1>
       <p class="shop-hero-subtitle" data-i18n="prod_hero_subtitle">Geräte, Apps und Zubehör</p>
     </div>
   </div>
- 
+
   <div class="shop-container">
     <div class="produkt-card">
       <div class="produkt-img-wrap">
@@ -93,7 +93,14 @@
       </div>
     </div>
   </div>
- 
+
   <script src="js/nav.js"></script>
+  <script>
+    document.querySelectorAll('.btn-kaufen').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        window.location.href = 'bestellen.html';
+      });
+    });
+  </script>
 </body>
 </html>
