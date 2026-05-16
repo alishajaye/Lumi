@@ -1,5 +1,5 @@
 /* =============================================
-   LUMI – lumi-icons.js
+   LUMI – icons.js (die Bibliothek)
    Shared SVG icon definitions for profiles
    Loaded BEFORE other scripts that need icons
    ============================================= */

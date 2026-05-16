@@ -362,11 +362,11 @@ function renderBelLetzte() {
   list.innerHTML = belohnungen.map(b => {
     const child = children.find(c => c.id === String(b.childId));
     const color = child ? child.color : b.childColor;
-    const avatarContent = child && child.icon ? child.icon : b.childName.charAt(0);
+    const avatarHtml = child ? renderAvatar(child, 'sm') : '<span style="color:' + color + ';font-size:15px;font-weight:900">' + b.childName.charAt(0) + '</span>';
     const ago = getTimeAgo(b.time);
     return `<div class="ueb-bel-letzte-item">
       <div class="ueb-bel-letzte-avatar" style="background:${soften(color,'20')};color:${color}">
-        ${avatarContent}
+        ${avatarHtml}
       </div>
       <div>
         <div class="ueb-bel-letzte-name">

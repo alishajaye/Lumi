@@ -1,5 +1,5 @@
 /* =============================================
-   LUMI – kinder-icons.js
+   LUMI – icon-picker.js (die Auswahl-Logik)
    SVG Icon-Picker Add-on für die Kinder-Seite
    Wird NACH kinder.js und lumi-icons.js geladen
    ============================================= */
