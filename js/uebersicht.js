@@ -20,7 +20,7 @@ const TRANSLATIONS = {
     giveTime: 'Zeit schenken', lastRewards: 'LETZTE BELOHNUNGEN',
     activities: 'Aktivitäten', seeAll: 'Alle sehen',
     weekOverview: 'Wochenübersicht', monToSun: 'Montag bis Sonntag',
-    thisWeek: 'diese Woche bis heute', individual: 'Einzeln', allChildren: 'Alle Kinder',
+    thisWeek: 'diese Woche bis heute', allChildren: 'Alle Kinder',
     noChildren: 'Noch keine Kinder hinzugefügt',
     currentPassword: 'AKTUELLES PASSWORT', newPassword: 'NEUES PASSWORT',
     confirmPassword: 'PASSWORT BESTÄTIGEN', cancel: 'Abbrechen', save: 'Speichern',
@@ -50,7 +50,7 @@ const TRANSLATIONS = {
     giveTime: 'Give time', lastRewards: 'LAST REWARDS',
     activities: 'Activities', seeAll: 'See all',
     weekOverview: 'Weekly Overview', monToSun: 'Monday to Sunday',
-    thisWeek: 'this week so far', individual: 'Individual', allChildren: 'All Children',
+    thisWeek: 'this week so far', allChildren: 'All Children',
     noChildren: 'No children added yet',
     currentPassword: 'CURRENT PASSWORD', newPassword: 'NEW PASSWORD',
     confirmPassword: 'CONFIRM PASSWORD', cancel: 'Cancel', save: 'Save',
@@ -85,9 +85,7 @@ function applyTranslations() {
 }
 
 // ─── Auth / User ─────────────────────────────
-// getUser() is defined in nav.js
 function renderUser() {
-  // nav.js handles profile display via updateProfileDisplay()
   if (typeof updateProfileDisplay === 'function') updateProfileDisplay();
 }
 
@@ -101,7 +99,6 @@ async function loadChildren() {
 
     if (result.status === 'success') {
       children = result.children.map(child => {
-        // Try to get icon from API, fallback to localStorage
         var iconKey = 'lumi_child_icon_' + child.id;
         var icon = child.icon || localStorage.getItem(iconKey) || '';
         return {
@@ -128,7 +125,7 @@ async function loadChildren() {
   }
 }
 
-// ─── Belohnungen (localStorage, da keine API dafür) ───
+// ─── Belohnungen (localStorage) ───────────────
 function getBelohnungen() {
   const raw = localStorage.getItem('lumi_belohnungen');
   if (raw) return JSON.parse(raw);
@@ -142,7 +139,6 @@ function saveBelohnungen(b) {
 // ─── Hilfsfunktionen ─────────────────────────
 function soften(hex, a) { return hex + a; }
 
-// Render avatar: SVG icon or first letter (uses lumi-icons.js if loaded)
 function renderAvatar(child, size) {
   if (typeof renderLumiAvatar === 'function') return renderLumiAvatar(child, size);
   var fontSize = size === 'sm' ? '15px' : size === 'lg' ? '28px' : '22px';
@@ -264,7 +260,6 @@ let belSelectedMinutes = null;
 function renderBelKinder() {
   const container = document.getElementById('belKinder');
 
-  // Auto-select if only one child
   if (children.length === 1 && !belSelectedChild) {
     belSelectedChild = children[0].id;
   }
@@ -296,7 +291,6 @@ function checkBelSubmit() {
   document.getElementById('belSubmitBtn').disabled = !(belSelectedChild && (belSelectedReason || document.getElementById('belEigenerGrund').value.trim()) && mins > 0);
 }
 
-// Reason buttons
 document.querySelectorAll('.uebersicht-bel-reason-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.uebersicht-bel-reason-btn').forEach(b => b.classList.remove('active'));
@@ -306,7 +300,6 @@ document.querySelectorAll('.uebersicht-bel-reason-btn').forEach(btn => {
   });
 });
 
-// Minute buttons
 document.querySelectorAll('.uebersicht-bel-min-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.uebersicht-bel-min-btn').forEach(b => b.classList.remove('active'));
@@ -340,7 +333,6 @@ document.getElementById('belSubmitBtn').addEventListener('click', () => {
   });
   saveBelohnungen(belohnungen);
 
-  // Reset
   belSelectedChild = null; belSelectedReason = null; belSelectedMinutes = null;
   document.querySelectorAll('.uebersicht-bel-reason-btn, .uebersicht-bel-min-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('belEigenerGrund').value = '';
@@ -351,14 +343,13 @@ document.getElementById('belSubmitBtn').addEventListener('click', () => {
 });
 
 function renderBelLetzte() {
-  const belohnungen = getBelohnungen().slice(0, 3);
+  const belohnungen = getBelohnungen().slice(0, 1);
   const list = document.getElementById('belLetzteList');
   if (belohnungen.length === 0) {
     list.innerHTML = `<div class="ueb-empty-small">${t('noRewards')}</div>`;
     return;
   }
 
-  // Update colors and icons from current children data
   list.innerHTML = belohnungen.map(b => {
     const child = children.find(c => c.id === String(b.childId));
     const color = child ? child.color : b.childColor;
@@ -398,10 +389,10 @@ function renderAktivitaeten() {
     }
   });
 
-  belohnungen.slice(0, 3).forEach(b => {
+  belohnungen.forEach(b => {
     const child = children.find(c => c.id === String(b.childId));
     const color = child ? child.color : b.childColor;
-    events.push({ childName: b.childName, color: color, type: 'reward', mins: b.mins, time: b.time });
+    events.push({ child: child || null, childName: b.childName, color: color, type: 'reward', mins: b.mins, time: b.time });
   });
 
   events.sort((a, b) => b.time - a.time);
@@ -411,16 +402,15 @@ function renderAktivitaeten() {
     return;
   }
 
-  const icons = {
+  const typeIcons = {
     limit: (c) => `<svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="6" stroke="${c}" stroke-width="1.4"/><path d="M9 6v3l2 2" stroke="${c}" stroke-width="1.4" stroke-linecap="round"/></svg>`,
-    reward: (c) => `<svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="4" y="8" width="10" height="7" rx="1.5" stroke="${c}" stroke-width="1.4"/><path d="M9 8V6a2 2 0 00-4 0 2 2 0 004 0zM9 8V6a2 2 0 014 0 2 2 0 01-4 0z" stroke="${c}" stroke-width="1.4" stroke-linecap="round"/></svg>`,
     streakStart: (c) => `<svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 2C10 4 11 4.5 12 6C13.5 7.5 13 10 11 11.5C9.5 12.5 7 12 6 11C4 9 4.5 7 6 5.5C7 4.5 8 4 9 2Z" stroke="${c}" stroke-width="1.4" fill="none"/></svg>`,
     streak: (c) => `<svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 2l1.5 3 3.5.5-2.5 2.5.5 3.5L9 10l-3 1.5.5-3.5L4 5.5l3.5-.5z" stroke="${c}" stroke-width="1.4" stroke-linejoin="round"/></svg>`,
   };
 
-  const bgColors = { limit:'#EAF2FB', reward:'#FEF3E2', streakStart:'#FDEEF2', streak:'#EDF6EF' };
+  const bgColors = { limit:'#EAF2FB', streakStart:'#FDEEF2', streak:'#EDF6EF' };
 
-  list.innerHTML = events.slice(0, 6).map(ev => {
+  list.innerHTML = events.slice(0, 8).map(ev => {
     const name = ev.child ? ev.child.name : ev.childName;
     const color = ev.color;
     let text = '';
@@ -429,10 +419,19 @@ function renderAktivitaeten() {
     else if (ev.type === 'streakStart') text = `${name}: ${t('actStreakStart')}`;
     else if (ev.type === 'streak') text = `${name}: ${(ev.child?.streak || '')} ${t('actStreakReached')}`;
 
+    let iconHtml;
+    if (ev.type === 'reward') {
+      if (ev.child) {
+        iconHtml = `<div class="ueb-aktivitaet-icon" style="background:${soften(color,'20')};border-radius:50%">${renderAvatar(ev.child, 'sm')}</div>`;
+      } else {
+        iconHtml = `<div class="ueb-aktivitaet-icon" style="background:${soften(color,'20')};border-radius:50%;display:flex;align-items:center;justify-content:center"><span style="color:${color};font-size:15px;font-weight:900">${(ev.childName||'?').charAt(0)}</span></div>`;
+      }
+    } else {
+      iconHtml = `<div class="ueb-aktivitaet-icon" style="background:${bgColors[ev.type]}">${typeIcons[ev.type](color)}</div>`;
+    }
+
     return `<div class="ueb-aktivitaet-item">
-      <div class="ueb-aktivitaet-icon" style="background:${bgColors[ev.type]}">
-        ${icons[ev.type](color)}
-      </div>
+      ${iconHtml}
       <div>
         <div class="ueb-aktivitaet-text">${text}</div>
         <div class="ueb-aktivitaet-time">${getTimeAgo(ev.time)}</div>
@@ -442,44 +441,49 @@ function renderAktivitaeten() {
 }
 
 // ─── Wochenübersicht ─────────────────────────
-let wocheTab = 'einzeln';
 let wocheSelectedChild = null;
-
-function setWocheTab(tab) {
-  wocheTab = tab;
-  document.getElementById('tabEinzeln').classList.toggle('active', tab === 'einzeln');
-  document.getElementById('tabAlle').classList.toggle('active', tab === 'alle');
-  renderWoche();
-}
+let wocheShowAll = false;
 
 function selectWocheChild(id) {
   wocheSelectedChild = id;
+  wocheShowAll = false;
+  renderWoche();
+}
+
+function selectWocheAll() {
+  wocheShowAll = true;
+  wocheSelectedChild = null;
   renderWoche();
 }
 
 function renderWoche() {
   const wk = WK();
-
-  // Child tabs
   const tabsEl = document.getElementById('wocheKinderTabs');
-  if (wocheTab === 'einzeln') {
-    tabsEl.style.display = 'flex';
-    if (!wocheSelectedChild && children.length > 0) wocheSelectedChild = children[0].id;
-    tabsEl.innerHTML = children.map(c => `
-      <button class="uebersicht-woche-tab uebersicht-woche-tab--child ${wocheSelectedChild === c.id || wocheSelectedChild === String(c.id) ? 'active' : ''}"
-              style="${(wocheSelectedChild === c.id || wocheSelectedChild === String(c.id)) ? `background:${soften(c.color,'30')};color:${c.color}` : ''}"
-              onclick="selectWocheChild('${c.id}')">
-        ${c.name}
-      </button>`).join('');
-  } else {
-    tabsEl.style.display = 'none';
+
+  if (!wocheSelectedChild && !wocheShowAll && children.length > 0) {
+    wocheSelectedChild = children[0].id;
   }
+
+  let tabsHtml = children.map(c => {
+    const isActive = !wocheShowAll && (wocheSelectedChild === c.id || wocheSelectedChild === String(c.id));
+    return `<button class="uebersicht-woche-tab uebersicht-woche-tab--child ${isActive ? 'active' : ''}"
+            style="${isActive ? 'background:' + soften(c.color,'30') + ';color:' + c.color : ''}"
+            onclick="selectWocheChild('${c.id}')">
+      ${c.name}
+    </button>`;
+  }).join('');
+
+  if (children.length > 1) {
+    tabsHtml += `<button class="uebersicht-woche-tab ${wocheShowAll ? 'active' : ''}" onclick="selectWocheAll()">${t('allChildren')}</button>`;
+  }
+
+  tabsEl.innerHTML = tabsHtml;
+  tabsEl.style.display = 'flex';
 
   // Chart
   const chart = document.getElementById('wocheChart');
 
-  if (wocheTab === 'alle' && children.length > 1) {
-    // ─── GROUPED BARS: nebeneinander pro Tag, eine pro Kind ───
+  if (wocheShowAll && children.length > 1) {
     const allWeekData = children.map(c => c.weekData || [0,0,0,0,0,0,0]);
     const maxVal = Math.max(...allWeekData.flat(), 1);
     const total = allWeekData.reduce((sum, wd) => sum + wd.reduce((a,b) => a+b, 0), 0);
@@ -506,12 +510,10 @@ function renderWoche() {
     }).join('');
 
   } else {
-    // ─── SINGLE CHILD or single bar per day ───
     let data = [0,0,0,0,0,0,0];
     let color = '#b49ed4';
 
-    if (wocheTab === 'alle') {
-      // Only 1 child, just show their data
+    if (wocheShowAll) {
       children.forEach(c => {
         (c.weekData || [0,0,0,0,0,0,0]).forEach((v, i) => { data[i] += v; });
       });
@@ -538,9 +540,6 @@ function renderWoche() {
   }
 }
 
-// ─── Profil Dropdown, Logout, Passwort Modal ─
-// All handled by nav.js
-
 // ─── Init ────────────────────────────────────
 function renderAllSync() {
   applyTranslations();
@@ -558,5 +557,4 @@ async function renderAll() {
   renderAllSync();
 }
 
-// Initial load
 renderAll();

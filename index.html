@@ -11,11 +11,11 @@
   <nav>
     <div class="logo"><a href="index.html"><img src="resources/assets/lumi_logo.svg" alt="Logo"></a></div>
     <div class="nav-links">
-    <a href="index.html" data-i18n-nav="nav_uebersicht">Übersicht</a>
-    <a href="kinder.html" data-i18n-nav="nav_kinder">Kinder</a>
-    <a href="produkte.html" data-i18n-nav="nav_produkte">Produkte</a>
-    <a href="empfehlungen.html" data-i18n-nav="nav_empfehlungen">Empfehlungen</a>
-    <a href="mitteilungen.html" data-i18n-nav="nav_mitteilungen">Mitteilungen</a>
+      <a href="index.html" data-i18n-nav="nav_uebersicht">Übersicht</a>
+      <a href="kinder.html" data-i18n-nav="nav_kinder">Kinder</a>
+      <a href="produkte.html" data-i18n-nav="nav_produkte">Produkte</a>
+      <a href="empfehlungen.html" data-i18n-nav="nav_empfehlungen">Empfehlungen</a>
+      <a href="mitteilungen.html" data-i18n-nav="nav_mitteilungen">Mitteilungen</a>
     </div>
   </nav>
 
@@ -109,9 +109,7 @@
         </div>
       </div>
       <div class="uebersicht-woche-tabs">
-        <button class="uebersicht-woche-tab active" id="tabEinzeln" onclick="setWocheTab('einzeln')" data-i18n="individual">Einzeln</button>
-        <button class="uebersicht-woche-tab" id="tabAlle" onclick="setWocheTab('alle')" data-i18n="allChildren">Alle Kinder</button>
-        <div class="uebersicht-woche-kinder-tabs" id="wocheKinderTabs"></div>
+        <div class="uebersicht-woche-kinder-tabs" id="wocheKinderTabs" style="display:flex;gap:8px;flex-wrap:wrap;"></div>
       </div>
       <div class="uebersicht-woche-chart" id="wocheChart"></div>
     </div>

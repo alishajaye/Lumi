@@ -31,6 +31,42 @@ const SHARED_TRANSLATIONS = {
     footer_imprint: "Impressum",
     footer_contact: "Kontakt",
 
+    legal_back_overview: "Zurück zur Übersicht",
+
+    contact_title: "Kontakt",
+    contact_subtitle: "Wir freuen uns über deine Nachricht.",
+    contact_write_title: "Schreib uns",
+    contact_write_text: "Hast du Fragen zu Lumi, Feedback oder Anregungen? Wir sind gerne für dich da.",
+    contact_location_title: "Standort",
+    contact_location_text: "Lumi ist ein Projekt der Fachhochschule Graubünden.",
+    fhgr_name: "FHGR – Fachhochschule Graubünden",
+
+    privacy_title: "Datenschutz",
+    privacy_subtitle: "So geht Lumi mit deinen Daten um.",
+    privacy_what_title: "Was ist Lumi?",
+    privacy_what_text: "Lumi ist ein smartes System für Familien, das Kindern hilft, einen bewussten Umgang mit Bildschirmzeit zu entwickeln. Es besteht aus einer physischen Lumi Box, die erkennt, wenn ein Gerät hineingelegt oder herausgenommen wird, und einer Web-App, über die Eltern die Bildschirmzeit verwalten, Belohnungen vergeben und den Fortschritt ihrer Kinder verfolgen können.",
+    privacy_data_title: "Welche Daten werden gespeichert?",
+    privacy_data_text_1: "Lumi speichert nur die für den Betrieb notwendigen Daten. Dazu gehören der Name und die E-Mail-Adresse der Eltern für die Anmeldung, die Namen und das Alter der Kinder für die Profilzuordnung, die tägliche Bildschirmzeit und Tageslimits sowie Belohnungen und Aktivitäten.",
+    privacy_data_text_2: "Alle Daten werden auf einem geschützten Server in der Schweiz gespeichert und nicht an Dritte weitergegeben.",
+    privacy_box_title: "Wie funktioniert die Lumi Box?",
+    privacy_box_text: "Die Lumi Box kommuniziert über WLAN mit der Web-App. Wenn ein Kind sein Gerät in die Box legt, wird dies registriert und die Bildschirmzeit-Zählung pausiert. Wird das Gerät entnommen, startet die Zählung. Die Box sendet diese Informationen verschlüsselt an die Datenbank, sodass Eltern in Echtzeit den Status sehen können.",
+    privacy_rights_title: "Deine Rechte",
+    privacy_rights_text: 'Du kannst jederzeit dein Konto löschen, woraufhin alle gespeicherten Daten entfernt werden. Kinderprofile können einzeln gelöscht werden. Bei Fragen zum Datenschutz wende dich an <a href="mailto:kontakt@lumi.ch">kontakt@lumi.ch</a>.',
+    privacy_note_title: "Hinweis",
+    privacy_note_text: "Dieses Projekt wurde im Rahmen des Moduls Interaktive Medien 4 (IM4) an der Fachhochschule Graubünden (FHGR) erstellt. Es handelt sich um ein Hochschulprojekt und keinen kommerziellen Dienst.",
+
+    imprint_title: "Impressum",
+    imprint_subtitle: "Wer hinter Lumi steckt.",
+    imprint_project_title: "Hochschulprojekt",
+    imprint_project_text: 'Lumi ist ein Projekt im Rahmen des Moduls <strong>Interaktive Medien 4 (IM4)</strong> im Studiengang Multimedia Production (BSc), 4. Semester.',
+    imprint_team_title: "Team – Nic und die Coder",
+    imprint_webapp: "Web-App",
+    imprint_webapp_names: "Alisha Künzi & Melina Gast",
+    imprint_physical: "Physical Computing",
+    imprint_physical_names: "Inès Jetzer & Nic Luginbühl",
+    imprint_concept_title: "Projektkonzept",
+    imprint_concept_text: "Lumi unterstützt Familien bei einem bewussten Umgang mit Bildschirmzeit. Das System besteht aus einer physischen Lumi Box (Physical Computing) und einer Web-App zur Verwaltung und Visualisierung der Nutzungsdaten. Zielgruppe sind Eltern mit Kindern im Alter von 4–12 Jahren.",
+
     mitt_title: "Mitteilungen",
     mitt_mark_all: "Alle als gelesen markieren",
     mitt_all: "Alle",
@@ -161,6 +197,42 @@ const SHARED_TRANSLATIONS = {
     footer_privacy: "Privacy",
     footer_imprint: "Imprint",
     footer_contact: "Contact",
+
+    legal_back_overview: "Back to overview",
+
+    contact_title: "Contact",
+    contact_subtitle: "We look forward to hearing from you.",
+    contact_write_title: "Write to us",
+    contact_write_text: "Do you have questions about Lumi, feedback or suggestions? We are happy to help.",
+    contact_location_title: "Location",
+    contact_location_text: "Lumi is a project by the University of Applied Sciences of the Grisons.",
+    fhgr_name: "FHGR – University of Applied Sciences of the Grisons",
+
+    privacy_title: "Privacy",
+    privacy_subtitle: "How Lumi handles your data.",
+    privacy_what_title: "What is Lumi?",
+    privacy_what_text: "Lumi is a smart system for families that helps children develop a more mindful approach to screen time. It consists of a physical Lumi Box that detects when a device is placed inside or taken out, and a web app that parents can use to manage screen time, give rewards and follow their children's progress.",
+    privacy_data_title: "What data is stored?",
+    privacy_data_text_1: "Lumi only stores the data needed for the service to work. This includes the parents' name and email address for login, the children's names and ages for profile assignment, daily screen time and daily limits, as well as rewards and activities.",
+    privacy_data_text_2: "All data is stored on a protected server in Switzerland and is not shared with third parties.",
+    privacy_box_title: "How does the Lumi Box work?",
+    privacy_box_text: "The Lumi Box communicates with the web app via Wi-Fi. When a child places their device in the box, this is registered and screen-time tracking pauses. When the device is taken out, tracking starts again. The box sends this information to the database in encrypted form so parents can see the status in real time.",
+    privacy_rights_title: "Your rights",
+    privacy_rights_text: 'You can delete your account at any time, which removes all stored data. Child profiles can be deleted individually. If you have questions about privacy, contact us at <a href="mailto:kontakt@lumi.ch">kontakt@lumi.ch</a>.',
+    privacy_note_title: "Note",
+    privacy_note_text: "This project was created as part of the Interactive Media 4 (IM4) module at the University of Applied Sciences of the Grisons (FHGR). It is a university project and not a commercial service.",
+
+    imprint_title: "Imprint",
+    imprint_subtitle: "Who is behind Lumi.",
+    imprint_project_title: "University project",
+    imprint_project_text: 'Lumi is a project created as part of the <strong>Interactive Media 4 (IM4)</strong> module in the Multimedia Production BSc programme, 4th semester.',
+    imprint_team_title: "Team – Nic and the Coders",
+    imprint_webapp: "Web app",
+    imprint_webapp_names: "Alisha Künzi & Melina Gast",
+    imprint_physical: "Physical computing",
+    imprint_physical_names: "Inès Jetzer & Nic Luginbühl",
+    imprint_concept_title: "Project concept",
+    imprint_concept_text: "Lumi supports families in developing a mindful approach to screen time. The system consists of a physical Lumi Box and a web app for managing and visualising usage data. The target group is parents with children aged 4–12.",
 
     mitt_title: "Notifications",
     mitt_mark_all: "Mark all as read",
@@ -300,6 +372,23 @@ function applySharedTranslations() {
     var val = getSharedT(key);
     if (val !== key) el.textContent = val;
   });
+  document.querySelectorAll("[data-i18n-html]").forEach(function(el) {
+    var key = el.getAttribute("data-i18n-html");
+    var val = getSharedT(key);
+    if (val !== key) el.innerHTML = val;
+  });
+  // Force footer links translation
+  var footerLinks = document.querySelectorAll(".lumi-footer-links a[data-i18n-shared]");
+  footerLinks.forEach(function(el) {
+    var key = el.getAttribute("data-i18n-shared");
+    var val = getSharedT(key);
+    if (val !== key) el.textContent = val;
+  });
+  var footerCopy = document.querySelector(".lumi-footer-copy[data-i18n-shared]");
+  if (footerCopy) {
+    var val = getSharedT("footer_copy");
+    if (val !== "footer_copy") footerCopy.textContent = val;
+  }
   var de = document.getElementById("langDE");
   var en = document.getElementById("langEN");
   if (de) de.classList.toggle("active", currentLang === "de");
@@ -356,16 +445,20 @@ function updateProfileDisplay() {
   var emailEl = document.getElementById("profileEmail");
   if (avatar) {
     if (parentIcon && typeof getLumiIconSvg === 'function' && typeof LUMI_ICONS !== 'undefined' && LUMI_ICONS[parentIcon]) {
-      avatar.innerHTML = getLumiIconSvg(parentIcon, '#fff', 32);
+      avatar.style.background = '#e8dff2';
+      avatar.innerHTML = getLumiIconSvg(parentIcon, '#b49ed4', 32);
     } else {
+      avatar.style.background = '#b49ed4';
       avatar.innerHTML = '';
       avatar.textContent = initial;
     }
   }
   if (avatarLg) {
     if (parentIcon && typeof getLumiIconSvg === 'function' && typeof LUMI_ICONS !== 'undefined' && LUMI_ICONS[parentIcon]) {
-      avatarLg.innerHTML = getLumiIconSvg(parentIcon, '#fff', 36);
+      avatarLg.style.background = '#e8dff2';
+      avatarLg.innerHTML = getLumiIconSvg(parentIcon, '#b49ed4', 36);
     } else {
+      avatarLg.style.background = '#b49ed4';
       avatarLg.innerHTML = '';
       avatarLg.textContent = initial;
     }
