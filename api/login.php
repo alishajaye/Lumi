@@ -5,7 +5,7 @@ ini_set('session.cookie_httponly', 1);
 header('Content-Type: application/json');
 
 // HIER ANGEPASST: Lädt die config.php aus demselben Ordner (api/)
-require_once 'config.php'; 
+require_once '../system/config.php'; 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $data = json_decode(file_get_contents("php://input"), true);

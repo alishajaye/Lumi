@@ -15,6 +15,11 @@ if (file_exists(__DIR__ . '/config.php')) {
     exit;
 }
 
+// Falls die Session noch nicht gestartet wurde, starten wir sie hier sicherheitshalber
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 if (!isset($_SESSION['user_id'])) {
     http_response_code(401);
     echo json_encode([
@@ -34,6 +39,7 @@ function getJsonInput() {
 try {
     // 1. KINDER LADEN (GET)
     if ($method === 'GET') {
+        // Zuerst die Standard-Stammdaten aller Kinder holen
         $stmt = $pdo->prepare("
             SELECT id, parent_id, name, age, daily_limit, color, nfc_id
             FROM child
@@ -41,9 +47,69 @@ try {
             ORDER BY id DESC
         ");
         $stmt->execute([':parent_id' => $userId]);
+        $children = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        // Jetzt für jedes Kind die Echtzeit-Statistiken live berechnen
+        foreach ($children as &$child) {
+            $childId = $child['id'];
+
+            // A) Verbrauch für den HEUTIGEN TAG zusammenrechnen (aus Spalte 'duration')
+            $stmtToday = $pdo->prepare("
+                SELECT SUM(duration) as used_today 
+                FROM session 
+                WHERE child_id = :child_id AND DATE(start_time) = CURRENT_DATE
+            ");
+            $stmtToday->execute([':child_id' => $childId]);
+            $todayResult = $stmtToday->fetch(PDO::FETCH_ASSOC);
+            $child['used_today'] = intval($todayResult['used_today'] ?? 0);
+
+            // B) Prüfen, ob aktuell eine Live-Session läuft (end_time ist NULL)
+            $stmtActive = $pdo->prepare("
+                SELECT start_time 
+                FROM session
+                WHERE child_id = :child_id AND end_time IS NULL 
+                LIMIT 1
+            ");
+            $stmtActive->execute([':child_id' => $childId]);
+            $activeSession = $stmtActive->fetch(PDO::FETCH_ASSOC);
+
+            if ($activeSession) {
+                $child['is_currently_using'] = true;
+                // Wandelt den Timestamp von 'start_time' in ISO-Format für JS um
+                $child['current_session_start'] = date('c', strtotime($activeSession['start_time']));
+            } else {
+                $child['is_currently_using'] = false;
+                $child['current_session_start'] = null;
+            }
+
+            // C) Verbrauch für die AKTUELLE WOCHE (Montag bis Sonntag) aufschlüsseln
+            $child['week_data'] = [0, 0, 0, 0, 0, 0, 0]; // Index 0=Mo, 1=Di, 2=Mi...
+            
+            // SQL-Abfrage: Holt die Summe der Minuten pro Wochentag für die aktuelle Kalenderwoche
+            $stmtWeek = $pdo->prepare("
+                SELECT WEEKDAY(start_time) as wochentag, SUM(duration) as total_minutes
+                FROM session
+                WHERE child_id = :child_id 
+                  AND YEARWEEK(start_time, 1) = YEARWEEK(CURRENT_DATE, 1)
+                  AND duration IS NOT NULL
+                GROUP BY WEEKDAY(start_time)
+            ");
+            $stmtWeek->execute([':child_id' => $childId]);
+            $weekRows = $stmtWeek->fetchAll(PDO::FETCH_ASSOC);
+
+            // Gefundene Werte in das 7-Tage-Array einsortieren
+            foreach ($weekRows as $row) {
+                $tagIndex = intval($row['wochentag']); // MySQL WEEKDAY liefert 0 für Mo bis 6 für So
+                if ($tagIndex >= 0 && $tagIndex <= 6) {
+                    $child['week_data'][$tagIndex] = intval($row['total_minutes'] ?? 0);
+                }
+            }
+        }
+
+        // Saubere Übergabe an dein uebersicht.js Frontend
         echo json_encode([
             "status" => "success",
-            "children" => $stmt->fetchAll(PDO::FETCH_ASSOC)
+            "children" => $children
         ]);
         exit;
     }

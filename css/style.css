@@ -2520,3 +2520,48 @@ body.produkte-page .shop-hero {
     gap: 16px;
   }
 }
+
+/* ==========================================================================
+   LUMI ERWEITERUNG: Wochenübersicht CSS-Balken
+   ========================================================================== */
+
+   .uebersicht-woche-chart {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end; /* WICHTIG: Richtet die Balken am Boden aus, damit sie nach oben wachsen */
+    height: 180px;
+    padding: 20px 10px 10px 10px;
+    background: #faf9f6;
+    border-radius: 12px;
+    margin-top: 15px;
+}
+
+.ueb-woche-bar-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    height: 100%;
+    flex: 1;
+}
+
+.ueb-woche-bar {
+    width: 24px;
+    border-radius: 6px 6px 0 0;
+    transition: height 0.4s cubic-bezier(0.4, 0, 0.2, 1); /* Sanfte Animation beim Laden */
+}
+
+.ueb-woche-bar-val {
+    font-size: 11px;
+    font-weight: 700;
+    color: #4a4a4a;
+    margin-bottom: 4px;
+    height: 15px;
+}
+
+.ueb-woche-bar-label {
+    font-size: 12px;
+    color: #a0a0a0;
+    margin-top: 8px;
+    font-weight: 600;
+}

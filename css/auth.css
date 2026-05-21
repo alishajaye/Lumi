@@ -174,3 +174,56 @@
   .register-text a:hover {
     color: #8a6bbf;
   }
+
+  /* ==========================================================================
+   LUMI ERWEITERUNG: Dynamische Aktivitäten im Dashboard
+   ========================================================================== */
+
+.uebersicht-aktivitaeten-list {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.ueb-aktivitaet-item {
+  display: flex !important;
+  align-items: center !important;
+  gap: 14px !important;
+  padding: 12px 0 !important;
+  border-bottom: 1px solid #f8f6f2 !important; /* Dezente Trennlinie passend zu Lumi */
+  transition: background-color 0.2s ease;
+}
+
+.ueb-aktivitaet-item:last-child {
+  border-bottom: none !important; /* Keine Trennlinie beim letzten Eintrag */
+}
+
+.ueb-aktivitaet-icon {
+  width: 36px !important;
+  height: 36px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 50% !important;
+  flex-shrink: 0 !important; /* Verhindert das Quetschen des Icons bei langem Text */
+}
+
+.ueb-aktivitaet-item > div:nth-child(2) {
+  flex: 1 !important;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* Falls noch keine Aktivitäten vorhanden sind (Empty State) */
+.ueb-empty-small {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #b0a9a0;
+  font-size: 14px;
+  padding: 30px 10px;
+  font-style: italic;
+  width: 100%;
+}

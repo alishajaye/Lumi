@@ -3,7 +3,7 @@
 header('Content-Type: application/json');
 
 // Lädt die Verbindungsdatei (hier korrigiert auf config.php)
-require_once 'config.php'; 
+require_once '../system/config.php'; 
 
 // Schutzbarriere: Prüfen, ob das Elternteil eingeloggt ist
 if (!isset($_SESSION['user_id'])) {

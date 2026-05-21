@@ -1,7 +1,7 @@
 <?php
 // sessions.php
 header('Content-Type: application/json');
-require_once 'config.php'; // Lädt die funktionierende config.php
+require_once '../system/config.php';  // Lädt die funktionierende config.php
 
 $method = $_SERVER['REQUEST_METHOD'];
 
