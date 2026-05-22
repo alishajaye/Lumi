@@ -1,99 +1,86 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Lumi – Übersicht</title>
-  <link rel="stylesheet" href="css/style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Lumi – Übersicht</title>
+<link rel="stylesheet" href="css/style.css" />
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
 </head>
 <body>
-  <nav>
-    <div class="logo">
-      <a href="index.html"><img src="resources/assets/lumi_logo.svg" alt="Logo"></a>
+<nav>
+  <div class="logo">
+    <a href="index.html"><img src="resources/assets/lumi_logo.svg" alt="Logo"></a>
+  </div>
+  <button class="burger-menu" aria-label="Menü öffnen" aria-expanded="false">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+  <div class="nav-links">
+    <a href="index.html" data-i18n-nav="nav_uebersicht">Übersicht</a>
+    <a href="kinder.html" data-i18n-nav="nav_kinder">Kinder</a>
+    <a href="produkte.html" data-i18n-nav="nav_produkte">Produkte</a>
+    <a href="empfehlungen.html" data-i18n-nav="nav_empfehlungen">Empfehlungen</a>
+    <a href="mitteilungen.html" data-i18n-nav="nav_mitteilungen">Mitteilungen</a>
+  </div>
+</nav>
+<div class="uebersicht-page">
+  <div class="uebersicht-header">
+    <div>
+      <div class="uebersicht-date" id="uebersichtDate"></div>
+      <h1 class="uebersicht-greeting" id="uebersichtGreeting"></h1>
+      <div class="uebersicht-meta" id="uebersichtMeta"></div>
     </div>
-  
-    <button class="burger-menu" aria-label="Menü öffnen" aria-expanded="false">
-      <span></span>
-      <span></span>
-      <span></span>
-    </button>
-  
-    <div class="nav-links">
-      <a href="index.html" data-i18n-nav="nav_uebersicht">Übersicht</a>
-      <a href="kinder.html" data-i18n-nav="nav_kinder">Kinder</a>
-      <a href="produkte.html" data-i18n-nav="nav_produkte">Produkte</a>
-      <a href="empfehlungen.html" data-i18n-nav="nav_empfehlungen">Empfehlungen</a>
-      <a href="mitteilungen.html" data-i18n-nav="nav_mitteilungen">Mitteilungen</a>
-    </div>
-  
-    <div class="nav-profile-wrap">
-      <button class="nav-profile-btn">
-        <div class="nav-profile-avatar">V</div>
-      </button>
+    <div class="uebersicht-stats-row">
+      <div class="uebersicht-stat-badge">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="3" width="12" height="9" rx="2" stroke="#b49ed4" stroke-width="1.3"/><path d="M5 14h6" stroke="#b49ed4" stroke-width="1.3" stroke-linecap="round"/></svg>
+        <span class="uebersicht-stat-val" id="statGeraete">0</span>
+        <span class="uebersicht-stat-label" data-i18n="devices">Geräte</span>
       </div>
-  </nav>
-
-  <div class="uebersicht-page">
-    <div class="uebersicht-header">
-      <div>
-        <div class="uebersicht-date" id="uebersichtDate"></div>
-        <h1 class="uebersicht-greeting" id="uebersichtGreeting"></h1>
-        <div class="uebersicht-meta" id="uebersichtMeta"></div>
+      <div class="uebersicht-stat-badge">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="#96C2A0" stroke-width="1.3"/><path d="M8 5v3l2 2" stroke="#96C2A0" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="uebersicht-stat-val" id="statMinuten">0</span>
+        <span class="uebersicht-stat-label" data-i18n="avgToday">Ø heute</span>
       </div>
-      <div class="uebersicht-stats-row">
-        <div class="uebersicht-stat-badge">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="3" width="12" height="9" rx="2" stroke="#b49ed4" stroke-width="1.3"/><path d="M5 14h6" stroke="#b49ed4" stroke-width="1.3" stroke-linecap="round"/></svg>
-          <span class="uebersicht-stat-val" id="statGeraete">0</span>
-          <span class="uebersicht-stat-label" data-i18n="devices">Geräte</span>
-        </div>
-        <div class="uebersicht-stat-badge">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="#96C2A0" stroke-width="1.3"/><path d="M8 5v3l2 2" stroke="#96C2A0" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <span class="uebersicht-stat-val" id="statMinuten">0</span>
-          <span class="uebersicht-stat-label" data-i18n="avgToday">Ø heute</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="uebersicht-section">
-      <div class="uebersicht-section-header">
-        <h2 class="uebersicht-section-title" data-i18n="family">Familie</h2>
-        <a href="kinder.html" class="uebersicht-section-link" data-i18n="manage">Verwalten ›</a>
-      </div>
-      <div class="uebersicht-kinder-grid" id="uebersichtKinderGrid">
-        <div class="uebersicht-empty" data-i18n="noChildren">Noch keine Kinder hinzugefügt</div>
-      </div>
-    </div>
-
-    <div class="uebersicht-two-col">
-      <div class="uebersicht-card uebersicht-aktivitaeten">
-        <div class="uebersicht-card-header">
-          <div class="uebersicht-card-title" data-i18n="activities">Aktivitäten</div>
-        </div>
-        <div class="uebersicht-aktivitaeten-list" id="aktivitaetenList"></div>
-      </div>
-    </div>
-
-    <div class="uebersicht-card uebersicht-woche">
-      <div class="uebersicht-woche-header">
-        <div>
-          <div class="uebersicht-card-title" data-i18n="weekOverview">Wochenübersicht</div>
-          <div class="uebersicht-card-subtitle" data-i18n="monToSun">Montag bis Sonntag</div>
-        </div>
-        <div class="uebersicht-woche-right">
-          <div class="uebersicht-woche-total" id="wocheTotal">0 min</div>
-          <div class="uebersicht-woche-label" data-i18n="thisWeek">diese Woche bis heute</div>
-        </div>
-      </div>
-      <div class="uebersicht-woche-tabs">
-        <div class="uebersicht-woche-kinder-tabs" id="wocheKinderTabs" style="display:flex;gap:8px;flex-wrap:wrap;"></div>
-      </div>
-      <div class="uebersicht-woche-chart" id="wocheChart"></div>
     </div>
   </div>
-
-  <script src="js/nav.js"></script>
-  <script src="js/icons.js"></script>
-  <script src="js/uebersicht.js"></script>
+  <div class="uebersicht-section">
+    <div class="uebersicht-section-header">
+      <h2 class="uebersicht-section-title" data-i18n="family">Familie</h2>
+      <a href="kinder.html" class="uebersicht-section-link" data-i18n="manage">Verwalten ›</a>
+    </div>
+    <div class="uebersicht-kinder-grid" id="uebersichtKinderGrid">
+      <div class="uebersicht-empty" data-i18n="noChildren">Noch keine Kinder hinzugefügt</div>
+    </div>
+  </div>
+  <div class="uebersicht-two-col">
+    <div class="uebersicht-card uebersicht-aktivitaeten">
+      <div class="uebersicht-card-header">
+        <div class="uebersicht-card-title" data-i18n="activities">Aktivitäten</div>
+      </div>
+      <div class="uebersicht-aktivitaeten-list" id="aktivitaetenList"></div>
+    </div>
+  </div>
+  <div class="uebersicht-card uebersicht-woche">
+    <div class="uebersicht-woche-header">
+      <div>
+        <div class="uebersicht-card-title" data-i18n="weekOverview">Wochenübersicht</div>
+        <div class="uebersicht-card-subtitle" data-i18n="monToSun">Montag bis Sonntag</div>
+      </div>
+      <div class="uebersicht-woche-right">
+        <div class="uebersicht-woche-total" id="wocheTotal">0 min</div>
+        <div class="uebersicht-woche-label" data-i18n="thisWeek">diese Woche bis heute</div>
+      </div>
+    </div>
+    <div class="uebersicht-woche-tabs">
+      <div class="uebersicht-woche-kinder-tabs" id="wocheKinderTabs" style="display:flex;gap:8px;flex-wrap:wrap;"></div>
+    </div>
+    <div class="uebersicht-woche-chart" id="wocheChart"></div>
+  </div>
+</div>
+<script src="js/nav.js"></script>
+<script src="js/icons.js"></script>
+<script src="js/uebersicht.js"></script>
 </body>
 </html>
