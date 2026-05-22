@@ -39,9 +39,9 @@ function getJsonInput() {
 try {
     // 1. KINDER LADEN (GET)
     if ($method === 'GET') {
-        // Zuerst die Standard-Stammdaten aller Kinder holen
+        // Zuerst die Standard-Stammdaten aller Kinder holen (rfid_id und streak angepasst)
         $stmt = $pdo->prepare("
-            SELECT id, parent_id, name, age, daily_limit, color, nfc_id
+            SELECT id, parent_id, name, age, daily_limit, streak, color, rfid_id
             FROM child
             WHERE parent_id = :parent_id
             ORDER BY id DESC
@@ -85,9 +85,9 @@ try {
             // C) Verbrauch für die AKTUELLE WOCHE (Montag bis Sonntag) aufschlüsseln
             $child['week_data'] = [0, 0, 0, 0, 0, 0, 0]; // Index 0=Mo, 1=Di, 2=Mi...
             
-            // SQL-Abfrage: Holt die Summe der Minuten pro Wochentag für die aktuelle Kalenderwoche
+            // SQL-Abfrage: Holt die Summe der Sekunden pro Wochentag für die aktuelle Kalenderwoche
             $stmtWeek = $pdo->prepare("
-                SELECT WEEKDAY(start_time) as wochentag, SUM(duration) as total_minutes
+                SELECT WEEKDAY(start_time) as wochentag, SUM(duration) as total_seconds
                 FROM session
                 WHERE child_id = :child_id 
                   AND YEARWEEK(start_time, 1) = YEARWEEK(CURRENT_DATE, 1)
@@ -101,7 +101,7 @@ try {
             foreach ($weekRows as $row) {
                 $tagIndex = intval($row['wochentag']); // MySQL WEEKDAY liefert 0 für Mo bis 6 für So
                 if ($tagIndex >= 0 && $tagIndex <= 6) {
-                    $child['week_data'][$tagIndex] = intval($row['total_minutes'] ?? 0);
+                    $child['week_data'][$tagIndex] = intval($row['total_seconds'] ?? 0);
                 }
             }
         }
@@ -119,9 +119,9 @@ try {
         $data = getJsonInput();
         $name = trim($data['name'] ?? '');
         $age = intval($data['age'] ?? 0);
-        $dailyLimit = intval($data['daily_limit'] ?? 0);
+        $dailyLimit = intval($data['daily_limit'] ?? 0); // Wird im Frontend bereits als Sekunden geschickt
         $color = trim($data['color'] ?? '#F19DAE');
-        $nfcId = trim($data['nfc_id'] ?? '');
+        $rfidId = trim($data['rfid_id'] ?? ''); // von nfc_id zu rfid_id geändert
 
         if (!$name || $age < 0 || $dailyLimit < 0) {
             echo json_encode([
@@ -131,9 +131,10 @@ try {
             exit;
         }
 
+        // SQL an neue Tabellenstruktur angepasst (rfid_id, streak wird per Default 0)
         $stmt = $pdo->prepare("
-            INSERT INTO child (parent_id, name, age, daily_limit, color, nfc_id)
-            VALUES (:parent_id, :name, :age, :daily_limit, :color, :nfc_id)
+            INSERT INTO child (parent_id, name, age, daily_limit, streak, color, rfid_id)
+            VALUES (:parent_id, :name, :age, :daily_limit, 0, :color, :rfid_id)
         ");
         $stmt->execute([
             ':parent_id' => $userId,
@@ -141,7 +142,7 @@ try {
             ':age'       => $age,
             ':daily_limit' => $dailyLimit,
             ':color'     => $color,
-            ':nfc_id'    => $nfcId ?: null
+            ':rfid_id'    => $rfidId ?: null
         ]);
         echo json_encode([
             "status" => "success",
@@ -158,7 +159,7 @@ try {
         $age = intval($data['age'] ?? 0);
         $dailyLimit = intval($data['daily_limit'] ?? 0);
         $color = trim($data['color'] ?? '#F19DAE');
-        $nfcId = trim($data['nfc_id'] ?? '');
+        $rfidId = trim($data['rfid_id'] ?? ''); // von nfc_id zu rfid_id geändert
 
         if (!$id || !$name || $age < 0 || $dailyLimit < 0) {
             echo json_encode([
@@ -168,10 +169,11 @@ try {
             exit;
         }
 
+        // Spaltenname rfid_id angepasst
         $stmt = $pdo->prepare("
             UPDATE child
             SET name = :name, age = :age, daily_limit = :daily_limit,
-                color = :color, nfc_id = :nfc_id
+                color = :color, rfid_id = :rfid_id
             WHERE id = :id AND parent_id = :parent_id
         ");
         $stmt->execute([
@@ -179,7 +181,7 @@ try {
             ':age'         => $age,
             ':daily_limit' => $dailyLimit,
             ':color'       => $color,
-            ':nfc_id'      => $nfcId ?: null,
+            ':rfid_id'      => $rfidId ?: null,
             ':id'          => $id,
             ':parent_id'   => $userId
         ]);

@@ -225,8 +225,9 @@ async function loadChildren() {
         name: child.name,
         age: Number(child.age),
         color: child.color || "#F19DAE",
-        dailyLimit: Number(child.daily_limit),
-        usedToday: Number(child.used_today || 0),
+        // HIER ANGEPASST: Sekunden aus der DB werden für das UI in Minuten umgerechnet
+        dailyLimit: Math.round(Number(child.daily_limit) / 60),
+        usedToday: Math.round(Number(child.used_today || 0) / 60),
         streak: Number(child.streak || 0),
         timeSaved: Number(child.time_saved || 0),
         deviceId: child.device_id,
@@ -251,7 +252,7 @@ async function createChild(data) {
     body: JSON.stringify({
       name: data.name,
       age: data.age,
-      daily_limit: data.dailyLimit,
+      daily_limit: data.dailyLimit, // Wird vor der Übergabe bereits in Sekunden umgerechnet
       color: data.color,
     }),
   });
@@ -267,7 +268,7 @@ async function updateChild(id, data) {
       id: id,
       name: data.name,
       age: data.age,
-      daily_limit: data.dailyLimit,
+      daily_limit: data.dailyLimit, // Wird vor der Übergabe bereits in Sekunden umgerechnet
       color: data.color,
     }),
   });
@@ -498,10 +499,11 @@ childForm.addEventListener("submit", async (e) => {
 
   const id = document.getElementById("childId").value;
 
+  // HIER ANGEPASST: Eingegebene Minuten werden mit 60 multipliziert, um Sekunden in der DB zu speichern
   const data = {
     name: document.getElementById("childName").value.trim(),
     age: parseInt(document.getElementById("childAge").value),
-    dailyLimit: parseInt(document.getElementById("childLimit").value),
+    dailyLimit: parseInt(document.getElementById("childLimit").value) * 60,
     color: document.getElementById("childColor").value,
   };
 
@@ -615,10 +617,11 @@ async function applyColor(color) {
   const child = children.find((c) => c.id === colorModalChildId);
   if (!child) return;
 
+  // HIER ANGEPASST: child.dailyLimit liegt lokal in Minuten vor, muss für die DB wieder * 60 gerechnet werden
   const result = await updateChild(child.id, {
     name: child.name,
     age: child.age,
-    dailyLimit: child.dailyLimit,
+    dailyLimit: child.dailyLimit * 60,
     color: color,
   });
 
@@ -689,10 +692,11 @@ document.getElementById("limitModalSave").addEventListener("click", async () => 
 
   if (!child || isNaN(value) || value < 0) return;
 
+  // HIER ANGEPASST: Der neue Wert aus dem Limit-Modal (Minuten) wird wieder mit 60 multipliziert
   const result = await updateChild(child.id, {
     name: child.name,
     age: child.age,
-    dailyLimit: value,
+    dailyLimit: value * 60,
     color: child.color,
   });
 

@@ -1,5 +1,5 @@
 /* =============================================
-   LUMI – Übersicht JS (API-basiert mit Live-Ticker - BEREINIGT)
+   LUMI – Übersicht JS (API-basiert mit Live-Ticker - BEREINIGT & ANGEPASST)
    ============================================= */
 
    const WK_DE = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'];
@@ -83,21 +83,26 @@
          children = result.children.map(child => {
            var iconKey = 'lumi_child_icon_' + child.id;
            var icon = child.icon || localStorage.getItem(iconKey) || '';
+           
+           // Wochen-Array aus der DB umrechnen von Sekunden in Minuten
+           const minutesWeekData = (child.week_data || [0, 0, 0, 0, 0, 0, 0]).map(sec => Math.round(Number(sec) / 60));
+   
            return {
              id: String(child.id),
              name: child.name,
              age: Number(child.age),
              color: child.color || '#F19DAE',
              icon: icon,
-             dailyLimit: Number(child.daily_limit),
-             usedTodayStored: Number(child.used_today || 0), 
+             // HIER ANGEPASST: Sekunden aus der Datenbank werden für das UI durch 60 geteilt
+             dailyLimit: Math.round(Number(child.daily_limit) / 60),
+             usedTodayStored: Math.round(Number(child.used_today || 0) / 60), 
              isCurrentlyUsing: Boolean(child.is_currently_using),
              currentSessionStart: child.current_session_start,
              streak: Number(child.streak || 0),
              timeSaved: Number(child.time_saved || 0),
              deviceId: child.device_id,
              devices: [],
-             weekData: child.week_data || [0, 0, 0, 0, 0, 0, 0],
+             weekData: minutesWeekData,
            };
          });
        } else {
@@ -135,7 +140,7 @@
      }
    }
    
-   // Hilfsfunktion zur sekundengenauen Berechnung der heutigen Live-Minuten
+   // Berechnet die heutigen Live-Minuten (bereits auf Minuten-Basis im UI)
    function calculateLiveMinutes(child) {
      let totalMinutes = child.usedTodayStored;
    
@@ -287,7 +292,7 @@
              </svg>
            </div>
            <div style="flex: 1;">
-             <div style="font-size: 14px; font-weight: 700; color: #2d2d2d;">${notif.child_name}</div>
+             <div style="font-size: 14px; font-weight: 700; color: #2d2d2d;">${notif.child_name || t('allChildren')}</div>
              <div style="font-size: 13px; color: #666; margin-top: 2px;">${notif.message}</div>
            </div>
            <div style="font-size: 12px; color: #a0a0a0; white-space: nowrap;">${formattedTime} Uhr</div>

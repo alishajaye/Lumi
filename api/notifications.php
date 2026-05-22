@@ -15,6 +15,11 @@ if (file_exists(__DIR__ . '/config.php')) {
     exit;
 }
 
+// Falls die Session noch nicht aktiv ist, starten
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 if (!isset($_SESSION['user_id'])) {
     http_response_code(401);
     echo json_encode([
@@ -28,10 +33,11 @@ $userId = $_SESSION['user_id'];
 $method = $_SERVER['REQUEST_METHOD'];
 
 try {
-    // MITTEILUNGEN ABRUFEN (GET)
+    // 1. MITTEILUNGEN ABRUFEN (GET)
     if ($method === 'GET') {
+        // SQL erweitert um n.is_read
         $stmt = $pdo->prepare("
-            SELECT n.id, n.message, n.created_at, c.name AS child_name, c.color
+            SELECT n.id, n.message, n.is_read, n.created_at, c.name AS child_name, c.color
             FROM notifications n
             JOIN child c ON n.child_id = c.id
             WHERE n.parent_id = :parent_id
@@ -46,7 +52,24 @@ try {
         exit;
     }
 
-    // ALLE MITTEILUNGEN LÖSCHEN (DELETE)
+    // 2. MITTEILUNGEN ALS GELESEN MARKIEREN (PUT) - NEU
+    if ($method === 'PUT') {
+        // Setzt alle ungelesenen Nachrichten der Eltern auf gelesen (1)
+        $stmt = $pdo->prepare("
+            UPDATE notifications 
+            SET is_read = 1 
+            WHERE parent_id = :parent_id AND is_read = 0
+        ");
+        $stmt->execute([':parent_id' => $userId]);
+        
+        echo json_encode([
+            "status" => "success",
+            "message" => "Mitteilungen als gelesen markiert."
+        ]);
+        exit;
+    }
+
+    // 3. ALLE MITTEILUNGEN LÖSCHEN (DELETE)
     if ($method === 'DELETE') {
         $stmt = $pdo->prepare("DELETE FROM notifications WHERE parent_id = :parent_id");
         $stmt->execute([':parent_id' => $userId]);
@@ -64,7 +87,7 @@ try {
     http_response_code(500);
     echo json_encode([
         "status" => "error",
-        "message" => "Serverfehler beim Abrufen der Mitteilungen: " . $e->getMessage()
+        "message" => "Serverfehler beim Verarbeiten der Mitteilungen: " . $e->getMessage()
     ]);
 }
 ?>
