@@ -1,5 +1,5 @@
 /* =============================================
-   LUMI – Übersicht JS  (API-basiert mit Live-Ticker)
+   LUMI – Übersicht JS (API-basiert mit Live-Ticker - BEREINIGT)
    ============================================= */
 
    const WK_DE = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'];
@@ -9,15 +9,8 @@
    const TRANSLATIONS = {
      de: {
        language: 'Sprache', changePassword: 'Passwort ändern', logout: 'Abmelden',
-       devices: 'Geräte', avgToday: 'Ø heute', rewards: 'Belohnungen',
+       devices: 'Geräte', avgToday: 'Ø heute',
        family: 'Familie', manage: 'Verwalten ›',
-       giveReward: 'Belohnung schenken', giveRewardSub: 'Zeit als Anerkennung vergeben',
-       selectChild: 'KIND AUSWÄHLEN', selectReason: 'GRUND AUSWÄHLEN',
-       cleanRoom: 'Zimmer aufgeräumt', homework: 'Hausaufgaben',
-       playedOutside: 'Draussen gespielt', helpedCooking: 'Beim Kochen geholfen',
-       readBook: 'Buch gelesen', ownReason: 'Eigener Grund eingeben...',
-       giveMinutes: 'MINUTEN SCHENKEN', ownMinutes: 'Eigene Minutenzahl eingeben...',
-       giveTime: 'Zeit schenken', lastRewards: 'LETZTE BELOHNUNGEN',
        activities: 'Aktivitäten', seeAll: 'Alle sehen',
        weekOverview: 'Wochenübersicht', monToSun: 'Montag bis Sonntag',
        thisWeek: 'diese Woche bis heute', allChildren: 'Alle Kinder',
@@ -27,27 +20,18 @@
        greetingMorning: 'Guten Morgen', greetingAfternoon: 'Guten Nachmittag',
        greetingEvening: 'Guten Abend',
        actLimitReached: 'hat sein Tageslimit eingehalten',
-       actRewardGiven: 'erhielt',
        actSessionEnded: 'Tablet-Session beendet',
-       actStreakStart: 'erster Tages-Streak gestartet',
+       actStreakStart: 'erster Tages-Streak started',
        actStreakReached: 'Tage-Streak erreicht',
        minToday: 'min heute', noActivities: 'Noch keine Aktivitäten vorhanden',
-       noRewards: 'Noch keine Belohnungen vergeben',
        children: 'Kinder', activeDevices: 'Geräte aktiv',
        years: 'Jahre',
        today: 'Heute', weekGoal: 'Wochenziel',
      },
      en: {
        language: 'Language', changePassword: 'Change Password', logout: 'Sign Out',
-       devices: 'Devices', avgToday: 'Ø today', rewards: 'Rewards',
+       devices: 'Devices', avgToday: 'Ø today',
        family: 'Family', manage: 'Manage ›',
-       giveReward: 'Give a Reward', giveRewardSub: 'Give time as recognition',
-       selectChild: 'SELECT CHILD', selectReason: 'SELECT REASON',
-       cleanRoom: 'Cleaned room', homework: 'Homework',
-       playedOutside: 'Played outside', helpedCooking: 'Helped cooking',
-       readBook: 'Read a book', ownReason: 'Enter custom reason...',
-       giveMinutes: 'GIVE MINUTES', ownMinutes: 'Enter custom minutes...',
-       giveTime: 'Give time', lastRewards: 'LAST REWARDS',
        activities: 'Activities', seeAll: 'See all',
        weekOverview: 'Weekly Overview', monToSun: 'Monday to Sunday',
        thisWeek: 'this week so far', allChildren: 'All Children',
@@ -57,12 +41,10 @@
        greetingMorning: 'Good morning', greetingAfternoon: 'Good afternoon',
        greetingEvening: 'Good evening',
        actLimitReached: 'kept their daily limit',
-       actRewardGiven: 'received',
        actSessionEnded: 'Tablet session ended',
        actStreakStart: 'first daily streak started',
        actStreakReached: 'day streak reached',
        minToday: 'min today', noActivities: 'No activities yet',
-       noRewards: 'No rewards given yet',
        children: 'Children', activeDevices: 'Active devices',
        years: 'years',
        today: 'Today', weekGoal: 'Week goal',
@@ -127,17 +109,6 @@
      }
    }
    
-   // ─── Belohnungen (localStorage) ───────────────
-   function getBelohnungen() {
-     const raw = localStorage.getItem('lumi_belohnungen');
-     if (raw) return JSON.parse(raw);
-     return [];
-   }
-   
-   function saveBelohnungen(b) {
-     localStorage.setItem('lumi_belohnungen', JSON.stringify(b));
-   }
-   
    // ─── Hilfsfunktionen ─────────────────────────
    function soften(hex, a) { return hex + a; }
    
@@ -198,13 +169,11 @@
    
      const totalDevices = children.reduce((a, c) => a + (c.devices ? c.devices.length : 0), 0);
      const avgMin = children.length > 0 ? Math.round(children.reduce((a, c) => a + calculateLiveMinutes(c), 0) / children.length) : 0;
-     const belohnungen = getBelohnungen();
    
      document.getElementById('uebersichtMeta').textContent =
        `${children.length} ${t('children')} · ${totalDevices} ${t('activeDevices')} · Ø ${avgMin} ${t('minToday')}`;
      document.getElementById('statGeraete').textContent = totalDevices;
      document.getElementById('statMinuten').textContent = avgMin + ' min';
-     document.getElementById('statBelohnungen').textContent = belohnungen.length;
    }
    
    // ─── Familie Karten ──────────────────────────
@@ -280,124 +249,6 @@
      }).join('');
    }
    
-   // ─── Belohnung schenken ──────────────────────
-   let belSelectedChild = null;
-   let belSelectedReason = null;
-   let belSelectedMinutes = null;
-   
-   function renderBelKinder() {
-     const container = document.getElementById('belKinder');
-   
-     if (children.length === 1 && !belSelectedChild) {
-       belSelectedChild = children[0].id;
-     }
-   
-     container.innerHTML = children.map(child => {
-       const isActive = String(belSelectedChild) === String(child.id);
-       return `
-       <div class="ueb-bel-child ${isActive ? 'active' : ''}"
-            style="--c:${child.color};${isActive ? 'background:' + soften(child.color,'15') + ';' : ''}"
-            onclick="selectBelChild('${child.id}')">
-         <div class="ueb-bel-child-avatar" style="background:${soften(child.color,'20')};border:2px solid ${child.color}">
-           ${renderAvatar(child, 'sm')}
-         </div>
-         <span>${child.name}</span>
-       </div>`;
-     }).join('') || `<span style="color:#b0a9a0;font-size:13px">${t('noChildren')}</span>`;
-   
-     checkBelSubmit();
-   }
-   
-   function selectBelChild(id) {
-     belSelectedChild = id;
-     renderBelKinder();
-     checkBelSubmit();
-   }
-   
-   function checkBelSubmit() {
-     const mins = belSelectedMinutes || parseInt(document.getElementById('belEigeneMinuten').value);
-     document.getElementById('belSubmitBtn').disabled = !(belSelectedChild && (belSelectedReason || document.getElementById('belEigenerGrund').value.trim()) && mins > 0);
-   }
-   
-   document.querySelectorAll('.uebersicht-bel-reason-btn').forEach(btn => {
-     btn.addEventListener('click', () => {
-       document.querySelectorAll('.uebersicht-bel-reason-btn').forEach(b => b.classList.remove('active'));
-       btn.classList.add('active');
-       belSelectedReason = btn.textContent;
-       checkBelSubmit();
-     });
-   });
-   
-   document.querySelectorAll('.uebersicht-bel-min-btn').forEach(btn => {
-     btn.addEventListener('click', () => {
-       document.querySelectorAll('.uebersicht-bel-min-btn').forEach(b => b.classList.remove('active'));
-       btn.classList.add('active');
-       belSelectedMinutes = parseInt(btn.dataset.mins);
-       document.getElementById('belEigeneMinuten').value = '';
-       checkBelSubmit();
-     });
-   });
-   
-   document.getElementById('belEigeneMinuten').addEventListener('input', () => {
-     document.querySelectorAll('.uebersicht-bel-min-btn').forEach(b => b.classList.remove('active'));
-     belSelectedMinutes = null;
-     checkBelSubmit();
-   });
-   
-   document.getElementById('belEigenerGrund').addEventListener('input', checkBelSubmit);
-   
-   document.getElementById('belSubmitBtn').addEventListener('click', () => {
-     const child = children.find(c => c.id === belSelectedChild || c.id === String(belSelectedChild));
-     if (!child) return;
-   
-     const mins = belSelectedMinutes || parseInt(document.getElementById('belEigeneMinuten').value);
-     const reason = belSelectedReason || document.getElementById('belEigenerGrund').value.trim();
-     if (!mins || !reason) return;
-   
-     const belohnungen = getBelohnungen();
-     belohnungen.unshift({
-       childId: child.id, childName: child.name, childColor: child.color,
-       mins, reason, time: Date.now()
-     });
-     saveBelohnungen(belohnungen);
-   
-     belSelectedChild = null; belSelectedReason = null; belSelectedMinutes = null;
-     document.querySelectorAll('.uebersicht-bel-reason-btn, .uebersicht-bel-min-btn').forEach(b => b.classList.remove('active'));
-     document.getElementById('belEigenerGrund').value = '';
-     document.getElementById('belEigeneMinuten').value = '';
-     document.getElementById('belSubmitBtn').disabled = true;
-   
-     renderAll();
-   });
-   
-   function renderBelLetzte() {
-     const belohnungen = getBelohnungen().slice(0, 1);
-     const list = document.getElementById('belLetzteList');
-     if (belohnungen.length === 0) {
-       list.innerHTML = `<div class="ueb-empty-small">${t('noRewards')}</div>`;
-       return;
-     }
-   
-     list.innerHTML = belohnungen.map(b => {
-       const child = children.find(c => c.id === String(b.childId));
-       const color = child ? child.color : b.childColor;
-       const avatarHtml = child ? renderAvatar(child, 'sm') : '<span style="color:' + color + ';font-size:15px;font-weight:900">' + b.childName.charAt(0) + '</span>';
-       const ago = getTimeAgo(b.time);
-       return `<div class="ueb-bel-letzte-item">
-         <div class="ueb-bel-letzte-avatar" style="background:${soften(color,'20')};color:${color}">
-           ${avatarHtml}
-         </div>
-         <div>
-           <div class="ueb-bel-letzte-name">
-             <strong>${b.childName}</strong>
-             <span style="color:#7ec99a;font-weight:700"> +${b.mins} min</span>
-           </div>
-           <div class="ueb-bel-letzte-reason">${b.reason} · ${ago}</div>
-         </div>
-       </div>`;
-     }).join('');
-   }
-   
    // ─── Echte Aktivitäten von notifications.php laden ───
    async function renderAktivitaeten() {
      const list = document.getElementById('aktivitaetenList');
@@ -423,7 +274,6 @@
        const latestNotifications = notifications.slice(0, 6);
    
        list.innerHTML = latestNotifications.map(notif => {
-         // Zeit formattieren (z.B. "14:25 Uhr")
          const date = new Date(notif.created_at);
          const formattedTime = date.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
          const childColor = notif.color || '#5192D2';
@@ -570,7 +420,6 @@
    function startLiveDashboardTicker() {
      if (window.liveDashboardInterval) clearInterval(window.liveDashboardInterval);
    
-     // Aktualisiert jede Sekunde die UI für flüssige Live-Zeiten
      window.liveDashboardInterval = setInterval(() => {
        const activeChildRunning = children.some(c => c.isCurrentlyUsing);
        if (activeChildRunning) {
@@ -580,7 +429,6 @@
        }
      }, 1000);
    
-     // Neuer API-Poll: Holt alle 10 Sekunden frische Aktivitäten und Gerätestatistiken vom Server
      if (window.apiPollInterval) clearInterval(window.apiPollInterval);
      window.apiPollInterval = setInterval(async () => {
        await loadChildren();
@@ -597,8 +445,6 @@
      renderUser();
      renderHeader();
      renderKinderGrid();
-     renderBelKinder();
-     renderBelLetzte();
      renderAktivitaeten();
      renderWoche();
    }
