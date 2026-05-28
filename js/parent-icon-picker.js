@@ -5,7 +5,6 @@
    ============================================= */
 
 function openParentIconModal() {
-  // Modal falls noch nicht im DOM, erstellen
   if (!document.getElementById('parentIconModalOverlay')) {
     injectParentIconModal();
   }
@@ -34,7 +33,7 @@ function injectParentIconModal() {
   overlay.className = 'kinder-modal-overlay';
   overlay.id = 'parentIconModalOverlay';
   overlay.innerHTML =
-    '<div class="kinder-modal kinder-modal--small" style="max-width:380px;">' +
+    '<div class="kinder-modal kinder-modal--small">'+
       '<div class="kinder-modal-header">' +
         '<h2 class="kinder-modal-title">' + title + '</h2>' +
         '<button class="kinder-modal-close" onclick="closeParentIconModal()">' +
@@ -44,7 +43,7 @@ function injectParentIconModal() {
           '</svg>' +
         '</button>' +
       '</div>' +
-      '<div class="kinder-icon-grid" id="parentIconGrid" style="max-height:320px;overflow-y:auto;"></div>' +
+      '<div class="kinder-icon-grid" id="parentIconGrid" style="overflow-y:auto;"></div>' +
       '<div class="kinder-form-actions" style="margin-top:20px;">' +
         '<button class="kinder-btn-cancel" onclick="closeParentIconModal()">' + cancelText + '</button>' +
         '<button class="kinder-btn-save" onclick="saveParentIcon()">' + saveText + '</button>' +
