@@ -1,7 +1,7 @@
 <?php
 // sessions.php
 header('Content-Type: application/json');
-require_once '../system/config.php';  // Lädt die funktionierende config.php
+require_once '../system/config.php';
 
 $method = $_SERVER['REQUEST_METHOD'];
 
@@ -10,29 +10,27 @@ function getJsonInput() {
 }
 
 try {
-    // Da die Box ein externes Hardware-Gerät ist, nutzt sie keine Browser-Session.
-    // Sie identifiziert das Kind rein über die übermittelte nfc_id.
     if ($method === 'POST') {
         $data = getJsonInput();
         
         $action = trim($data['action'] ?? ''); // 'start' oder 'end'
-        $nfcId  = trim($data['nfc_id'] ?? '');
+        // WICHTIG: In unserem ERM heißt das Feld in der Tabelle "child" "rfid_id", nicht "nfc_id"
+        $rfidId = trim($data['rfid_id'] ?? '');
 
-        if (!$nfcId || !in_array($action, ['start', 'end'])) {
+        if (!$rfidId || !in_array($action, ['start', 'end'])) {
             http_response_code(400);
             echo json_encode(["status" => "error", "message" => "Ungültige Parameter."]);
             exit;
         }
 
-        // 1. Finde heraus, welches Kind zu dieser NFC-ID gehört 
-        // ERWEITERT: Holt direkt den Namen, das Elternteil und das Tageslimit mit ab
-        $stmt = $pdo->prepare("SELECT id, name, parent_id, daily_limit FROM child WHERE nfc_id = :nfc_id");
-        $stmt->execute([':nfc_id' => $nfcId]);
+        // 1. Kind anhand der RFID identifizieren
+        $stmt = $pdo->prepare("SELECT id, name, parent_id, daily_limit FROM child WHERE rfid_id = :rfid_id");
+        $stmt->execute([':rfid_id' => $rfidId]);
         $child = $stmt->fetch();
 
         if (!$child) {
-            http_response_code(444); // Eigener Statuscode: Karte unbekannt
-            echo json_encode(["status" => "error", "message" => "NFC-Karte nicht registriert."]);
+            http_response_code(444); 
+            echo json_encode(["status" => "error", "message" => "RFID-Karte nicht registriert."]);
             exit;
         }
 
@@ -45,34 +43,57 @@ try {
         // SZENARIO A: SITZUNG STARTEN
         // ==========================================
         if ($action === 'start') {
-            // Prüfen, ob für dieses Kind noch eine offene Session existiert (Sicherheitscheck)
-            $checkSession = $pdo->prepare("SELECT id FROM session WHERE child_id = :child_id AND end_time IS NULL");
-            $checkSession->execute([':child_id' => $childId]);
+            // NEU: Zuerst berechnen wir die heute bereits verbrauchte Zeit aus der session Tabelle
+            $timeCheckStmt = $pdo->prepare("
+                SELECT COALESCE(SUM(duration), 0) as total_used 
+                FROM session 
+                WHERE child_id = :child_id AND DATE(start_time) = CURRENT_DATE AND status = 'completed'
+            ");
+            $timeCheckStmt->execute([':child_id' => $childId]);
+            $totalUsedToday = intval($timeCheckStmt->fetch()['total_used']);
             
-            if ($checkSession->fetch()) {
-                echo json_encode(["status" => "success", "message" => "Session läuft bereits."]);
+            // NEU: Restzeit berechnen
+            $restzeit = $dailyLimit - $totalUsedToday;
+            if ($restzeit <= 0) {
+                echo json_encode(["status" => "error", "message" => "Tageslimit bereits erreicht.", "restzeit" => 0]);
                 exit;
             }
 
-            // Neue Session eintragen. start_time wird automatisch über current_timestamp() befüllt!
-            $stmt = $pdo->prepare("INSERT INTO session (child_id, start_time, end_time, duration) VALUES (:child_id, CURRENT_TIMESTAMP, NULL, NULL)");
-            $stmt->execute([':child_id' => $childId]);
+            // NEU: Prüfen, ob für dieses Kind noch eine offene Session existiert (über das neue status Feld)
+            $checkSession = $pdo->prepare("SELECT id FROM session WHERE child_id = :child_id AND status = 'active'");
+            $checkSession->execute([':child_id' => $childId]);
+            
+            if ($checkSession->fetch()) {
+                echo json_encode(["status" => "error", "message" => "Session läuft bereits."]);
+                exit;
+            }
 
-            // AUTOMATISCHER EINTRAG 1: Mitteilung über das Entnehmen aus der Box
+            // NEU: Neue Session eintragen mit Status 'active' und der berechneten Restzeit
+            $stmt = $pdo->prepare("
+                INSERT INTO session (child_id, start_time, allocated_time, status) 
+                VALUES (:child_id, CURRENT_TIMESTAMP, :allocated_time, 'active')
+            ");
+            $stmt->execute([
+                ':child_id' => $childId,
+                ':allocated_time' => $restzeit
+            ]);
+
+            // Benachrichtigung an Eltern (wie vom Teammitglied vorgesehen, Tabelle heißt laut ERM "notification", nicht "notifications")
             $notifStmt = $pdo->prepare("
-                INSERT INTO notifications (parent_id, child_id, message, created_at) 
+                INSERT INTO notification (parent_id, child_id, message, created_at) 
                 VALUES (:parent_id, :child_id, :message, CURRENT_TIMESTAMP)
             ");
             $notifStmt->execute([
                 ':parent_id' => $parentId,
                 ':child_id'  => $childId,
-                ':message'   => $childName . " hat das Gerät aus der Box genommen und eine Sitzung gestartet."
+                ':message'   => $childName . " hat das Gerät aus der Box genommen."
             ]);
 
+            // WICHTIG: Wir geben die Restzeit an den Microcontroller zurück!
             echo json_encode([
                 "status" => "success", 
                 "message" => "Sitzung erfolgreich gestartet.",
-                "child_id" => $childId
+                "restzeit_minuten" => $restzeit
             ]);
             exit;
         }
@@ -81,8 +102,8 @@ try {
         // SZENARIO B: SITZUNG BEENDEN
         // ==========================================
         if ($action === 'end') {
-            // Finde die aktuell offene Session des Kindes
-            $sessionStmt = $pdo->prepare("SELECT id, start_time FROM session WHERE child_id = :child_id AND end_time IS NULL ORDER BY id DESC LIMIT 1");
+            // NEU: Finde die aktuell offene Session über den Status
+            $sessionStmt = $pdo->prepare("SELECT id, start_time FROM session WHERE child_id = :child_id AND status = 'active' ORDER BY id DESC LIMIT 1");
             $sessionStmt->execute([':child_id' => $childId]);
             $openSession = $sessionStmt->fetch();
 
@@ -93,39 +114,25 @@ try {
 
             $sessionId = $openSession['id'];
             $startTime = new DateTime($openSession['start_time']);
-            $endTime   = new DateTime(); // Jetzt
+            $endTime   = new DateTime(); 
 
             // Berechne die Spieldauer in Minuten
             $interval = $startTime->diff($endTime);
             $durationInMinutes = ($interval->days * 24 * 60) + ($interval->h * 60) + $interval->i;
-            
-            // Falls es weniger als eine Minute war, runden wir für den Testlauf auf mindestens 1 Minute auf
-            if ($durationInMinutes === 0) {
-                $durationInMinutes = 1;
-            }
+            if ($durationInMinutes === 0) $durationInMinutes = 1;
 
-            // 1. Update der Session-Tabelle (Endzeit & Dauer setzen)
-            $updateSession = $pdo->prepare("UPDATE session SET end_time = CURRENT_TIMESTAMP, duration = :duration WHERE id = :id");
+            // NEU: Update der Session-Tabelle (Endzeit, Dauer UND Status auf 'completed' setzen)
+            $updateSession = $pdo->prepare("UPDATE session SET end_time = CURRENT_TIMESTAMP, duration = :duration, status = 'completed' WHERE id = :id");
             $updateSession->execute([
                 ':duration' => $durationInMinutes,
                 ':id'       => $sessionId
             ]);
 
-            // 2. Buchung im Zeit-Sparbuch (time_accounts) eintragen
-            // Wir buchen die verbrauchte Zeit als negativen Betrag ab ('type' = 'abzug')
-            $insertAccount = $pdo->prepare("
-                INSERT INTO time_accounts (child_id, amount, type, session_id, timestamp) 
-                VALUES (:child_id, :amount, 'abzug', :session_id, CURRENT_TIMESTAMP)
-            ");
-            $insertAccount->execute([
-                ':child_id'   => $childId,
-                ':amount'     => -$durationInMinutes, // Negativer Wert, da Zeit verbraucht wurde
-                ':session_id' => $sessionId
-            ]);
+            // HINWEIS: Der Eintrag in time_accounts wurde komplett gelöscht, da wir die Zeit dynamisch berechnen!
 
-            // AUTOMATISCHER EINTRAG 2: Mitteilung über das Zurücklegen in die Box
+            // AUTOMATISCHER EINTRAG 2: Mitteilung über das Zurücklegen
             $notifStmt = $pdo->prepare("
-                INSERT INTO notifications (parent_id, child_id, message, created_at) 
+                INSERT INTO notification (parent_id, child_id, message, created_at) 
                 VALUES (:parent_id, :child_id, :message, CURRENT_TIMESTAMP)
             ");
             $notifStmt->execute([
@@ -134,29 +141,23 @@ try {
                 ':message'   => $childName . " hat das Gerät wieder zurückgelegt (Dauer: " . $durationInMinutes . " Min.)."
             ]);
 
-            // AUTOMATISCHER EINTRAG 3: Limit-Check für den heutigen Tag
-            // Berechnet die absolute Summe aller verbrauchten Zeiten ('abzug') am heutigen Kalendertag
+            // NEU: Limit-Check für den heutigen Tag (jetzt direkt aus der session Tabelle)
             $timeCheckStmt = $pdo->prepare("
-                SELECT SUM(ABS(amount)) as total_used 
-                FROM time_accounts 
-                WHERE child_id = :child_id 
-                  AND type = 'abzug' 
-                  AND DATE(timestamp) = CURRENT_DATE
+                SELECT SUM(duration) as total_used 
+                FROM session 
+                WHERE child_id = :child_id AND DATE(start_time) = CURRENT_DATE AND status = 'completed'
             ");
             $timeCheckStmt->execute([':child_id' => $childId]);
-            $timeResult = $timeCheckStmt->fetch();
-            $totalUsedToday = intval($timeResult['total_used'] ?? 0);
+            $totalUsedToday = intval($timeCheckStmt->fetch()['total_used'] ?? 0);
 
-            // Prüfen, ob die verbrauchte Zeit das eingestellte Limit übersteigt
             if ($totalUsedToday > $dailyLimit) {
                 $limitNotifStmt = $pdo->prepare("
-                    INSERT INTO notifications (parent_id, child_id, message, created_at) 
+                    INSERT INTO notification (parent_id, child_id, message, created_at) 
                     VALUES (:parent_id, :child_id, :message, CURRENT_TIMESTAMP)
                 ");
                 $limitNotifStmt->execute([
                     ':parent_id' => $parentId,
                     ':child_id'  => $childId,
-                    // Exakter Textwunsch: "X hat das Tageslimit von Y Minuten überschritten!"
                     ':message'   => $childName . " hat das Tageslimit von " . $dailyLimit . " Minuten überschritten!"
                 ]);
             }
@@ -171,7 +172,6 @@ try {
         }
     }
 
-    // Falls fälschlicherweise GET o.ä. aufgerufen wurde
     http_response_code(405);
     echo json_encode(["status" => "error", "message" => "Methode nicht erlaubt."]);
 
@@ -179,7 +179,7 @@ try {
     http_response_code(500);
     echo json_encode([
         "status" => "error",
-        "message" => "Serverfehler bei der Zeiterfassung: " . $e->getMessage()
+        "message" => "Serverfehler: " . $e->getMessage()
     ]);
 }
 ?>
