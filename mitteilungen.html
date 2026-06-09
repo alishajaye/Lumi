@@ -4,45 +4,51 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Mitteilungen – Lumi</title>
+  <link rel="icon" href="resources/assets/lumi_logo.svg" type="image/svg+xml">
   <link rel="stylesheet" href="css/style.css" />
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
 </head>
-<body>
-  <nav>
-    <div class="logo"><a href="index.html"><img src="resources/assets/lumi_logo.svg" alt="Logo"></a></div>
-    <div class="nav-links">
-      <a href="index.html" data-i18n-nav="nav_uebersicht">Übersicht</a>
-      <a href="kinder.html" data-i18n-nav="nav_kinder">Kinder</a>
-      <a href="produkte.html" data-i18n-nav="nav_produkte">Produkte</a>
-      <a href="empfehlungen.html" data-i18n-nav="nav_empfehlungen">Empfehlungen</a>
-      <a href="mitteilungen.html" data-i18n-nav="nav_mitteilungen">Mitteilungen</a>
-    </div>
-  </nav>
-  
-  <div class="mitt-page-content">
-    <div class="mitt-top-bar">
-      <h1 class="mitt-page-title" data-i18n="mitt_title">Mitteilungen</h1>
-      <button class="mitt-mark-all-btn" id="clearAllBtn">Verlauf leeren</button>
-    </div>
-    
-    <div class="mitt-filter-tabs">
-      <button class="mitt-filter-tab active" data-filter="all" data-i18n="mitt_all">Alle</button>
-      <button class="mitt-filter-tab" data-filter="unread" data-i18n="mitt_unread">Ungelesen</button>
-      <button class="mitt-filter-tab" data-filter="read" data-i18n="mitt_read">Gelesen</button>
-    </div>
-    
-    <div class="mitt-notification-list" id="notificationList">
-      <p style="text-align: center; color: #b0a9a0; padding: 20px;">Mitteilungen werden geladen...</p>
-    </div>
-    
-    <div class="mitt-empty-state" id="emptyState" style="display: none;">
-      <div class="mitt-empty-icon"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><path d="M20 8a4 4 0 0 1 8 0v2h-8V8z" stroke="#b0a9a0" stroke-width="2"/><path d="M12 20c0-6.627 5.373-12 12-12s12 5.373 12 12v8l3 6H9l3-6v-8z" stroke="#b0a9a0" stroke-width="2" stroke-linejoin="round" fill="none"/><path d="M20 38a4 4 0 0 0 8 0" stroke="#b0a9a0" stroke-width="2" stroke-linecap="round"/></svg></div>
-      <p data-i18n="mitt_empty">Keine Mitteilungen vorhanden</p>
-    </div>
-  </div>
 
-  <script src="js/icons.js"></script>
-  <script src="js/nav.js"></script>
-  <script src="Mitteilungen.js"></script> 
+<body>
+<nav>
+  <div class="logo"><a href="index.html"><img src="resources/assets/lumi_logo.svg" alt="Logo"></a></div>
+  <div class="nav-links">
+    <a href="index.html" data-i18n-nav="nav_uebersicht">Übersicht</a>
+    <a href="kinder.html" data-i18n-nav="nav_kinder">Kinder</a>
+    <a href="produkte.html" data-i18n-nav="nav_produkte">Produkte</a>
+    <a href="empfehlungen.html" data-i18n-nav="nav_empfehlungen">Empfehlungen</a>
+    <a href="mitteilungen.html" data-i18n-nav="nav_mitteilungen">Mitteilungen</a>
+  </div>
+</nav>
+
+<div class="mitt-page-content">
+  <div class="mitt-top-bar">
+    <h1 class="mitt-page-title" data-i18n-shared="mitt_title">Mitteilungen</h1>
+    <button class="mitt-mark-all-btn" id="clearAllBtn" data-i18n-shared="mitt_mark_all">Verlauf leeren</button>
+  </div>
+  <div class="mitt-filter-tabs">
+    <button class="mitt-filter-tab active" data-filter="all" data-i18n-shared="mitt_all">Alle</button>
+    <button class="mitt-filter-tab" data-filter="unread" data-i18n-shared="mitt_unread">Ungelesen</button>
+    <button class="mitt-filter-tab" data-filter="read" data-i18n-shared="mitt_read">Gelesen</button>
+  </div>
+  <div class="mitt-notification-list" id="notificationList">
+    <p style="text-align: center; color: #b0a9a0; padding: 20px;">Mitteilungen werden geladen...</p>
+  </div>
+  <div class="mitt-empty-state" id="emptyState" style="display: none;">
+    <div class="mitt-empty-icon">
+      <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+        <path d="M20 8a4 4 0 0 1 8 0v2h-8V8z" stroke="#b0a9a0" stroke-width="2"/>
+        <path d="M12 20c0-6.627 5.373-12 12-12s12 5.373 12 12v8l3 6H9l3-6v-8z" stroke="#b0a9a0" stroke-width="2" stroke-linejoin="round" fill="none"/>
+        <path d="M20 38a4 4 0 0 0 8 0" stroke="#b0a9a0" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <p data-i18n-shared="mitt_empty">Keine Mitteilungen in dieser Kategorie</p>
+  </div>
+</div>
+
+<script src="js/icons.js"></script>
+<script src="js/nav.js"></script>
+<script src="js/mitteilungen.js"></script>
+<script src="js/parent-icon-picker.js"></script>
 </body>
 </html>

@@ -3,46 +3,46 @@
 <head>
   <meta charset="UTF-8" />
   <title>Login</title>
+  <link rel="icon" href="resources/assets/lumi_logo.svg" type="image/svg+xml">
   <link rel="stylesheet" href="css/auth.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />  <!-- NEU: Schrift -->
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />  
 </head>
+
 <body>
-
   <div class="login-container">
-
     <img src="resources/assets/lumi_logo.svg" alt="Logo" class="logo" />
 
-    <div class="login-card">  <!-- NEU: Card-Wrapper -->
+    <div class="login-card">  
 
-      <div class="login-header">  <!-- NEU: Header -->
+      <div class="login-header">  
         <h1>Willkommen bei Lumi</h1>
         <p>Schön, dass du da bist</p>
       </div>
 
       <form id="loginForm">
 
-        <div class="form-group">  <!-- GEÄNDERT: class="form-group" -->
+        <div class="form-group">  
           <label for="email">E-MAIL</label>
           <input type="email" id="email" placeholder="max@beispiel.ch" required />
         </div>
 
-        <div class="form-group">  <!-- GEÄNDERT: class="form-group" -->
+        <div class="form-group">  
           <label for="password">PASSWORT</label>
           <input type="password" id="password" placeholder="••••••••" required />
-          <a href="#" class="forgot-link">Passwort vergessen?</a>  <!-- NEU -->
+          <a href="#" class="forgot-link">Passwort vergessen?</a>  
         </div>
 
-        <button type="submit" class="btn-login">Anmelden</button>  <!-- GEÄNDERT: class="btn-login" -->
+        <button type="submit" class="btn-login">Anmelden</button>  
 
       </form>
 
-      <p class="register-text">  <!-- GEÄNDERT: class="register-text" -->
+      <p class="register-text">  
         Noch kein Konto? <a href="register.html">Registrieren</a>
       </p>
 
-    </div>  <!-- Ende login-card -->
+    </div>  
 
-  </div>  <!-- Ende login-container -->
+  </div>  
 
   <script src="js/login.js"></script>
 </body>

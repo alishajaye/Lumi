@@ -10,6 +10,8 @@ function getJsonInput() {
 }
 
 try {
+    // Da die Box ein externes Hardware-Gerät ist, nutzt sie keine Browser-Session.
+    // Sie identifiziert das Kind rein über die übermittelte rfid_id der Karte.
     if ($method === 'POST') {
         $data = getJsonInput();
         
@@ -17,6 +19,7 @@ try {
         // WICHTIG: In unserem ERM heißt das Feld in der Tabelle "child" "rfid_id", nicht "nfc_id"
         $rfidId = trim($data['rfid_id'] ?? '');
 
+        if (!$rfidId || !in_array($action, ['start', 'end'])) {
         if (!$rfidId || !in_array($action, ['start', 'end'])) {
             http_response_code(400);
             echo json_encode(["status" => "error", "message" => "Ungültige Parameter."]);
@@ -37,7 +40,13 @@ try {
         $childId    = $child['id'];
         $childName  = $child['name'];
         $parentId   = $child['parent_id'];
-        $dailyLimit = intval($child['daily_limit']);
+        $dailyLimit = intval($child['daily_limit']); // Ist in Sekunden hinterlegt!
+
+        // Finde das zugehörige Gerät des Kindes, um den Status zu ändern und die ID zu loggen
+        $deviceStmt = $pdo->prepare("SELECT id FROM device WHERE child_id = :child_id LIMIT 1");
+        $deviceStmt->execute([':child_id' => $childId]);
+        $device = $deviceStmt->fetch();
+        $deviceId = $device ? $device['id'] : null;
 
         // ==========================================
         // SZENARIO A: SITZUNG STARTEN
@@ -124,7 +133,7 @@ try {
             // NEU: Update der Session-Tabelle (Endzeit, Dauer UND Status auf 'completed' setzen)
             $updateSession = $pdo->prepare("UPDATE session SET end_time = CURRENT_TIMESTAMP, duration = :duration, status = 'completed' WHERE id = :id");
             $updateSession->execute([
-                ':duration' => $durationInMinutes,
+                ':duration' => $durationInSeconds,
                 ':id'       => $sessionId
             ]);
 
@@ -165,8 +174,8 @@ try {
             echo json_encode([
                 "status" => "success",
                 "message" => "Sitzung erfolgreich beendet.",
-                "duration_minutes" => $durationInMinutes,
-                "total_used_today" => $totalUsedToday
+                "duration_seconds" => $durationInSeconds,
+                "total_used_today_seconds" => $totalUsedTodaySeconds
             ]);
             exit;
         }

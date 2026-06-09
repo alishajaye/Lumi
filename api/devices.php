@@ -26,8 +26,9 @@ try {
     // 1. GERÄTE AUSLESEN (GET)
     // Holt alle Geräte von Kindern, die dem aktuell eingeloggten User gehören
     if ($method === 'GET') {
+        // SQL erweitert um d.NFC_id und d.is_in_box für die Live-Statusanzeige im Dashboard
         $stmt = $pdo->prepare("
-            SELECT d.id, d.child_id, d.name, d.type, c.name AS child_name
+            SELECT d.id, d.child_id, d.name, d.type, d.NFC_id, d.is_in_box, c.name AS child_name
             FROM device d
             JOIN child c ON d.child_id = c.id
             WHERE c.parent_id = :parent_id
@@ -50,6 +51,8 @@ try {
         $childId = intval($data['child_id'] ?? 0);
         $deviceName = trim($data['name'] ?? '');
         $deviceType = trim($data['type'] ?? '');
+        // NFC_id als String abfangen (Wichtig wegen Wechsel zu VARCHAR, erlaubt Text und Hex-Codes)
+        $nfcId = trim($data['nfc_id'] ?? ''); 
 
         if (!$childId || !$deviceName) {
             echo json_encode([
@@ -70,16 +73,17 @@ try {
             exit;
         }
 
-        // In Tabelle 'device' eintragen
+        // In Tabelle 'device' eintragen (Inklusive NFC_id und dem Standardwert 1 für is_in_box)
         $stmt = $pdo->prepare("
-            INSERT INTO device (child_id, name, type)
-            VALUES (:child_id, :name, :type)
+            INSERT INTO device (child_id, name, type, NFC_id, is_in_box)
+            VALUES (:child_id, :name, :type, :nfc_id, 1)
         ");
 
         $stmt->execute([
             ':child_id' => $childId,
             ':name'     => $deviceName,
-            ':type'     => $deviceType ? $deviceType : null
+            ':type'     => $deviceType ? $deviceType : null,
+            ':nfc_id'   => $nfcId ? $nfcId : null
         ]);
 
         echo json_encode([
