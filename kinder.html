@@ -4,10 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Kinder – Lumi</title>
-  <!-- <link rel="icon" href="resources/assets/lumi_logo.svg" type="image/svg+xml"> -->
   <link rel="stylesheet" href="css/style.css" />
-  <!-- <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet" /> -->
-</head>
+  </head>
 
 <body>
   <nav>
@@ -35,7 +33,6 @@
     <div class="kinder-grid" id="kinderGrid"></div>
   </div>
 
-  <!-- Add/Edit Modal -->
   <div class="kinder-modal-overlay" id="modalOverlay">
     <div class="kinder-modal">
       <div class="kinder-modal-header">
@@ -48,7 +45,7 @@
         <input type="hidden" id="childId" />
         <div class="kinder-form-group"><label>NAME</label><input type="text" id="childName" placeholder="Name des Kindes" required /></div>
         <div class="kinder-form-group"><label>ALTER</label><input type="number" id="childAge" placeholder="Alter in Jahren" min="0" max="18" required /></div>
-        <div class="kinder-form-group"><label>TAGESLIMIT (MINUTEN)</label><input type="number" id="childLimit" placeholder="z.B. 90" min="0" max="480" required /></div>
+        
         <div class="kinder-form-group">
           <label>FARBE WÄHLEN</label>
           <div class="kinder-color-picker">
@@ -67,7 +64,6 @@
           <input type="hidden" id="childColor" value="#F19DAE" />
         </div>
 
-        <!-- Icon Picker -->
         <div class="kinder-form-group">
           <label id="iconPickerLabel">ICON WÄHLEN</label>
           <div class="kinder-icon-picker">
@@ -85,7 +81,6 @@
     </div>
   </div>
 
-  <!-- Color Modal -->
   <div class="kinder-modal-overlay" id="colorModalOverlay">
     <div class="kinder-modal kinder-modal--small">
       <div class="kinder-modal-header">
@@ -108,7 +103,6 @@
     </div>
   </div>
 
-  <!-- Limit Modal -->
   <div class="kinder-modal-overlay" id="limitModalOverlay">
     <div class="kinder-modal kinder-modal--small">
       <div class="kinder-modal-header">
@@ -135,6 +129,5 @@
   <script src="js/kinder.js"></script>
   <script src="js/icon-picker.js"></script>
   <script src="js/color-picker.js"></script>
-  <!-- <script src="js/parent-icon-picker.js"></script> -->
-</body>
+  </body>
 </html>
