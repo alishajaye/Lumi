@@ -7,7 +7,6 @@ document.addEventListener('DOMContentLoaded', () => {
   let allNotifications = [];
   let currentFilter = 'all';
 
-  // Zeitformatierung je nach aktueller Sprache
   function formatTime(dateString) {
     const date = new Date(dateString);
     const lang = localStorage.getItem('lumi_lang') || 'de';
@@ -18,7 +17,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // 1. Mitteilungen von der PHP-API holen
   async function fetchNotifications() {
     try {
       const response = await fetch('api/notifications.php');
@@ -36,7 +34,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // 2. Mitteilungen im DOM aufbauen und filtern
   function renderNotifications() {
     notificationList.innerHTML = '';
     
@@ -86,7 +83,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // 3. Filter-Tabs
   tabs.forEach(tab => {
     tab.addEventListener('click', () => {
       tabs.forEach(t => t.classList.remove('active'));
@@ -96,7 +92,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // 4. Verlauf leeren
   if (clearAllBtn) {
     clearAllBtn.addEventListener('click', async () => {
       const lang = localStorage.getItem('lumi_lang') || 'de';
@@ -121,9 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Initiales Laden
   fetchNotifications();
 
-  // Live-Poll alle 15 Sekunden
   setInterval(fetchNotifications, 15000);
 });

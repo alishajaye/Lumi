@@ -1,9 +1,3 @@
-/* =============================================
-   LUMI – icons.js (die Bibliothek)
-   Shared SVG icon definitions for profiles
-   Loaded BEFORE other scripts that need icons
-   ============================================= */
-
 var LUMI_ICONS = {
   lion: {
     name: { de: 'Löwe', en: 'Lion' },
@@ -91,7 +85,6 @@ var LUMI_ICONS = {
   }
 };
 
-// Helper: get icon SVG with a specific color
 function getLumiIconSvg(iconKey, color, size) {
   if (!iconKey || !LUMI_ICONS[iconKey]) return '';
   size = size || 24;
@@ -99,14 +92,12 @@ function getLumiIconSvg(iconKey, color, size) {
   return '<div style="width:' + size + 'px;height:' + size + 'px;color:' + color + ';display:flex;align-items:center;justify-content:center">' + svg + '</div>';
 }
 
-// Helper: get icon name in current language
 function getLumiIconName(iconKey) {
   if (!iconKey || !LUMI_ICONS[iconKey]) return '';
   var lang = localStorage.getItem('lumi_lang') || 'de';
   return LUMI_ICONS[iconKey].name[lang] || LUMI_ICONS[iconKey].name.de;
 }
 
-// Helper: render avatar (icon or initial letter)
 function renderLumiAvatar(child, size) {
   var iconKey = child.icon || localStorage.getItem('lumi_child_icon_' + child.id) || '';
   if (iconKey && LUMI_ICONS[iconKey]) {
@@ -117,7 +108,6 @@ function renderLumiAvatar(child, size) {
   return '<span style="color:' + child.color + ';font-size:' + fs + ';font-weight:900">' + child.name.charAt(0) + '</span>';
 }
 
-// Helper: render parent avatar (icon or initial letter)
 function renderParentAvatar(size) {
   var iconKey = localStorage.getItem('lumi_parent_icon') || '';
   var user = typeof getUser === 'function' ? getUser() : { name: 'U' };

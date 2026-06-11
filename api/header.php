@@ -8,7 +8,6 @@
     <nav class="nav-menu">
       <ul>
         <?php
-          // Hilfs-Logik: Welche Seite ist gerade aktiv?
           $currentPage = basename($_SERVER['PHP_SELF']);
         ?>
         <li><a href="ubersicht.php" class="<?php echo ($currentPage == 'ubersicht.php') ? 'active' : ''; ?>">Übersicht</a></li>

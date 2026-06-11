@@ -1,8 +1,3 @@
-/* =============================================
-   LUMI – nav.js
-   Läuft auf JEDER Seite: Auth-Check, Profil-Dropdown, Sprachwechsel, Nav, Footer
-   ============================================= */
-
    const SHARED_TRANSLATIONS = {
     de: {
       nav_uebersicht: "Übersicht",
@@ -464,7 +459,6 @@
     if (emailEl) emailEl.textContent = user.email;
   }
   
-  // ─── Profile Dropdown & Burger Menu ──────────
   function injectProfileDropdown() {
     var nav = document.querySelector("nav");
     if (!nav || document.getElementById("profileBtn")) return;
@@ -591,7 +585,6 @@
     }
   }
   
-  // ─── Password Modal ──────────────────────────
   function injectPasswordModal() {
     if (document.getElementById("navPasswordModalOverlay")) return;
     var modal = document.createElement("div");
@@ -659,7 +652,6 @@
     document.body.appendChild(footer);
   }
   
-  // Skript automatisch initialisieren bei Laden der Seite
   document.addEventListener("DOMContentLoaded", function() {
     checkAuth();
     injectProfileDropdown();

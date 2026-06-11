@@ -411,7 +411,7 @@ childForm.addEventListener("submit", async (e) => {
   const data = {
     name: document.getElementById("childName").value.trim(),
     age: parseInt(document.getElementById("childAge").value),
-    dailyLimit: existingChild ? existingChild.dailyLimit * 60 : 5400, // bestehenden Wert behalten, Default = 90min
+    dailyLimit: existingChild ? existingChild.dailyLimit * 60 : 5400, 
     color: document.getElementById("childColor").value,
   };
   let result;

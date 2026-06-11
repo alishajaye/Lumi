@@ -1,5 +1,4 @@
 <?php
-// kinder.php
 header('Content-Type: application/json');
 
 if (file_exists(__DIR__ . '/config.php')) {
@@ -15,7 +14,6 @@ if (file_exists(__DIR__ . '/config.php')) {
     exit;
 }
 
-// Falls die Session noch nicht gestartet wurde, starten wir sie hier sicherheitshalber
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -37,9 +35,7 @@ function getJsonInput() {
 }
 
 try {
-    // 1. KINDER LADEN (GET)
     if ($method === 'GET') {
-        // Zuerst die Standard-Stammdaten aller Kinder holen (rfid_id und streak angepasst)
         $stmt = $pdo->prepare("
             SELECT id, parent_id, name, age, daily_limit, streak, color, rfid_id
             FROM child
@@ -49,11 +45,9 @@ try {
         $stmt->execute([':parent_id' => $userId]);
         $children = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        // Jetzt für jedes Kind die Echtzeit-Statistiken live berechnen
         foreach ($children as &$child) {
             $childId = $child['id'];
 
-            // A) Verbrauch für den HEUTIGEN TAG zusammenrechnen (aus Spalte 'duration')
             $stmtToday = $pdo->prepare("
                 SELECT SUM(duration) as used_today 
                 FROM session 
@@ -63,7 +57,6 @@ try {
             $todayResult = $stmtToday->fetch(PDO::FETCH_ASSOC);
             $child['used_today'] = intval($todayResult['used_today'] ?? 0);
 
-            // B) Prüfen, ob aktuell eine Live-Session läuft (end_time ist NULL)
             $stmtActive = $pdo->prepare("
                 SELECT start_time 
                 FROM session
@@ -75,17 +68,14 @@ try {
 
             if ($activeSession) {
                 $child['is_currently_using'] = true;
-                // Wandelt den Timestamp von 'start_time' in ISO-Format für JS um
                 $child['current_session_start'] = date('c', strtotime($activeSession['start_time']));
             } else {
                 $child['is_currently_using'] = false;
                 $child['current_session_start'] = null;
             }
 
-            // C) Verbrauch für die AKTUELLE WOCHE (Montag bis Sonntag) aufschlüsseln
-            $child['week_data'] = [0, 0, 0, 0, 0, 0, 0]; // Index 0=Mo, 1=Di, 2=Mi...
+            $child['week_data'] = [0, 0, 0, 0, 0, 0, 0]; 
             
-            // SQL-Abfrage: Holt die Summe der Sekunden pro Wochentag für die aktuelle Kalenderwoche
             $stmtWeek = $pdo->prepare("
                 SELECT WEEKDAY(start_time) as wochentag, SUM(duration) as total_seconds
                 FROM session
@@ -97,16 +87,14 @@ try {
             $stmtWeek->execute([':child_id' => $childId]);
             $weekRows = $stmtWeek->fetchAll(PDO::FETCH_ASSOC);
 
-            // Gefundene Werte in das 7-Tage-Array einsortieren
             foreach ($weekRows as $row) {
-                $tagIndex = intval($row['wochentag']); // MySQL WEEKDAY liefert 0 für Mo bis 6 für So
+                $tagIndex = intval($row['wochentag']); 
                 if ($tagIndex >= 0 && $tagIndex <= 6) {
                     $child['week_data'][$tagIndex] = intval($row['total_seconds'] ?? 0);
                 }
             }
         }
 
-        // Saubere Übergabe an dein uebersicht.js Frontend
         echo json_encode([
             "status" => "success",
             "children" => $children
@@ -114,14 +102,13 @@ try {
         exit;
     }
 
-    // 2. KIND HINZUFÜGEN (POST)
     if ($method === 'POST') {
         $data = getJsonInput();
         $name = trim($data['name'] ?? '');
         $age = intval($data['age'] ?? 0);
-        $dailyLimit = intval($data['daily_limit'] ?? 0); // Wird im Frontend bereits als Sekunden geschickt
+        $dailyLimit = intval($data['daily_limit'] ?? 0); 
         $color = trim($data['color'] ?? '#F19DAE');
-        $rfidId = trim($data['rfid_id'] ?? ''); // von nfc_id zu rfid_id geändert
+        $rfidId = trim($data['rfid_id'] ?? ''); 
 
         if (!$name || $age < 0 || $dailyLimit < 0) {
             echo json_encode([
@@ -131,7 +118,6 @@ try {
             exit;
         }
 
-        // SQL an neue Tabellenstruktur angepasst (rfid_id, streak wird per Default 0)
         $stmt = $pdo->prepare("
             INSERT INTO child (parent_id, name, age, daily_limit, streak, color, rfid_id)
             VALUES (:parent_id, :name, :age, :daily_limit, 0, :color, :rfid_id)
@@ -151,7 +137,6 @@ try {
         exit;
     }
 
-    // 3. KIND BEARBEITEN (PUT)
     if ($method === 'PUT') {
         $data = getJsonInput();
         $id = intval($data['id'] ?? 0);
@@ -159,7 +144,7 @@ try {
         $age = intval($data['age'] ?? 0);
         $dailyLimit = intval($data['daily_limit'] ?? 0);
         $color = trim($data['color'] ?? '#F19DAE');
-        $rfidId = trim($data['rfid_id'] ?? ''); // von nfc_id zu rfid_id geändert
+        $rfidId = trim($data['rfid_id'] ?? ''); 
 
         if (!$id || !$name || $age < 0 || $dailyLimit < 0) {
             echo json_encode([
@@ -169,7 +154,6 @@ try {
             exit;
         }
 
-        // Spaltenname rfid_id angepasst
         $stmt = $pdo->prepare("
             UPDATE child
             SET name = :name, age = :age, daily_limit = :daily_limit,
@@ -192,7 +176,6 @@ try {
         exit;
     }
 
-    // 4. KIND LÖSCHEN (DELETE)
     if ($method === 'DELETE') {
         $data = getJsonInput();
         $id = intval($data['id'] ?? 0);
@@ -220,7 +203,6 @@ try {
         exit;
     }
 
-    // Methode nicht erlaubt
     http_response_code(405);
     echo json_encode([
         "status" => "error",

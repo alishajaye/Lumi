@@ -1,8 +1,6 @@
 <?php
-// register.php
 header('Content-Type: application/json');
 
-// HIER ANGEPASST: Lädt die config.php direkt aus dem api/ Ordner
 require_once '../system/config.php'; 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -18,7 +16,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    // Prüfen, ob die E-Mail bereits existiert
     $stmt = $pdo->prepare("SELECT id FROM users WHERE email = :email");
     $stmt->execute([':email' => $email]);
     if ($stmt->fetch()) {
@@ -26,11 +23,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    // Passwort sicher hashen
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-    // Neuen Benutzer (Elternteil) in die Tabelle 'users' einfügen
-    // 'created_at' befüllt sich dank deiner Anpassung in phpMyAdmin ganz von alleine!
     $insert = $pdo->prepare("INSERT INTO users (email, password, vorname, nachname) VALUES (:email, :pass, :firstName, :lastName)");
     $insert->execute([
         ':email'     => $email,

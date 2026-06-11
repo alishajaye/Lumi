@@ -1,11 +1,6 @@
-/* =============================================
-   LUMI – Übersicht JS (API-basiert mit Live-Ticker - BEREINIGT & ANGEPASST)
-   ============================================= */
-
    const WK_DE = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'];
    const WK_EN = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-   
-   // ─── Übersetzungen ───────────────────────────
+  
    const TRANSLATIONS = {
      de: {
        language: 'Sprache', changePassword: 'Passwort ändern', logout: 'Abmelden',
@@ -51,7 +46,6 @@
      }
    };
    
-   // currentLang is declared in nav.js (loaded first)
    function t(key) { return (TRANSLATIONS[currentLang] && TRANSLATIONS[currentLang][key]) || key; }
    function WK() { return currentLang === 'en' ? WK_EN : WK_DE; }
    
@@ -66,12 +60,10 @@
      });
    }
    
-   // ─── Auth / User ─────────────────────────────
    function renderUser() {
      if (typeof updateProfileDisplay === 'function') updateProfileDisplay();
    }
    
-   // ─── Kinder von API laden ────────────────────
    let children = [];
    
    async function loadChildren() {
@@ -84,7 +76,6 @@
            var iconKey = 'lumi_child_icon_' + child.id;
            var icon = child.icon || localStorage.getItem(iconKey) || '';
            
-           // Wochen-Array aus der DB umrechnen von Sekunden in Minuten
            const minutesWeekData = (child.week_data || [0, 0, 0, 0, 0, 0, 0]).map(sec => Math.round(Number(sec) / 60));
    
            return {
@@ -93,7 +84,6 @@
              age: Number(child.age),
              color: child.color || '#F19DAE',
              icon: icon,
-             // HIER ANGEPASST: Sekunden aus der Datenbank werden für das UI durch 60 geteilt
              dailyLimit: Math.round(Number(child.daily_limit) / 60),
              usedTodayStored: Math.round(Number(child.used_today || 0) / 60), 
              isCurrentlyUsing: Boolean(child.is_currently_using),
@@ -140,7 +130,6 @@
      }
    }
    
-   // Berechnet die heutigen Live-Minuten (bereits auf Minuten-Basis im UI)
    function calculateLiveMinutes(child) {
      let totalMinutes = child.usedTodayStored;
    
@@ -274,8 +263,7 @@
          list.innerHTML = `<div class="ueb-empty-small">${t('noActivities')}</div>`;
          return;
        }
-   
-       // Zeige maximal die neuesten 6 Aktivitäten auf dem Dashboard an
+  
        const latestNotifications = notifications.slice(0, 6);
    
        list.innerHTML = latestNotifications.map(notif => {
@@ -421,7 +409,7 @@
      }
    }
    
-   // ─── Live-Ticker Logik ─────────────────────────
+   // ─── Live-Ticker ─────────────────────────
    function startLiveDashboardTicker() {
      if (window.liveDashboardInterval) clearInterval(window.liveDashboardInterval);
    
@@ -444,7 +432,6 @@
      }, 10000);
    }
    
-   // ─── Init ────────────────────────────────────
    function renderAllSync() {
      applyTranslations();
      renderUser();

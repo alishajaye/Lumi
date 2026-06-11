@@ -1,5 +1,4 @@
 <?php
-// notifications.php
 header('Content-Type: application/json');
 
 if (file_exists(__DIR__ . '/config.php')) {
@@ -15,7 +14,6 @@ if (file_exists(__DIR__ . '/config.php')) {
     exit;
 }
 
-// Falls die Session noch nicht aktiv ist, starten
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -33,9 +31,7 @@ $userId = $_SESSION['user_id'];
 $method = $_SERVER['REQUEST_METHOD'];
 
 try {
-    // 1. MITTEILUNGEN ABRUFEN (GET)
     if ($method === 'GET') {
-        // SQL erweitert um n.is_read
         $stmt = $pdo->prepare("
             SELECT n.id, n.message, n.is_read, n.created_at, c.name AS child_name, c.color
             FROM notifications n
@@ -52,9 +48,7 @@ try {
         exit;
     }
 
-    // 2. MITTEILUNGEN ALS GELESEN MARKIEREN (PUT) - NEU
     if ($method === 'PUT') {
-        // Setzt alle ungelesenen Nachrichten der Eltern auf gelesen (1)
         $stmt = $pdo->prepare("
             UPDATE notifications 
             SET is_read = 1 
@@ -69,7 +63,6 @@ try {
         exit;
     }
 
-    // 3. ALLE MITTEILUNGEN LÖSCHEN (DELETE)
     if ($method === 'DELETE') {
         $stmt = $pdo->prepare("DELETE FROM notifications WHERE parent_id = :parent_id");
         $stmt->execute([':parent_id' => $userId]);

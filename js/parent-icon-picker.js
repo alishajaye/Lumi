@@ -1,9 +1,3 @@
-/* =============================================
-   LUMI – parent-icon-picker.js
-   Profilbild-Auswahl für Eltern (via Nav-Dropdown)
-   Muss NACH icons.js und nav.js geladen werden
-   ============================================= */
-
 function openParentIconModal() {
   if (!document.getElementById('parentIconModalOverlay')) {
     injectParentIconModal();
@@ -11,7 +5,6 @@ function openParentIconModal() {
   renderParentIconGrid();
   document.getElementById('parentIconModalOverlay').classList.add('active');
 
-  // Dropdown schliessen
   var dd = document.getElementById('profileDropdown');
   if (dd) dd.classList.remove('active');
 }
@@ -52,7 +45,6 @@ function injectParentIconModal() {
 
   document.body.appendChild(overlay);
 
-  // Klick ausserhalb schliesst Modal
   overlay.addEventListener('click', function(e) {
     if (e.target === overlay) closeParentIconModal();
   });
@@ -105,7 +97,7 @@ function renderParentIconGrid() {
 
 function saveParentIcon() {
   localStorage.setItem('lumi_parent_icon', _selectedParentIcon);
-  // Avatar im Nav sofort aktualisieren
+
   if (typeof updateProfileDisplay === 'function') updateProfileDisplay();
   closeParentIconModal();
 }

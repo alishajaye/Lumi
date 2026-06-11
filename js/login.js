@@ -1,4 +1,3 @@
-// login.js
 document.getElementById('loginForm').addEventListener('submit', async (e) => {
   e.preventDefault();
  
@@ -15,13 +14,11 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
     const result = await response.json();
  
     if (result.status === 'success') {
-      // Use first name from email (before dot or @), capitalize
       const beforeAt = email.split('@')[0];
       const firstName = beforeAt.split('.')[0];
       const displayName = firstName.charAt(0).toUpperCase() + firstName.slice(1);
       localStorage.setItem('lumi_user', JSON.stringify({ name: displayName, email: email }));
  
-      // Redirect to overview
       window.location.href = 'index.html';
     } else {
       alert(result.message || 'Login fehlgeschlagen.');

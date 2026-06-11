@@ -1,6 +1,4 @@
-// logout.js
 document.getElementById("logoutBtn").addEventListener("click", async (e) => {
-  // Prevent the default button behavior
   e.preventDefault();
 
   try {
@@ -12,7 +10,7 @@ document.getElementById("logoutBtn").addEventListener("click", async (e) => {
     const result = await response.json();
 
     if (result.status === "success") {
-      // Redirect to login page after successful logout
+ 
       window.location.href = "login.html";
     } else {
       console.error("Logout failed");

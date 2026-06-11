@@ -1,11 +1,8 @@
 <?php
-// devices.php
 header('Content-Type: application/json');
 
-// Lädt die Verbindungsdatei (hier korrigiert auf config.php)
 require_once '../system/config.php'; 
 
-// Schutzbarriere: Prüfen, ob das Elternteil eingeloggt ist
 if (!isset($_SESSION['user_id'])) {
     http_response_code(401);
     echo json_encode([
@@ -23,10 +20,7 @@ function getJsonInput() {
 }
 
 try {
-    // 1. GERÄTE AUSLESEN (GET)
-    // Holt alle Geräte von Kindern, die dem aktuell eingeloggten User gehören
     if ($method === 'GET') {
-        // SQL erweitert um d.NFC_id und d.is_in_box für die Live-Statusanzeige im Dashboard
         $stmt = $pdo->prepare("
             SELECT d.id, d.child_id, d.name, d.type, d.NFC_id, d.is_in_box, c.name AS child_name
             FROM device d
@@ -44,14 +38,12 @@ try {
         exit;
     }
 
-    // 2. GERÄT HINZUFÜGEN (POST)
     if ($method === 'POST') {
         $data = getJsonInput();
 
         $childId = intval($data['child_id'] ?? 0);
         $deviceName = trim($data['name'] ?? '');
         $deviceType = trim($data['type'] ?? '');
-        // NFC_id als String abfangen (Wichtig wegen Wechsel zu VARCHAR, erlaubt Text und Hex-Codes)
         $nfcId = trim($data['nfc_id'] ?? ''); 
 
         if (!$childId || !$deviceName) {
@@ -62,7 +54,6 @@ try {
             exit;
         }
 
-        // Sicherheits-Check: Gehört das Kind überhaupt diesem User?
         $check = $pdo->prepare("SELECT id FROM child WHERE id = :id AND parent_id = :parent_id");
         $check->execute([':id' => $childId, ':parent_id' => $userId]);
         if (!$check->fetch()) {
@@ -73,7 +64,6 @@ try {
             exit;
         }
 
-        // In Tabelle 'device' eintragen (Inklusive NFC_id und dem Standardwert 1 für is_in_box)
         $stmt = $pdo->prepare("
             INSERT INTO device (child_id, name, type, NFC_id, is_in_box)
             VALUES (:child_id, :name, :type, :nfc_id, 1)
@@ -93,7 +83,6 @@ try {
         exit;
     }
 
-    // 3. GERÄT LÖSCHEN (DELETE)
     if ($method === 'DELETE') {
         $data = getJsonInput();
         $deviceId = intval($data['id'] ?? 0);
@@ -106,7 +95,6 @@ try {
             exit;
         }
 
-        // Sicherheits-Check: Gehört das Gerät einem Kind dieses Users?
         $check = $pdo->prepare("
             SELECT d.id FROM device d
             JOIN child c ON d.child_id = c.id
@@ -121,7 +109,6 @@ try {
             exit;
         }
 
-        // Löschen ausführen
         $stmt = $pdo->prepare("DELETE FROM device WHERE id = :id");
         $stmt->execute([':id' => $deviceId]);
 
@@ -132,7 +119,6 @@ try {
         exit;
     }
 
-    // Falls eine andere Methode genutzt wurde
     http_response_code(405);
     echo json_encode(["status" => "error", "message" => "Methode nicht erlaubt."]);
 

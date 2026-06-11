@@ -1,7 +1,5 @@
 <?php
-// login.php
 ini_set('session.cookie_httponly', 1);
-// ini_set('session.cookie_secure', 1); // Falls HTTPS, einkommentieren
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
