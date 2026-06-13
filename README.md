@@ -1,73 +1,154 @@
-# 🔑👤 Authentifizierung Minimal (Boilerplate)
+**Kurzbeschreibung des Projekts**
 
-![Static Badge](https://img.shields.io/badge/Sprache-PHP-%23f7df1e)
-![Static Badge](https://img.shields.io/badge/Kurs-MMP_IM4-blue)
-![Last Changed](https://img.shields.io/endpoint?url=https://badges.crazy-internet.ch/im4_example.php)
+- **Modul:** Interaktive Medien 4 an der Fachhochschule Graubünden (FS26)
+- **Themenfeld:** IoT-Applikation für Eltern mit kleinen Kindern
+- **Name des Projekts:** Lumi
+- **Team Physical Computing:** Inès Jetzer & Nic Luginbühl
+- **Team WebApp:** Alisha Künzi & Melina Gast
 
-> 🎨 Dieses Boilerplate kann entweder in einem Code-Along Schritt für Schritt gemeinsam erarbeitet werden oder fixfertig auf einem Webserver installiert werden.
+Lumi ist ein hybrides System bestehend aus einer Web-App und einer physischen Lumi Box. Ziel des Projekts ist es, Eltern dabei zu unterstützen, die Bildschirmzeit ihrer Kinder bewusster und konfliktfreier zu verwalten.
 
-Dieses Repository beinhaltet ein vollständiges, minimales Authenzifizierungs-System basierend auf PHP als Backend und HTML/CSS/JS als Frontend.
+Kinder legen ihre Geräte in die Lumi Box. Die Bildschirmzeit wird anschliessend automatisch erfasst und in der Web-App visualisiert. Eltern können Tageslimits definieren, Kinderprofile verwalten und Mitteilungen der Box empfangen.
 
-Es ermöglicht Benutzern das `Registrieren`, `Anmelden`, `Abmelden` und den Zugriff auf eine `geschützte Seite` nach erfolgreicher Authentifizierung.
+Das System soll Familien helfen, einen ausgeglicheneren Umgang mit digitalen Medien zu fördern.
 
-Eine einfache Erklärung des Login-Ablaufs mit Sessions und Cookies findest du in [`sessions.md`](sessions.md).
+**UX & Konzeption**
 
-# 🏁 Live - Version
+- **Figma:** Figma-Link: [Link einfügen]
+- **User Flow & Screen Flow:** Screenshots und Flows aus Figma ergänzen
 
-Du kannst Homely unter folgendem Link testen:
+**Geplante Features**
 
-[https://im4.crazy-internet.ch/](https://im4.crazy-internet.ch/)
+- Kinderprofile
+- Bildschirmzeit-Limits
+- Echtzeit-Mitteilungen
+- Wochenübersicht der Nutzungszeit
+- Verbindung zur Lumi Box
+- Mehrsprachigkeit
 
-## ⚙️ Installation
+### Nicht umgesetzte Features ?
 
-Um dieses Boilerplate auf dem eigenen Web-Server zu installieren, führe folgende Schritte aus:
+- Push-Benachrichtigungen
+- Belohnungssystem → z.B. wenn Kind das Zimmer aufgeräumt hat, bekommt es 10 Minuten mehr Bildschirmzeit
+- Vollständige Gamification
+- Erweiterte Statistiken
 
-### 1. Download
+**Setup**
 
-- [Klone das Repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) über GitHub oder [downloade das Repository als ZIP Datei](https://docs.github.com/en/repositories/working-with-files/using-files/downloading-source-code-archives) auf deinen eigenen Computer.
+- WebApp: https://lumi.alisha-kuenzi.ch/
+- Video-Dokumentation: [YouTube-Link einfügen]
 
-### 2. Datenbank
+### Installationsanleitung WebApp
 
-- Erstelle eine neue Datenbank bei deinem Hoster (z.B. [Infomaniak](https://www.infomaniak.com/de/support/faq/1981/mysqlmariadb-benutzer-und-datenbanken-verwalten)).
+**Voraussetzungen**
+Benötigt werden:
 
-- Importiere die Datei `system/database.sql` in die neue Datenbank, um die `users` Tabelle zu erstellen.
+- PHP
+- MySQL-Datenbank
+- Webserver mit PHP-Unterstützung
+- FTP- oder SFTP-Zugang
 
-### 3. Code
+**Installation**
 
-- Benenne die Datei `system/config.php.blank` in `system/config.php` um.
+1. Repository herunterladen oder klonen
+2. Projekt auf den Webserver hochladen
+3. Neue MySQL-Datenbank erstellen
+4. Datei `database.sql` importieren
+5. Datei `config.php.blank` in `config.php` umbenennen
+6. Datenbank-Zugangsdaten in `config.php` eintragen
+7. Projekt im Browser öffnen
 
-- Passe die Datenbankverbindungsdaten in der Datei `system/config.php` an.
+### Bauanleitung Physical Computing
 
-### 4. FTP Connect
+**Verwendete Komponenten**
 
-- Erstelle eine neue FTP Verbindung mit dem SFTP Plugin gemäss [Anleitung im MMP 101](https://github.com/Interaktive-Medien/101-MMP/blob/main/resources/sftp.md).
+- ESP32
+- RFID-Reader
+- RFID-Tags
+- NFC Reader PN532
+- NFC Tags
+- LED-Ring
+- Servo Motor
+- Externe Stromversorgung(Batterie)
+- Kondensator
 
-# 📁 Struktur
+**Ergänzungen**
 
-## 🎨 Frontend
+- Komponentenplan ergänzen
 
-### root (Basis-Verzeichnis)
+- Steckplan:
+![Steckplan](Steckplan.jpg)
 
-- beinhaltet alle HTML-Dateien des Frontends.
-- beinhaltet die `.gitignore` Datei, welche die Dateien und Verzeichnisse ausblendet, die nicht auf GitHub hochgeladen werden sollen.
+- Prototyp:
+![prototyp1](Images/IMG_8016.JPG)
+![prototyp2](Images/IMG_8017.JPG)
+![prototyp3](Images/IMG_8018.JPG)
 
-### js
+Kurz vor der Abgabe, ist leider der Servo Motor Kabuttgegangen und hat nicht mehr richtig gedreht. Darum wurde die Logik im Code ausgeklammert und mit einem Serial.Print der Servo Motor und das öffnen der Box simuliert.
 
-- beinhaltet alle JavaScript-Dateien des Frontends.
+### Projektstruktur
 
-### css
+Die Web-App besteht aus Frontend und Backend.
 
-- beinhaltet alle CSS-Dateien des Frontends.
+Frontend:
 
-## 🤖 Backend
+- HTML
+- CSS
+- JavaScript
 
-### api
+Backend:
 
-- Beinhaltet alle API-Endpunkte des Backends.
-- Diese Dateien werden von `JavaScript` aufgerufen und geben eine Antwort an `JavaScript` zurück.
+- PHP
+- MySQL
 
-### system
+Die Kommunikation zwischen Web-App und Datenbank erfolgt über PHP-API-Endpunkte.
 
-- Beinhaltet die Konfigurationsdatei für die Datenbankverbindung.
-- Beinhaltet die Datei `database.sql`, die die `users` Tabelle erstellt.
-- Beinhaltet die Datei `config.php`, die die Konfiguration des Backends enthält.
+**Datenschnittstelle**
+Die Lumi Box sendet Nutzungsdaten an die Datenbank. Die Web-App liest diese Daten aus und visualisiert sie in Echtzeit.
+
+**ERM**
+
+ERP_Lumi.pdf
+
+**Authentifizierung**
+Benutzer können sich registrieren und anmelden. 
+Die Authentifizierung basiert auf PHP-Sessions.
+
+**Known Bugs**
+
+- Teilweise Verzögerungen bei Echtzeitdaten
+- Responsive Darstellung einzelner Modals noch nicht vollständig optimiert
+- Sprachwechsel funktioniert nicht in allen Bereichen fehlerfrei
+
+**Reflexion / Lernfortschritt**
+Im Projekt haben wir gelernt, wie Frontend, Backend und Physical Computing miteinander verbunden werden können. Besonders spannend war die Zusammenarbeit zwischen Web-App und Hardware-Team.
+
+**Zusätzlich konnten wir Erfahrungen mit:**
+
+- Datenbanken
+- API-Kommunikation
+- PHP-Sessions
+- Responsive Design
+- Echtzeitdaten
+- Physical Computing
+
+**Herausforderungen & Lösungen**
+Eine grosse Herausforderung war die Synchronisation der Daten zwischen Lumi Box und Web-App. Auch das Zusammenspiel der verschiedenen Komponenten benötigte mehrere Tests und Anpassungen.
+
+Das Responsive Design der Modals sowie die Mehrsprachigkeit führten ebenfalls zu mehreren Iterationen.
+
+**KI wurde verwendet für:**
+
+- UX-Konzeption
+- Textunterstützung
+- Code-Unterstützung
+- Mockup-Erstellung
+
+**Verwendete KI-Tools:**
+
+- ChatGPT/ Claude.ai
+- Gemini
+- Figma Make
+
+**Fazit**
+Lumi verbindet Physical Computing und Webentwicklung zu einem gemeinsamen System. Das Projekt zeigte, wie digitale und physische Komponenten kombiniert werden können, um ein alltagsnahes Problem zu lösen.
