@@ -146,6 +146,7 @@ try {
         $color = trim($data['color'] ?? '#F19DAE');
         $rfidId = trim($data['rfid_id'] ?? ''); 
 
+        // 1. Zuerst prüfen, ob die Pflichtfelder ausgefüllt sind
         if (!$id || !$name || $age < 0 || $dailyLimit < 0) {
             echo json_encode([
                 "status" => "error",
@@ -154,21 +155,41 @@ try {
             exit;
         }
 
-        $stmt = $pdo->prepare("
-            UPDATE child
-            SET name = :name, age = :age, daily_limit = :daily_limit,
-                color = :color, rfid_id = :rfid_id
-            WHERE id = :id AND parent_id = :parent_id
-        ");
-        $stmt->execute([
-            ':name'        => $name,
-            ':age'         => $age,
-            ':daily_limit' => $dailyLimit,
-            ':color'       => $color,
-            ':rfid_id'      => $rfidId ?: null,
-            ':id'          => $id,
-            ':parent_id'   => $userId
-        ]);
+        // 2. Dann das Update ausführen (mit Weiche für die RFID)
+        if ($rfidId !== ''){
+            $stmt = $pdo->prepare("
+                UPDATE child
+                SET name = :name, age = :age, daily_limit = :daily_limit,
+                    color = :color, rfid_id = :rfid_id
+                WHERE id = :id AND parent_id = :parent_id
+            ");
+            $stmt->execute([
+                ':name'        => $name,
+                ':age'         => $age,
+                ':daily_limit' => $dailyLimit,
+                ':color'       => $color,
+                ':rfid_id'     => $rfidId,
+                ':id'          => $id,
+                ':parent_id'   => $userId
+            ]);
+        } else {
+            // Die App hat keine (oder eine leere) RFID geschickt -> rfid_id in Ruhe lassen!
+            $stmt = $pdo->prepare("
+                UPDATE child
+                SET name = :name, age = :age, daily_limit = :daily_limit,
+                    color = :color
+                WHERE id = :id AND parent_id = :parent_id
+            ");
+            $stmt->execute([
+                ':name'        => $name,
+                ':age'         => $age,
+                ':daily_limit' => $dailyLimit,
+                ':color'       => $color,
+                ':id'          => $id,
+                ':parent_id'   => $userId
+            ]);
+        }
+
         echo json_encode([
             "status" => "success",
             "message" => "Kind wurde aktualisiert."

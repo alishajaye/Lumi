@@ -3,3 +3,6 @@ config.php
 .vscode
 .env
 node_modules
+esp32/lumi_box/config.h
+esp32/lumi_box/build/sketch/config.h
+build/

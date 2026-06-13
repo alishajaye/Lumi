@@ -316,12 +316,6 @@ function renderCards() {
             </div>
           </div>
           <div class="kinder-week-chart">${bars}</div>
-          <div class="kinder-devices-section">
-            <div class="kinder-devices-label">${t("devices")}</div>
-            <div class="kinder-devices-list">
-              <span class="kinder-device-none">${t("noDevice")}</span>
-            </div>
-          </div>
           <div class="kinder-card-actions">
             <button class="kinder-btn-details" style="--child-color:${child.color};--child-color-light:${soften(child.color, "1A")}" data-child-id="${child.id}">${t("details")}</button>
             <button class="kinder-btn-limit" style="--child-color:${child.color};--child-color-light:${soften(child.color, "1A")}" data-child-id="${child.id}">${t("limit")}</button>

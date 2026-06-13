@@ -2,9 +2,16 @@
 #include <Adafruit_PN532.h>
 #include <Adafruit_NeoPixel.h>
 
+#include "config.h"
+#include <WiFi.h>
+#include <HTTPClient.h>
+#include <ArduinoJson.h>
+
 #include <SPI.h>
 #include <MFRC522.h>
 #include <ESP32Servo.h>
+
+String aktuellesKindRFID = "";
 
 #define SDA_PIN 6
 #define SCL_PIN 7
@@ -78,17 +85,19 @@ void servoUmschalten() {
 
   if (!servoIstOffen) {
 
-    Serial.println("Servo öffnet...");
+    // Serial.println("Servo öffnet...");
+    Serial.println("Box offen");
 
-    myServo.write(SERVO_OPEN);
+    // myServo.write(SERVO_OPEN);
 
     servoIstOffen = true;
 
   } else {
 
-    Serial.println("Servo schließt...");
+    // Serial.println("Servo schließt...");
+    Serial.println("Box geschlossen");
 
-    myServo.write(SERVO_CLOSED);
+    // myServo.write(SERVO_CLOSED);
 
     servoIstOffen = false;
   }
@@ -98,9 +107,21 @@ void setup() {
 
   Serial.begin(115200);
 
+ 
+
+  delay(3000); 
+  Serial.println("\n\n--- ESP32-C6 startet ---");
+
   Wire.begin(SDA_PIN, SCL_PIN);
 
-  // Serial.println("Starte PN532...");
+  WiFi.begin(SECRET_SSID, SECRET_PASS);
+  Serial.print("Verbinde mit WLAN");
+
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+  Serial.println("\n Wlan verbunden!");
 
   nfc.begin();
 
@@ -123,18 +144,62 @@ void setup() {
 
   //Servomotor
 
-  ESP32PWM::allocateTimer(0);
-  myServo.setPeriodHertz(50);
-  myServo.attach(SERVO_PIN, 500, 2400);
-  myServo.write(SERVO_CLOSED);
-
-  // Serial.println("Überwachung gestartet...");
+  // ESP32PWM::allocateTimer(0);
+  // myServo.setPeriodHertz(50);
+  // myServo.attach(SERVO_PIN, 500, 2400);
+  // myServo.write(SERVO_CLOSED);
 
   ring.begin();
   ring.clear();
   ring.show();
 
   Serial.println("System gestartet");
+}
+
+int meldeServer(String action, String rfid) {
+  if (WiFi.status() == WL_CONNECTED) {
+    HTTPClient http;
+    http.begin(SECRET_URL); // URL aus der secrets.h
+    http.addHeader("Content-Type", "application/json");
+
+    StaticJsonDocument<200> sendDoc;
+    sendDoc["action"] = action;
+    sendDoc["rfid_id"] = rfid;
+    
+    String requestBody;
+    serializeJson(sendDoc, requestBody);
+
+    Serial.println("Sende an Server: " + requestBody);
+    int httpResponseCode = http.POST(requestBody);
+    int antwortWert = 0;
+
+    if (httpResponseCode > 0) {
+      String response = http.getString();
+      Serial.println("Antwort vom Server: " + response);
+
+      StaticJsonDocument<512> responseDoc;
+      deserializeJson(responseDoc, response);
+
+      if (responseDoc["status"] == "success") {
+        if (action == "start") {
+          antwortWert = responseDoc["restzeit_sekunden"];
+        } else {
+          antwortWert = 1;
+        }
+      } else {
+         Serial.println("Server meldet einen Fehler in der Logik.");
+      }
+    } else {
+      Serial.print("Netzwerkfehler beim Senden: ");
+      Serial.println(httpResponseCode);
+    }
+    http.end();
+    
+    return antwortWert;
+  } else {
+    Serial.println("Fehler: Kein WLAN verbunden!");
+    return 0;
+  }
 }
 
 void loop() {
@@ -153,22 +218,19 @@ void loop() {
   bool personGefunden = false;
 
   if (rfid.PICC_IsNewCardPresent() && rfid.PICC_ReadCardSerial()){
-    if (personIstErlaubt(rfid.uid.uidByte, rfid.uid.size)) {
-      Serial.println("Person erkannt: ERLAUBT");
-
-      personGefunden = true;
-
-      servoUmschalten();
-      delay(1000);
-    } else {
-      Serial.print("Unbekannte Person UID: ");
-
-      for (byte i = 0; i < rfid.uid.size; i++) {
-        Serial.print(rfid.uid.uidByte[i], HEX);
-        Serial.print(" ");
-      }
-      Serial.println();
+    String rfidString = "";
+    for (byte i = 0; i < rfid.uid.size; i++) {
+      if(rfid.uid.uidByte[i] < 0x10) rfidString += "0";
+      rfidString += String(rfid.uid.uidByte[i], HEX);
     }
+    rfidString.toUpperCase();
+
+    aktuellesKindRFID = rfidString; 
+    Serial.println("Chip gelesen: " + aktuellesKindRFID);
+    Serial.println("Kind erkannt");
+
+    servoUmschalten();
+    delay(1000);
 
     rfid.PICC_HaltA();
     rfid.PCD_StopCrypto1();
@@ -178,14 +240,22 @@ void loop() {
     //PRESENT
     case PRESENT:
 
-    if(erlaubterTag){
-      return;
-    }
-
-    if(!erlaubterTag){
+    if(!erlaubterTag && aktuellesKindRFID != ""){
       Serial.println("Handy fehlt!");
-      zustand = MISSING;
-      sekundenRest = startZeit;
+
+      int restzeitVomServer = meldeServer("start", aktuellesKindRFID);
+
+      if (restzeitVomServer > 0) {
+        sekundenRest = restzeitVomServer;
+
+        startZeit = restzeitVomServer;
+
+        zustand = MISSING;
+        Serial.println("Restzeit: " + String(sekundenRest) + " Sekunden");
+      } else {
+        Serial.println("Zeit abgelaufen!");
+        zustand = ALERT;
+      }
     }
 
     break;
@@ -196,14 +266,14 @@ void loop() {
       if(erlaubterTag){
         Serial.println("Handy wieder zurück.");
 
+        meldeServer("end", aktuellesKindRFID);
+
         zustand = PRESENT;
         ring.clear();
         ring.show();
+        aktuellesKindRFID = "";
         return;
       }
-
-      Serial.println("Sekunden übrig: ");
-      Serial.println(sekundenRest);
 
       {
         int ledsAn = map(sekundenRest, 0, startZeit, 0, NUMPIXELS);
@@ -231,11 +301,14 @@ void loop() {
       //ALERT
       case ALERT:
         if (erlaubterTag) {
-          Serial.println("Objekt wieder vorhanden");
+          Serial.println("Handy wieder vorhanden");
+
+          meldeServer("end", aktuellesKindRFID);
 
           zustand = PRESENT;
           ring.clear();
           ring.show();
+          aktuellesKindRFID = "";
           return;
         }
 
