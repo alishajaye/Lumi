@@ -14,8 +14,9 @@ Das System soll Familien helfen, einen ausgeglicheneren Umgang mit digitalen Med
 
 **UX & Konzeption**
 
-- **Figma:** Figma-Link: [Link einfügen]
-- **User Flow & Screen Flow:** Screenshots und Flows aus Figma ergänzen
+- **Figma:** Figma-Link: https://www.figma.com/design/KMsjycRtOtbVj73YLE4L6u/IM-4-%E2%80%93-App-Konzeption-Vorlage--Alisha--Melina--In%C3%A8s--Nic-?node-id=78-325&t=jpJ87YyqJZXBGiQA-1
+
+![userflow](Images/IM%204%20–%20App-Konzeption%20Vorlage%20(Alisha,%20Melina,%20Inès,%20Nic).jpg)
 
 **Geplante Features**
 
@@ -36,7 +37,7 @@ Das System soll Familien helfen, einen ausgeglicheneren Umgang mit digitalen Med
 **Setup**
 
 - WebApp: https://lumi.alisha-kuenzi.ch/
-- Video-Dokumentation: [YouTube-Link einfügen]
+- Video-Dokumentation: https://youtube.com/shorts/U-2V9uAie6Q?feature=share
 
 ### Installationsanleitung WebApp
 
@@ -59,9 +60,11 @@ Benötigt werden:
 7. Projekt im Browser öffnen
 
 ### Bauanleitung Physical Computing
+**Komponentenplan**
+
+![komponentenplan](Images/Komponentenpla_Lumi.jpg)
 
 **Verwendete Komponenten**
-
 - ESP32
 - RFID-Reader
 - RFID-Tags
@@ -72,11 +75,8 @@ Benötigt werden:
 - Externe Stromversorgung(Batterie)
 - Kondensator
 
-**Ergänzungen**
 
-- Komponentenplan ergänzen
-
-- Steckplan:
+**Steckplan:**
 ![Steckplan](Steckplan.jpg)
 
 - Prototyp:
@@ -108,7 +108,7 @@ Die Lumi Box sendet Nutzungsdaten an die Datenbank. Die Web-App liest diese Date
 
 **ERM**
 
-ERP_Lumi.pdf
+![ERM](Images/ERM_Lumi.png)
 
 **Authentifizierung**
 Benutzer können sich registrieren und anmelden. 
